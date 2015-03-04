@@ -1,0 +1,173 @@
+/*******************************************************************************
+ *                                                                             *
+ * Root                                                                        *
+ *                                                                             *
+ ******************************************************************************/
+.root{
+    -fx-font-size: 11pt;
+    -fx-font-family: 'font-family: 'Open Sans', sans-serif;';
+    -fx-base: #a7dbdb;
+    -fx-background: white;
+    -fx-control-inner-background: white;
+    -fx-focus-color: #69d2e7;
+    -fx-text-base-color: #3b3a35;
+    -fx-disabled-opacity: 0.4; /*The opacity level to use for the disabled pseudoclass.*/
+    -fx-hover-base: #69d2e7;
+    -fx-focused-base: #f38630;
+  /*    -fx-box-border: red;*/
+    -fx-text-box-border: #f38630;
+    /* -fx-tab-border-color: red;*/ 
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Hyperlink                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+.hyperlink {
+    -fx-padding: 0.166667em; /* 2 */
+    -fx-cursor: hand;
+    -fx-content-display: LEFT;
+    -fx-text-fill: -fx-text-background-color;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * TabPane                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+.tab-pane {
+    -fx-tab-min-width: 6em; 
+    -fx-tab-max-width: 6em;
+    -fx-tab-min-height: 2em;
+    -fx-tab-max-height: 2em; 
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+    -fx-background-color: transparent;    
+    -fx-alignment: CENTER;
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.tab-pane > .tab-content-area {
+    -fx-background-color: -fx-control-inner-background;
+    -fx-padding: 0; /* 0 */
+    /* -fx-opacity: -fx-disabled-opacity;*/
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-insets: 0 1 1 0, 1 2 1 1, 2 3 1 2;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-padding: 0.083333em 0.5em 0.083333em 0.5em; /* 1 6 1 6 */
+    -fx-text-fill: -fx-text-base-color;
+
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * SplitPane                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+.split-pane {
+  /*  -fx-background-color: , -fx-control-inner-background; */
+    -fx-background-insets: 0, 1;
+    -fx-padding: 0;
+    -fx-box-border: -fx-base;
+}
+
+.split-pane > .split-pane-divider {
+	-fx-background-insets: 0 1 1 0, 1 2 1 1, 2 3 1 2;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-padding: 0 0 0 0; /* 0 3 0 3 */
+}
+
+/* horizontal the two nodes are placed to the left/right of each other. */
+.split-pane:horizontal > .split-pane-divider {
+   -fx-border-color: -fx-base -fx-base -fx-base;
+   -fx-background-color: -fx-base, -fx-base;
+   -fx-background-insets: 0, 0 1 0 1;
+}
+
+/* vertical the two nodes are placed on top of each other. */
+.split-pane:vertical > .split-pane-divider {
+   -fx-border-color:  -fx-base -fx-base -fx-base;
+   -fx-background-color: -fx-base, -fx-base;
+   -fx-background-insets: 0, 1 0 1 0;
+}
+
+.split-pane > .split-pane-divider > .horizontal-grabber {
+    -fx-padding: 5 1 5 1;
+    -fx-background-color: -fx-text-base-color, -fx-base;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-shape: "M0 0 L0 0 L2 0 L2 2 L0 2 Z M0 4 L0 4 L2 4 L2 6 L0 6 Z M0 8 L0 8 L2 8 L2 10 L0 10 Z";
+}
+
+.split-pane > .split-pane-divider > .vertical-grabber {
+    -fx-padding: 1 5 1 5;
+    -fx-background-color: -fx-text-base-color, -fx-base;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-shape: "M0 0 L0 0 L2 0 L2 2 L0 2 Z M4 0 L4 0 L4 2 L6 2 L6 0 Z M8 0 L8 0 L8 2 L10 2 L10 0 Z";
+} 
+
+/*******************************************************************************
+ *                                                                             *
+ * TitledPane                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+
+.titled-pane {
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.titled-pane:focused {
+    -fx-text-fill: white;
+}
+
+.titled-pane > .title {
+   /*  -fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;*/
+    /*-fx-background-insets: 0, 1, 2;*/
+   /*  -fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;*/
+   /*  -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;*/ /* 2 10 3 10 */
+    -fx-background-insets: 0 1 1 0, 1 2 1 1, 2 3 1 2;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-padding: 0.083333em 0.5em 0.083333em 0.5em; /* 1 6 1 6 */
+    -fx-text-fill: -fx-text-base-color;
+
+        /* -fx-min-height: em; */
+}
+
+.titled-pane:focused > .title {
+    -fx-color: -fx-focus-color;
+}
+/* 
+.titled-pane > .title > .arrow-button {
+    -fx-background-color: null;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0.0em 0.25em 0.0em 0.0em; /* 0 3 0 0 */
+/*
+ 
+.titled-pane > .title > .arrow-button > .arrow {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.25em 0.3125em 0.25em 0.3125em; /* 3 3.75 3 3.75 */
+/*     -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+.titled-pane > *.content {
+    -fx-background-color:
+        -fx-box-border,
+        linear-gradient(to bottom, derive(-fx-color,-02%), derive(-fx-color,65%) 12%, derive(-fx-color,23%) 88%, derive(-fx-color,50%) 99%, -fx-box-border);
+    -fx-background-insets: 0, 0 1 1 1;
+    -fx-padding: 0.167em;
+}
+
+.titled-pane:focused > .title > .arrow-button > .arrow {
+    -fx-background-color: white;
+}*/
