@@ -46,7 +46,7 @@
       </TabPane>
       <ImageView fitHeight="98.0" fitWidth="87.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="0.0">
          <image>
-            <Image url="@../../../ressources/logo-pompiers.jpg" />
+            <Image url="@resources/logo-pompiers.jpg" />
          </image>
       </ImageView>
    </children>
