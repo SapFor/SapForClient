@@ -23,6 +23,8 @@ public class DirectorLeftController implements Initializable{
 	
 	private DirectorController director;
 	
+	String URLRessource=System.getProperty("user.dir")+"/src/main/resources/";
+	
 
 	    @FXML
 	    private ListView<String> listUV;
@@ -36,7 +38,9 @@ public class DirectorLeftController implements Initializable{
 	    
 	    public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 	    assert listUV != null : "fx:id=\"listUV\" was not injected: check your FXML file 'Director-left.fxml'.";
-	    LectureUVFichier fichierUV = new LectureUVFichier("C:/JC/Cours_Master2_CCI/Depot-Github/SapForClient/src/main/resources/UVname", 0);
+	     
+	    
+	    LectureUVFichier fichierUV = new LectureUVFichier(URLRessource+"UVname", 0);
     	ObservableList<String> items =FXCollections.observableArrayList (fichierUV.getListUV());
     	listUV.setItems(items);
     	
@@ -44,7 +48,7 @@ public class DirectorLeftController implements Initializable{
     	listUV.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
     	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
     	    	
-    	    	LectureUVFichier fichier = new LectureUVFichier("C:/JC/Cours_Master2_CCI/Depot-Github/SapForClient/src/main/resources/" + newValue, 0);
+    	    	LectureUVFichier fichier = new LectureUVFichier(URLRessource + newValue, 0);
     		    ObservableList<String> ObserListNom =FXCollections.observableArrayList (fichier.getListUV());
     		    director.loadTokenFromLeft(ObserListNom);
     	        System.out.println("Selected item: " + newValue);
