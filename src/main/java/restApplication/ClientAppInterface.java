@@ -47,7 +47,7 @@ public interface ClientAppInterface {
 	// listLoading = 0 for "candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
 	public List<String> getListCandidatDirecteur(String ClickedItemSession, int listLoading);
 	
-	// Get the objet ListCandidats hosting all the list (accepted, refused, pendind, all candidates) : to put into the director tab
+	// Get the objet ListCandidats hosting all the list (accepted, refused, pending, no handled candidates) : to put into the director tab
 	public ListCandidats getListCandidatDirecteurGlobal(String ClickedItemSession);
 	
 	// Get the number of candidates for a stage : to put into the director tab 

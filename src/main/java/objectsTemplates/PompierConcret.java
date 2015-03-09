@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /*
 * Created with Eclipse.
 * Author : Caroline Chabert
-* Class to get and set firemans data hosted by the server (cloning of data)
+* Class to get and set firemen data hosted by the server (cloning of data)
 *
 */
 
@@ -99,9 +99,6 @@ public class PompierConcret {
 	public void setGestion(List<String> gestion) { this.gestion = gestion; }
 	public List<String> getGestion(){ return gestion; }
 	
-	@Override
-	public String toString() {
-		return "Pompiers [nom: " + nom + ", prenom: " + prenom + "]";
-	}
+	
 	
 }

@@ -66,7 +66,7 @@ public class StageConcret {
 	public String getInfos() { return infos; }
 	
 	/*
-	 * Complete list of candidates for the session
+	 * List of no handled candidates for the session
 	 */
 	public void setCandidats(List<String> candidats) { this.candidats = candidats; }
 	public List<String> getCandidats() { return candidats; }
