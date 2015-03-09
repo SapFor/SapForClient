@@ -292,12 +292,6 @@ public class ClientApp {
 			EncapsulationStage encapSession = service.path("UV/" + clickedItemUV).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
 			listSessionForm=encapSession.capsule;
 			
-<<<<<<< HEAD
-			EncapsulationStage encapStage = service.path("UV/" + clickedItemUV).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
-			listSession=encapStage.capsule;
-						
-=======
->>>>>>> origin/master
 			List<String> listSess = new ArrayList<String>(); // create list of stages for pushing on the tab
 			Calendar dateStage;
 			String date;
@@ -305,15 +299,11 @@ public class ClientApp {
 			String ligneSess;
 			
 			// loop of comparison between the string clickedUV and the correspondent element in the list of UV (of the server)
-<<<<<<< HEAD
-	        for(int j=0; j<listSession.size(); j++){
-	        	StageConcret newligne = listSession.get(j);
-	        	if(clickedItemUV.compareTo(newligne.getUV())==0){ // if true, get the place/date of the stage and put into the created list 
-=======
+
 	        for(int j=0; j<listSessionForm.size(); j++){
 	        	StageConcret newligne = listSessionForm.get(j);
-	        	if(clickedItemUV == newligne.getNomStage()){ // if true, get the place/date of the stage and put into the created list 
->>>>>>> origin/master
+	        	if(clickedItemUV.compareTo(newligne.getUV())==0){ // if true, get the place/date of the stage and put into the created list 
+
 	        		dateStage = newligne.getDate();
 	        		date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + (dateStage.get(Calendar.MONTH)+1) + "/" + dateStage.get(Calendar.YEAR);
 	        		nomLieu = newligne.getLieu();
@@ -374,10 +364,10 @@ public class ClientApp {
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
-			System.out.println(getInfoDetailsFormation(listSession.get(0).getNomStage()));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
 			System.out.println();
 			
-			candidateBoutonFormation(listSession.get(0).getNomStage());
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			
@@ -400,10 +390,10 @@ public class ClientApp {
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
-			System.out.println(getInfoDetailsFormation(listSession.get(0).getNomStage()));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
 			System.out.println();
 			
-			candidateBoutonFormation(listSession.get(0).getNomStage());
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			
@@ -425,10 +415,10 @@ public class ClientApp {
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
-			System.out.println(getInfoDetailsFormation(listSession.get(0).getNomStage()));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
 			System.out.println();
 			
-			candidateBoutonFormation(listSession.get(0).getNomStage());
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			
@@ -449,10 +439,10 @@ public class ClientApp {
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
-			System.out.println(getInfoDetailsFormation(listSession.get(0).getNomStage()));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
 			System.out.println();
 			
-			candidateBoutonFormation(listSession.get(0).getNomStage());
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			
@@ -465,23 +455,23 @@ public class ClientApp {
 			System.out.println(ListeAGerer);
 			
 						
-			System.out.println(getListCandidatDirecteur(listSession.get(0).getNomStage(),0));
-			System.out.println(getListCandidatDirecteur(listSession.get(0).getNomStage(),1));
-			System.out.println(getListCandidatDirecteur(listSession.get(0).getNomStage(),2));
-			System.out.println(getListCandidatDirecteur(listSession.get(0).getNomStage(),3));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),0));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),1));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),2));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),3));
 			
-			ListCandidats listeCand=getListCandidatDirecteurGlobal(listSession.get(0).getNomStage());
-			System.out.println(getListCandidatDirecteurGlobal(listSession.get(0).getNomStage()).getCandidat());
+			ListCandidats listeCand=getListCandidatDirecteurGlobal(listSessionDir.get(0).getNomStage());
+			System.out.println(getListCandidatDirecteurGlobal(listSessionDir.get(0).getNomStage()).getCandidat());
 			
 			//cloturerCandidature(ListeAGerer.get(0),10,3,2015);
 			
-			listeCand.getAccepte().add(listSession.get(0).getCandidats().get(0));
-			listeCand.getAccepte().add(listSession.get(0).getCandidats().get(2));
-			listeCand.getAttente().add(listSession.get(0).getCandidats().get(1));
-			listeCand.getRefuse().add(listSession.get(0).getCandidats().get(3));
+			listeCand.getAccepte().add(listSessionDir.get(0).getCandidats().get(0));
+			listeCand.getAccepte().add(listSessionDir.get(0).getCandidats().get(2));
+			listeCand.getAttente().add(listSessionDir.get(0).getCandidats().get(1));
+			listeCand.getRefuse().add(listSessionDir.get(0).getCandidats().get(3));
 			listeCand.getCandidat().clear();
 			
-			enregBoutonDirecteur(listSession.get(0).getNomStage(),listeCand.getCandidat(),listeCand.getAccepte(),listeCand.getAttente(),listeCand.getRefuse());
+			enregBoutonDirecteur(listSessionDir.get(0).getNomStage(),listeCand);
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			

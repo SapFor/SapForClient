@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class StageConcret {
 
 	private String uv;
-	//private int directeur;
+	private int directeur;
 	private String nomStage;
 	private Calendar date;
 	private Calendar finCandidature;
@@ -31,13 +31,7 @@ public class StageConcret {
 	private List<String> refuse;
 	
 	
-<<<<<<< HEAD
-	/*@Override
-	public void setDirecteur(int idDirecteur) {
-		// TODO Auto-generated method stub
-		this.directeur=idDirecteur;
-	}
-=======
+
 	/*
 	 * ID director of the session
 	 */
@@ -47,8 +41,8 @@ public class StageConcret {
 	/*
 	 * UV of the session
 	 */
-	public void setNomStage(String uv) { this.uv = uv; }
-	public String getNomStage() { return uv; }
+	public void setNomStage(String nomStage) { this.nomStage = nomStage; }
+	public String getNomStage() { return nomStage; }
 	
 	/*
 	 * Date of the session
@@ -98,26 +92,7 @@ public class StageConcret {
 	public void setRefuse(List<String> refuse) { this.refuse = refuse; }
 	public List<String> getRefuse() { return refuse; }
 
->>>>>>> origin/master
 
-	@Override
-	public int getDirecteur() {
-		// TODO Auto-generated method stub
-		return directeur;
-	}*/
-	
-	
-	public void setNomStage(String nom){
-		this.nomStage=nom;
-		
-	}
-	
-	
-	public String getNomStage(){
-		return nomStage;
-		
-	}
-	
 	
 	public void setUV(String UV) {
 		// TODO Auto-generated method stub
@@ -131,106 +106,6 @@ public class StageConcret {
 	}
 	
 	
-	public void setDate(Calendar date) {
-		
-		this.date=date;
-	}
-
-	
-	
-	public Calendar getDate() {
-		// TODO Auto-generated method stub
-				
-		return this.date;
-	}
-		
-	
-	public Calendar getFinCandidature(){
-		
-		return finCandidature;
-		
-	}
-	
-	
-	public void setFinCandidature(Calendar date){
-		
-		this.finCandidature=date;
-	}
-	
-	
-	public void setLieu(String lieu) {
-		
-		this.lieu=lieu;
-		
-	}
-
-	
-	public String getLieu() {
-		// TODO Auto-generated method stub
-		return lieu;
-	}
-
-	
-	public void setInfos(String infos) {
-		
-		
-		this.infos=infos;
-		
-	}
-
-	
-	public String getInfos() {
-		// TODO Auto-generated method stub
-		return infos;
-	}
-
-	
-	public void setCandidats(List<String> candidats) {
-		// TODO Auto-generated method stub
-		this.candidats=candidats;
-	}
-
-	
-	public List<String> getCandidats() {
-		// TODO Auto-generated method stub
-		return candidats;
-	}
-
-	
-	public void setAccepte(List<String> accepte) {
-		// TODO Auto-generated method stub
-		this.accepte=accepte;
-	}
-
-	
-	public List<String> getAccepte() {
-		// TODO Auto-generated method stub
-		return accepte;
-	}
-
-	
-	public void setAttente(List<String> attente) {
-		// TODO Auto-generated method stub
-		this.attente=attente;
-	}
-
-	
-	public List<String> getAttente() {
-		// TODO Auto-generated method stub
-		return attente;
-	}
-
-	
-	public void setRefuse(List<String> refuse) {
-		// TODO Auto-generated method stub
-		this.refuse=refuse;
-	}
-
-	
-	public List<String> getRefuse() {
-		// TODO Auto-generated method stub
-		return refuse;
-	}
 }
 	
 	
