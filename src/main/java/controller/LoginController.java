@@ -1,5 +1,7 @@
 package controller;
 
+import restApplication.*;
+
 import java.io.IOException;
 
 import javafx.event.Event;
@@ -8,26 +10,75 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 
 public class LoginController {
 
+	@FXML
+    private TextArea mdpArea;
+
     @FXML
     private Button validerLoginButton;
 
+    @FXML
+    private TextArea loginArea;
+    
+    @FXML
+    private Label errorArea;
+    
 	@FXML
     void onClicValiderLogin(Event event) {
+		
+		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
+    	currentStage.close();
+    	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
         try {
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
+			//stage = (Stage) root.getScene().getWindow();
+
 			Stage stage = new Stage();
-			stage = (Stage) root.getScene().getWindow();
+			stage.setScene(scene);
 			stage.show();
 			
 		} 
-        catch (IOException e) { e.printStackTrace(); } 
+        catch (IOException e) { e.printStackTrace(); }
+		
+        // Partie à utiliser lors de l'accès au serveur
+    	/*
+        String idPompier = loginArea.getText();
+        String mdp = mdpArea.getText();
+        
+        String reponse = ClientApp.login(idPompier, mdp);
+        if(reponse == "ok"){
+        	Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
+        	currentStage.close();
+        	
+        	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
+            try {
+    			Parent root = fxmlLoader.load();
+    			Scene scene = new Scene(root);
+    			//stage = (Stage) root.getScene().getWindow();
+
+    			Stage stage = new Stage();
+    			stage.setScene(scene);
+    			stage.show();
+    			
+    		} 
+            catch (IOException e) { e.printStackTrace(); } 
+        }
+        else { 
+        	errorArea.setText(reponse + " : le login et/ou le mot de passe sont incorrects."); 
+        	errorArea.setVisible(true);
+        }
+        */
     }
+    
+	
+	
 
 }

@@ -62,7 +62,7 @@ public class ClientApp {
 		*/
 		
 		// Get idSession by login and password
-		public static String login(int idPompier,String mdp){
+		public static String login(String idPompier,String mdp){
 			config = new DefaultClientConfig();
 			client = Client.create(config);
 			service = client.resource(getBaseURI());
@@ -78,6 +78,9 @@ public class ClientApp {
 		
 		// Get IdSession
 		public static int getIdSession(){ return idSession; }
+		
+		// Get name fireman
+		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent n°" + getIdSession(); }
 		
 		
 		// Deconnect the session
