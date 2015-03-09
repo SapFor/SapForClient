@@ -56,11 +56,12 @@ public class DirectorRightController {
 		loadGrid(token);
     }*/
 	
-	public void loadCandidats(String token) {
-		LectureUVFichier fichier = new LectureUVFichier(URLRessource + token, 0);
-		ObservableList<String> ObserListNom =FXCollections.observableArrayList (fichier.getListUV());
+	public void loadCandidats(String sessionID) {
+		//ObservableList<String> ObserListNom =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID)); // line to use once connected to database
+		LectureUVFichier fichier = new LectureUVFichier(URLRessource + sessionID, 0); // comment out line once connected to database
+		ObservableList<String> ObserListNom =FXCollections.observableArrayList (fichier.getListUV()); // comment out line once connected to database
 		loadGrid(ObserListNom);
-		loadButtons();
+		loadButtons(sessionID);
 	}
 
 	public void init(DirectorController directorController) {
@@ -70,6 +71,7 @@ public class DirectorRightController {
 	private void loadGrid(ObservableList<String> names) {
 
 		gridCandidats.getChildren().clear(); // clear gridPane
+		gridCandidats.setPadding(new Insets(20, 20, 20, 20));
 		
 		// setup column titles
 		//Label counter = new Label("Candidats acceptés");
@@ -147,26 +149,7 @@ public class DirectorRightController {
 	}
 	
 	
-	private void loadButtons(){
-		Button btnCloturer = new Button();
-		Button btnEnvoyer = new Button();
-		btnCloturer.setText("Clôturer la session");
-		btnEnvoyer.setText("Valider les candidatures");
-		btnCloturer.setVisible(true); //need to call function that determins how to show button
-		btnCloturer.setVisible(true); //need to call function that determins how to show button
-
-		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer);
-		hbButtons.setSpacing(100);
-		hbButtons.setPadding(new Insets(10, 10, 10, 10));
-		bdrPaneCandidats.setBottom(hbButtons);
-		
-		
-		
-	}
-
 private void loadButtons(String sessionID){
-	//	Button btnCloturer = new Button();
-	//	Button btnEnvoyer = new Button();
 		btnCloturer.setText("Clôturer la session");
 		btnEnvoyer.setText("Valider les candidatures");
 		btnCloturer.setVisible(true);
@@ -199,6 +182,12 @@ private void loadButtons(String sessionID){
 	    int month = cal.get(Calendar.MONTH) + 1; // January is 0
 	    int day = cal.get(Calendar.DAY_OF_MONTH);
 		//cloturerCandidature(getIdSession(), day, month, year);
+	 }
+	
+	@FXML
+	private void btnEnvoyerAction(ActionEvent event) {
+		
+		//enregBoutonDirecteur(getIdSession(), List<String> accepte, List<String> attente, List<String> refuse);
 	 }
 }
 
