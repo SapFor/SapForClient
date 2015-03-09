@@ -32,7 +32,7 @@
                <children>
                   <Separator layoutX="98.0" layoutY="76.0" prefHeight="2.0" prefWidth="382.0" />
                   <TextArea layoutX="344.0" layoutY="151.0" prefHeight="33.0" prefWidth="172.0" />
-                  <Button layoutX="367.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="Valider">
+                  <Button fx:id="validerLoginButton" layoutX="367.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#onClicValiderLogin" prefHeight="25.0" prefWidth="116.0" text="Valider">
                      <font>
                         <Font size="18.0" />
                      </font>
