@@ -27,17 +27,25 @@ import objectsTemplates.*;
 */
 
 public class ClientApp {
-	
+
+//////////////////////Attributs//////////////////////
 		public static PompierConcret moi;
 		private static int idSession;
 		private static List<StageConcret> listSession;
 		private static List<UVConcret> listUV;
 		private static int nbCandidats = 0;
+
+		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
+		// Working on the assumption that your int value is 
+		// the ordinal value of the items in your enum (method getListCandidatDirecteur)
+
 		
 		private static ClientConfig config;
 		private static Client client;
 		private static WebResource service;
 		//private List<?> abstractList;
+		
+//////////////////////Methods//////////////////////
 		
 		// Get server URI
 		private static URI getBaseURI() {
@@ -95,18 +103,7 @@ public class ClientApp {
 			else { return "erreur de deconnexion!"; }
 		}
 		
-		// Close the candidatures of a stage : associated to the "Candidater" button in the formation tab
-		public static String cloturerCandidature(String nomStage,int jour, int mois, int annee){
-			String reponse;
-			String date = jour + "/" + mois + "/" + annee;
-			reponse = service.path("directeur/" + nomStage + "/" + date).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
-			if(reponse == "OK"){
-				return "date changée";
-			}
-			else { return "Problème lors du changement de date";}
-		}
-		
-		
+//////////////////////Director Methods//////////////////////		
 		
 	
 		// Get list of the director stages : to put into the director tab
@@ -138,10 +135,8 @@ public class ClientApp {
 	    }
 		
 		
-		
-		
 	  	// Get list of director candidates for a specific stage : to put into the director tab
-		public static List<String> getListCandidatDirecteur(String ClickedItemSession, String listLoading){
+		public static List<String> getListCandidatDirecteur(String ClickedItemSession, int listLoading){
 
 			/*
 			// Get the three words of the item "Nom  Date  Lieu" and redo a unique completed string
@@ -155,23 +150,18 @@ public class ClientApp {
 	        */
 	    	
 	        // Comparison between the string stage and the correspondent element in the list of stages (of the server)
-	        int i = 0;
+			// when the correct stage is found in the list -> get candidates list (switch case)
+			int i = 0;
 	        while( i<listSession.size() && !ClickedItemSession.equals(listSession.get(i).getNomStage()) ){ i++; }
-	        
-	        // the correct stage is found in the list -> get candidates list
-	        List<String> listId;
-			switch (listLoading){  // choice of the candidates list to load
-			
-				case "candidat": listId = listSession.get(i).getCandidats();
-								 nbCandidats = listId.size();  
-								 break;
-			
-				case "attente": listId = listSession.get(i).getAttente(); break;
-				
-				case "accepte": listId = listSession.get(i).getAccepte(); break;
-				
-				case "refuse": listId = listSession.get(i).getRefuse(); break;
 
+	        List<String> listId = null;
+	        
+	        GuideList whichList = GuideList.values()[listLoading];
+			switch (whichList){  // choice of the candidates list to load
+				case CANDIDAT : listId = listSession.get(i).getCandidats(); break;
+				case ATTENTE : listId = listSession.get(i).getAttente(); break;
+				case ACCEPTE : listId = listSession.get(i).getAccepte(); break;
+				case REFUSE : listId = listSession.get(i).getRefuse(); break;
 				default: System.out.println("Aucune liste trouvee");
 			}
 			
@@ -191,13 +181,66 @@ public class ClientApp {
 	    }
 		
 		
+		
+		// Get the objet ListCandidats hosting all the list (accepted, refused, pendind, all candidates) : to put into the director tab
+		public static ListCandidats getListCandidatDirecteurGlobal(String ClickedItemSession){
+			
+			ListCandidats candidates = new ListCandidats();  // create object of the class ListCandidats for pushing on the tab
+			List<String> currentListPomp;
+			
+			for (int j=0; j<4; j++){
+				currentListPomp = getListCandidatDirecteur(ClickedItemSession, j);
+				
+				switch (j){  // choice of the candidates list to set in the ListCandidats object
+					case 0 : candidates.setCandidat(currentListPomp); break;
+					case 1 : candidates.setAttente(currentListPomp); break;
+					case 2 : candidates.setAccepte(currentListPomp); break;
+					case 3 : candidates.setRefuse(currentListPomp); break;
+					default: System.out.println("Aucune liste chargee");
+				}
+	        }
+	    	return candidates;
+		}
+		
+		
 		// Get the number of candidates for a stage : to put into the director tab 
 		public static int getNbCandidats(){
 			return nbCandidats;
 		}
 		
 		
+		// Push a updated list of candidates for a specific stage to the server : "Enregistrer" button in the director tab
+		public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
+					
+			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
+			int i = 0;
+			while( i<listSession.size() && !session.equals(listSession.get(i).getNomStage()) ){ i++; }
+			        
+			StageConcret updatedSession = listSession.get(i);
+			updatedSession.setCandidats(candidat);
+			updatedSession.setAccepte(accepte);
+			updatedSession.setAttente(attente);
+			updatedSession.setRefuse(refuse);
+					
+			// Add a new stage using the PUT HTTP method. managed by the Jersey framework
+			service.path("directeur/" + moi.getIdSession()).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
+		}
 		
+				
+		
+		// Close the candidatures of a stage : associated to the "Candidater" button in the director tab
+		public static String cloturerCandidature(String nomStage,int jour, int mois, int annee){
+			String reponse;
+			String date = jour + "/" + mois + "/" + annee;
+			reponse = service.path("directeur/" + nomStage + "/" + date).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
+			if(reponse == "OK"){
+				return "date changée";
+			}
+			else { return "Problème lors du changement de date";}
+		}
+				
+				
+//////////////////////Formation Methods//////////////////////					
 		
 		// Get list of the formation UVs : to put into the formation tab
 		public static List<String> getListUVFormation(){
@@ -272,34 +315,17 @@ public class ClientApp {
 		}
 		
 		
-
-	 
-		// Push a updated list of candidates for a specific stage to the server : "Enregistrer" button in the director tab
-		public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
-			
-			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
-	        int i = 0;
-	        while( i<listSession.size() && !session.equals(listSession.get(i).getNomStage()) ){ i++; }
-	        
-			StageConcret updatedSession = listSession.get(i);
-			updatedSession.setCandidats(candidat);
-			updatedSession.setAccepte(accepte);
-			updatedSession.setAttente(attente);
-			updatedSession.setRefuse(refuse);
-			
-			// Add a new stage using the POST HTTP method. managed by the Jersey framework
-			service.path("directeur/" + moi.getIdSession()).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(new GenericType<StageConcret>(){}, updatedSession);
-		}
-		
 		
 		
 		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
 		public static void candidateBoutonFormation(String currentStage){
 			
-			moi.setEnCours(currentStage); // on renseigne une liste de stages ou une stage ?
+			List<String> current = moi.getEnCours();
+			current.add(currentStage);   
+			moi.setEnCours(current);   // adding the new candidated stage on the list of stages of our fireman (adding side client)
 			
-			// Add a new fireman using the POST HTTP method. managed by the Jersey framework
-			service.path("candidat/" + moi.getIdSession()).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).post(new GenericType<PompierConcret>(){}, moi);
+			// Add a new stage using the GET HTTP method. managed by the Jersey framework
+			service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 		}
 		
 		
