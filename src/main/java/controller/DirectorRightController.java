@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 
 import model.LectureUVFichier;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -115,12 +118,12 @@ public class DirectorRightController {
 		while (noDecisionIter.hasNext() || acceptedIter.hasNext() || refusedIter.hasNext() || pendingIter.hasNext()) {
 	
 			// setup of RadioButtons
-			RadioButton rdoAttente = new RadioButton(); 
-			RadioButton rdoRefuse = new RadioButton(); 
+			final RadioButton rdoAttente = new RadioButton(); 
+			final RadioButton rdoRefuse = new RadioButton(); 
 			RadioButton rdoAccepte = new RadioButton(); 
 			
 			// only one RadioButton belonging to toggleGroup can be choosen at a given moment 
-			ToggleGroup radioGroup = new ToggleGroup();
+			final ToggleGroup radioGroup = new ToggleGroup();
 			rdoAttente.setToggleGroup(radioGroup);
 			rdoRefuse.setToggleGroup(radioGroup);
 			rdoAccepte.setToggleGroup(radioGroup);
@@ -156,6 +159,33 @@ public class DirectorRightController {
 			gridCandidats.add(txtName, 0, i);
 			gridCandidats.add(hb,1,i);
 			i++;
+			
+			radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+			      public void changed(ObservableValue<? extends Toggle> ov,
+			              Toggle oldToggle, Toggle newToggle) {
+			            if (radioGroup.getSelectedToggle() == rdoAttente) {
+			            	// delete name from oldToggle list
+			            	// put name into newToggle list (rdoAttente)
+			            	// save to database (in some sort of temp way)
+			            	// reload list ????
+			            }
+			            else if (radioGroup.getSelectedToggle() == rdoRefuse) {
+			            	// delete name from oldToggle list
+			            	// put name into newToggle list (rdoRefuse)
+			            	// save to database (in some sort of temp way)
+			            	// reload list ????
+			            }
+			            else {		// radioGroup.getSelectedToggle() == rdoAttente
+			            	// delete name from oldToggle list
+			            	// put name into newToggle list (rdoAttente)
+			            	// save to database (in some sort of temp way)
+			            	// reload list ????
+			            }
+			            
+			          }
+			        });
+			
+			
 			
 			
 			// try to increase counter everytime the radio button is selected
