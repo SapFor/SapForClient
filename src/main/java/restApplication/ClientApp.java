@@ -209,14 +209,19 @@ public class ClientApp {
 		}
 		
 		
-		// Push a updated list of candidates for a specific stage to the server : "Enregistrer" button in the director tab
-		public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
-					
+		// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
+		public static void enregBoutonDirecteur(String session, ListCandidats updatedLists){
+		//public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
+				
 			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			int i = 0;
 			while( i<listSession.size() && !session.equals(listSession.get(i).getNomStage()) ){ i++; }
 			        
 			StageConcret updatedSession = listSession.get(i);
+			List<String> candidat = updatedLists.getCandidat();
+			List<String> accepte = updatedLists.getAttente();
+			List<String> attente = updatedLists.getAccepte();
+			List<String> refuse = updatedLists.getRefuse();
 			updatedSession.setCandidats(candidat);
 			updatedSession.setAccepte(accepte);
 			updatedSession.setAttente(attente);
@@ -228,7 +233,7 @@ public class ClientApp {
 		
 				
 		
-		// Close the candidatures of a stage : associated to the "Candidater" button in the director tab
+		// Close the candidatures of a stage : associated to the "Cloturer" button in the director tab
 		public static String cloturerCandidature(String nomStage,int jour, int mois, int annee){
 			String reponse;
 			String date = jour + "/" + mois + "/" + annee;
