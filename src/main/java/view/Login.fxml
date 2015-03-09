@@ -20,7 +20,7 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Separator layoutX="95.0" layoutY="76.0" prefHeight="0.0" prefWidth="491.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="76.0" />
+      <Separator layoutX="88.0" layoutY="76.0" prefHeight="3.0" prefWidth="498.0" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="76.0" />
       <ImageView fitHeight="98.0" fitWidth="87.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../../resources/logo-pompiers.jpg" />
