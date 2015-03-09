@@ -22,7 +22,7 @@ public class DirectorController {
 		directorRightController.init(this);
 		}
 	
-	public void loadTokenFromLeft(ObservableList<String> token) {
+	public void loadTokenFromLeft(String token) {
 		directorRightController.loadCandidats(token);
 	}
 	
