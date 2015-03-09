@@ -7,17 +7,14 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import objectsTemplates.*;
 
@@ -32,7 +29,8 @@ public class ClientApp {
 //////////////////////Attributs//////////////////////
 		public static PompierConcret moi;
 		private static int idSession;
-		private static List<StageConcret> listSession;
+		private static List<StageConcret> listSessionForm;
+		private static List<StageConcret> listSessionDir;
 		private static List<UVConcret> listUV;
 		private static int nbCandidats = 0;
 
@@ -82,16 +80,6 @@ public class ClientApp {
 		// Get IdSession
 		public static int getIdSession(){ return idSession; }
 		
-		// Test if the stage is closed
-		public static boolean testDate(String nomStage){
-			StageConcret test;
-			int i = 0;
-			while( i<listSession.size() && !nomStage.equals(listSession.get(i).getNomStage()) ){ i++;}
-			test = listSession.get(i);
-			
-			if( test.getFinCandidature().after(Calendar.getInstance().getTime()) ){ return true; }
-			else{ return false; }
-		}
 		
 		// Deconnect the session
 		public static String deconnexion(int idSession){
@@ -104,7 +92,19 @@ public class ClientApp {
 			else { return "erreur de deconnexion!"; }
 		}
 		
-//////////////////////Director Methods//////////////////////		
+//////////////////////Director Methods//////////////////////	
+		
+
+		// Test if the stage is closed
+		public static boolean testDate(String nomStage){
+			StageConcret test;
+			int i = 0;
+			while( i<listSessionDir.size() && !nomStage.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
+			test = listSessionDir.get(i);
+			
+			if( test.getFinCandidature().after(Calendar.getInstance().getTime()) ){ return true; }
+			else{ return false; }
+		}
 		
 	
 		// Get list of the director stages : to put into the director tab
@@ -112,16 +112,16 @@ public class ClientApp {
 			//WebResource service = connect();
 			// Get list of stages from the server
 			EncapsulationStage encapStage = service.path("directeur/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
-			listSession=encapStage.capsule;
+			listSessionDir=encapStage.capsule;
 			
-			List<String> listSess = new ArrayList(); // create list of stages for pushing on the tab
+			List<String> listSess = new ArrayList<String>(); // create list of stages for pushing on the tab
 			Calendar dateStage;
 			String nomUV;
 			String date;
 			String nomLieu;
 			String ligneSess;
 	    	
-			Iterator<StageConcret> ite = listSession.iterator();
+			Iterator<StageConcret> ite = listSessionDir.iterator();
 	    	while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
 	    		StageConcret newLigne = ite.next();
 				
@@ -153,20 +153,20 @@ public class ClientApp {
 	        // Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			// when the correct stage is found in the list -> get candidates list (switch case)
 			int i = 0;
-	        while( i<listSession.size() && !ClickedItemSession.equals(listSession.get(i).getNomStage()) ){ i++; }
+	        while( i<listSessionDir.size() && !ClickedItemSession.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 
 	        List<String> listId = null;
 	        
 	        GuideList whichList = GuideList.values()[listLoading];
 			switch (whichList){  // choice of the candidates list to load
-				case CANDIDAT : listId = listSession.get(i).getCandidats(); break;
-				case ATTENTE : listId = listSession.get(i).getAttente(); break;
-				case ACCEPTE : listId = listSession.get(i).getAccepte(); break;
-				case REFUSE : listId = listSession.get(i).getRefuse(); break;
+				case CANDIDAT : listId = listSessionDir.get(i).getCandidats(); break;
+				case ATTENTE : listId = listSessionDir.get(i).getAttente(); break;
+				case ACCEPTE : listId = listSessionDir.get(i).getAccepte(); break;
+				case REFUSE : listId = listSessionDir.get(i).getRefuse(); break;
 				default: System.out.println("Aucune liste trouvee");
 			}
 			
-		 	List<String> listPompiers = new ArrayList();  // create list of firemans for pushing on the tab
+		 	List<String> listPompiers = new ArrayList<String>();  // create list of firemen for pushing on the tab
 		 	
 		 	if (listId!=null){
 		    	Iterator<String> ite = listId.iterator();
@@ -185,7 +185,7 @@ public class ClientApp {
 		
 		
 		
-		// Get the objet ListCandidats hosting all the list (accepted, refused, pendind, all candidates) : to put into the director tab
+		// Get the objet ListCandidats hosting all the list (accepted, refused, pending, no handled candidates) : to put into the director tab
 		public static ListCandidats getListCandidatDirecteurGlobal(String ClickedItemSession){
 			
 			ListCandidats candidates = new ListCandidats();  // create object of the class ListCandidats for pushing on the tab
@@ -212,14 +212,19 @@ public class ClientApp {
 		}
 		
 		
-		// Push a updated list of candidates for a specific stage to the server : "Enregistrer" button in the director tab
-		public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
-					
+		// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
+		public static void enregBoutonDirecteur(String session, ListCandidats updatedLists){
+		//public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
+				
 			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			int i = 0;
-			while( i<listSession.size() && !session.equals(listSession.get(i).getNomStage()) ){ i++; }
+			while( i<listSessionDir.size() && !session.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 			        
-			StageConcret updatedSession = listSession.get(i);
+			StageConcret updatedSession = listSessionDir.get(i);
+			List<String> candidat = updatedLists.getCandidat();
+			List<String> accepte = updatedLists.getAttente();
+			List<String> attente = updatedLists.getAccepte();
+			List<String> refuse = updatedLists.getRefuse();
 			updatedSession.setCandidats(candidat);
 			updatedSession.setAccepte(accepte);
 			updatedSession.setAttente(attente);
@@ -231,7 +236,7 @@ public class ClientApp {
 		
 				
 		
-		// Close the candidatures of a stage : associated to the "Candidater" button in the director tab
+		// Close the candidatures of a stage : associated to the "Cloturer" button in the director tab
 		public static String cloturerCandidature(String nomStage,int jour, int mois, int annee){
 			String reponse;
 			String date = jour + "/" + mois + "/" + annee;
@@ -251,7 +256,7 @@ public class ClientApp {
 			EncapsulationUV encapUV = service.path("candidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
 			listUV=encapUV.capsule;
 			
-			List<String> listUVDispo = new ArrayList(); // create list of UV for pushing on the tab
+			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
 			String nomUV;
 					
 			Iterator<UVConcret> ite = listUV.iterator();
@@ -283,10 +288,16 @@ public class ClientApp {
 		
 		// Get list of the formation stages of the formation UVs : to put into the formation tab
 		public static List<String> getListSessionFormation(String clickedItemUV){
+			// Get list of stages from the server
+			EncapsulationStage encapSession = service.path("UV/" + clickedItemUV).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
+			listSessionForm=encapSession.capsule;
 			
+<<<<<<< HEAD
 			EncapsulationStage encapStage = service.path("UV/" + clickedItemUV).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
 			listSession=encapStage.capsule;
 						
+=======
+>>>>>>> origin/master
 			List<String> listSess = new ArrayList<String>(); // create list of stages for pushing on the tab
 			Calendar dateStage;
 			String date;
@@ -294,9 +305,15 @@ public class ClientApp {
 			String ligneSess;
 			
 			// loop of comparison between the string clickedUV and the correspondent element in the list of UV (of the server)
+<<<<<<< HEAD
 	        for(int j=0; j<listSession.size(); j++){
 	        	StageConcret newligne = listSession.get(j);
 	        	if(clickedItemUV.compareTo(newligne.getUV())==0){ // if true, get the place/date of the stage and put into the created list 
+=======
+	        for(int j=0; j<listSessionForm.size(); j++){
+	        	StageConcret newligne = listSessionForm.get(j);
+	        	if(clickedItemUV == newligne.getNomStage()){ // if true, get the place/date of the stage and put into the created list 
+>>>>>>> origin/master
 	        		dateStage = newligne.getDate();
 	        		date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + (dateStage.get(Calendar.MONTH)+1) + "/" + dateStage.get(Calendar.YEAR);
 	        		nomLieu = newligne.getLieu();
@@ -313,10 +330,10 @@ public class ClientApp {
 
 			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
 	        int i = 0;
-	        while( i<listSession.size() && !ClickedItemSession.equals(listSession.get(i).getNomStage()) ){ i++; }
+	        while( i<listSessionForm.size() && !ClickedItemSession.equals(listSessionForm.get(i).getNomStage()) ){ i++; }
 	        
 	        // the correct stage is found in the list -> get detailled infos
-	        String infosDetails = listSession.get(i).getInfos(); 
+	        String infosDetails = listSessionForm.get(i).getInfos(); 
 		 	return infosDetails;		
 		}
 		
