@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.Iterator;
 
 import model.LectureUVFichier;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,19 +12,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
@@ -57,18 +48,39 @@ public class DirectorRightController {
     }*/
 	
 	public void loadCandidats(String sessionID) {
-		//ObservableList<String> ObserListNom =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID)); // line to use once connected to database
-		LectureUVFichier fichier = new LectureUVFichier(URLRessource + sessionID, 0); // comment out line once connected to database
-		ObservableList<String> ObserListNom =FXCollections.observableArrayList (fichier.getListUV()); // comment out line once connected to database
-		loadGrid(ObserListNom);
+		// 0 = candidates without accepted, refused or pending decision
+		//ObservableList<String> noDecisionList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,0));  
+		// 1 = candidates on waiting list
+		//ObservableList<String> pendingList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,1));
+		// 2 = candidates on accepted list
+		//ObservableList<String> acceptedList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,2));
+		// 3 = candidates on refused list
+		//ObservableList<String> refusedList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,3));
+		LectureUVFichier fichierNoDecision = new LectureUVFichier(URLRessource + "nodecision" , 0); // comment out line once connected to database
+		LectureUVFichier fichierAccepted = new LectureUVFichier(URLRessource + "accepted" , 0); // comment out line once connected to database
+		LectureUVFichier fichierRefused = new LectureUVFichier(URLRessource + "refused", 0); // comment out line once connected to database
+		LectureUVFichier fichierPending = new LectureUVFichier(URLRessource + "pending", 0); // comment out line once connected to database
+		ObservableList<String> noDecisionList =FXCollections.observableArrayList (fichierNoDecision.getListUV()); // comment out line once connected to database
+		ObservableList<String> acceptedList =FXCollections.observableArrayList (fichierAccepted.getListUV()); // comment out line once connected to database
+		ObservableList<String> refusedList =FXCollections.observableArrayList (fichierRefused.getListUV()); // comment out line once connected to database
+		ObservableList<String> pendingList =FXCollections.observableArrayList (fichierPending.getListUV()); // comment out line once connected to database
+//		loadHashMap(noDecisionList, acceptedList, refusedList, pendingList ); 
+		loadGrid(noDecisionList, acceptedList, refusedList, pendingList);
 		loadButtons(sessionID);
 	}
 
 	public void init(DirectorController directorController) {
 		director = directorController;
 	}
+	
+/*	private ObservableMap<K,V> loadHashMap(ObservableList<String> noDecisionList, ObservableList<String> acceptedList, 
+							 ObservableList<String> refusedList, ObservableList<String> pendingList ) {
 		
-	private void loadGrid(ObservableList<String> names) {
+
+		
+	}*/
+		
+	private void loadGrid(ObservableList<String> noDecisionList, ObservableList<String> acceptedList, ObservableList<String> refusedList, ObservableList<String> pendingList) {
 
 		gridCandidats.getChildren().clear(); // clear gridPane
 		gridCandidats.setPadding(new Insets(20, 20, 20, 20));
@@ -94,10 +106,14 @@ public class DirectorRightController {
 		gridCandidats.add(hbTitle,1,0);
 		gridCandidats.add(boxCounter,0,1000);
 		
-		Iterator<String> iter = names.iterator();
+		Iterator<String> noDecisionIter = noDecisionList.iterator();
+		Iterator<String> acceptedIter = acceptedList.iterator();
+		Iterator<String> refusedIter = refusedList.iterator();
+		Iterator<String> pendingIter = pendingList.iterator();
 		int i=1;
 		
-		while (iter.hasNext()){
+		while (noDecisionIter.hasNext() || acceptedIter.hasNext() || refusedIter.hasNext() || pendingIter.hasNext()) {
+	
 			// setup of RadioButtons
 			RadioButton rdoAttente = new RadioButton(); 
 			RadioButton rdoRefuse = new RadioButton(); 
@@ -111,7 +127,6 @@ public class DirectorRightController {
 			rdoAttente.setVisible(true);
 			rdoRefuse.setVisible(true);
 			rdoAccepte.setVisible(true);
-			radioGroup.selectToggle(rdoAttente);
 			
 			// putting RadioButtons into HBox for easy horizontal distribution
 			HBox hb = new HBox(rdoAccepte, rdoRefuse, rdoAttente);
@@ -119,34 +134,53 @@ public class DirectorRightController {
 			hb.setPadding(new Insets(10, 10, 10, 10));
 			
 			Text txtName = new Text();
-			txtName.setText(iter.next());
+			
+			if(noDecisionIter.hasNext()) {
+				//System.out.println(noDecisionIter.next());
+				txtName.setText(noDecisionIter.next());
+			}
+			else if(acceptedIter.hasNext()) {
+				radioGroup.selectToggle(rdoAccepte);
+				txtName.setText(acceptedIter.next());
+			}
+			else if(refusedIter.hasNext()) {
+				radioGroup.selectToggle(rdoRefuse);
+				txtName.setText(refusedIter.next());
+			}
+			else{		// pendingIter
+				radioGroup.selectToggle(rdoAttente);
+				txtName.setText(pendingIter.next());
+			}
+
 			// adding names and RadioButtons to gridPane
 			gridCandidats.add(txtName, 0, i);
 			gridCandidats.add(hb,1,i);
 			i++;
 			
+			
 			// try to increase counter everytime the radio button is selected
 						
 						
 			/*radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
-							        {
-							 			 public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle)
-							            {
-							 			int count = 0;			        	
-							               if (radioGroup.getSelectedToggle() == rdoAccepte)
-							                     {
-							                       	count ++; counter.setText(""+count);
-							                       	}
-							            	   							                
-							                else
-							                { 
-							                		                  		                    
-							                }
-							            } 
-							        });*/
-		};
+	        {
+	 			 public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle)
+	            {
+	 			int count = 0;			        	
+	               if (radioGroup.getSelectedToggle() == rdoAccepte)
+	                     {
+	                       	count ++; counter.setText(""+count);
+	                       	}
+	            	   							                
+	                else
+	                { 
+	                		                  		                    
+	                }
+	            } 
+	        });*/
+		} // end while
 		
-	}
+	} // end loadGrid
+		
 	
 	
 private void loadButtons(String sessionID){
