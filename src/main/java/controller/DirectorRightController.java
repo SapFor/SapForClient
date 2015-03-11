@@ -33,6 +33,10 @@ public class DirectorRightController {
 	String URLRessource=System.getProperty("user.dir")+"/src/main/resources/";
 	private String sessionToken;
 	private DirectorController director;
+	private ObservableList<String> noDecisionList;
+	private ObservableList<String> acceptedList;
+	private ObservableList<String> refusedList;
+	private ObservableList<String> pendingList;
 	
 	@FXML
     private GridPane gridCandidats;
@@ -48,6 +52,7 @@ public class DirectorRightController {
 	
 	@FXML
     private Button btnSauvTemp;
+	
 
 	/*public void loadCandidats(ObservableList<String> token) {
 		loadGrid(token);
@@ -66,17 +71,20 @@ public class DirectorRightController {
 		LectureUVFichier fichierAccepted = new LectureUVFichier(URLRessource + "accepted" , 0); // comment out line once connected to database
 		LectureUVFichier fichierRefused = new LectureUVFichier(URLRessource + "refused", 0); // comment out line once connected to database
 		LectureUVFichier fichierPending = new LectureUVFichier(URLRessource + "pending", 0); // comment out line once connected to database
-		ObservableList<String> noDecisionList =FXCollections.observableArrayList (fichierNoDecision.getListUV()); // comment out line once connected to database
-		ObservableList<String> acceptedList =FXCollections.observableArrayList (fichierAccepted.getListUV()); // comment out line once connected to database
-		ObservableList<String> refusedList =FXCollections.observableArrayList (fichierRefused.getListUV()); // comment out line once connected to database
-		ObservableList<String> pendingList =FXCollections.observableArrayList (fichierPending.getListUV()); // comment out line once connected to database
-//		loadHashMap(noDecisionList, acceptedList, refusedList, pendingList ); 
+		noDecisionList =FXCollections.observableArrayList (fichierNoDecision.getListUV()); // comment out line once connected to database
+		acceptedList =FXCollections.observableArrayList (fichierAccepted.getListUV()); // comment out line once connected to database
+		refusedList =FXCollections.observableArrayList (fichierRefused.getListUV()); // comment out line once connected to database
+		pendingList =FXCollections.observableArrayList (fichierPending.getListUV()); // comment out line once connected to database
+
 		loadGrid(noDecisionList, acceptedList, refusedList, pendingList);
 		loadButtons(sessionID);
 	}
 
 	public void init(DirectorController directorController) {
 		director = directorController;
+		
+		
+		
 	}
 	
 /*	private ObservableMap<K,V> loadHashMap(ObservableList<String> noDecisionList, ObservableList<String> acceptedList, 
@@ -117,13 +125,14 @@ public class DirectorRightController {
 		Iterator<String> refusedIter = refusedList.iterator();
 		Iterator<String> pendingIter = pendingList.iterator();
 		int i=1;
+		String tempName;
 		
 		while (noDecisionIter.hasNext() || acceptedIter.hasNext() || refusedIter.hasNext() || pendingIter.hasNext()) {
-	
+			
 			// setup of RadioButtons
-			final RadioButton rdoAttente = new RadioButton(); 
-			final RadioButton rdoRefuse = new RadioButton(); 
-			RadioButton rdoAccepte = new RadioButton(); 
+			final RadioButton rdoAttente = new RadioButton();
+			final RadioButton rdoRefuse = new RadioButton();
+			final RadioButton rdoAccepte = new RadioButton();
 			
 			// only one RadioButton belonging to toggleGroup can be choosen at a given moment 
 			final ToggleGroup radioGroup = new ToggleGroup();
@@ -139,55 +148,41 @@ public class DirectorRightController {
 			hb.setSpacing(100);
 			hb.setPadding(new Insets(10, 10, 10, 10));
 			
-			Text txtName = new Text();
-			
 			if(noDecisionIter.hasNext()) {
-				//System.out.println(noDecisionIter.next());
-				txtName.setText(noDecisionIter.next());
+				tempName = noDecisionIter.next();
 			}
 			else if(acceptedIter.hasNext()) {
 				radioGroup.selectToggle(rdoAccepte);
-				txtName.setText(acceptedIter.next());
+				tempName = acceptedIter.next();
 			}
 			else if(refusedIter.hasNext()) {
 				radioGroup.selectToggle(rdoRefuse);
-				txtName.setText(refusedIter.next());
+				tempName = refusedIter.next();
 			}
 			else{		// pendingIter
 				radioGroup.selectToggle(rdoAttente);
-				txtName.setText(pendingIter.next());
+				tempName = pendingIter.next();
 			}
-
+			
+			Text txtName = new Text();
+			txtName.setText(tempName);
+			rdoAccepte.setUserData(tempName);
+			rdoRefuse.setUserData(tempName);
+			rdoAttente.setUserData(tempName);
+			
 			// adding names and RadioButtons to gridPane
 			gridCandidats.add(txtName, 0, i);
 			gridCandidats.add(hb,1,i);
 			i++;
-			
+
 			radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			      public void changed(ObservableValue<? extends Toggle> ov,
-			              Toggle oldToggle, Toggle newToggle) {
-			            if (radioGroup.getSelectedToggle() == rdoAttente) {
-			            	// delete name from oldToggle list
-			            	// put name into newToggle list (rdoAttente)
-			            	// save to database (in some sort of temp way)
-			            	// reload list ????
-			            }
-			            else if (radioGroup.getSelectedToggle() == rdoRefuse) {
-			            	// delete name from oldToggle list
-			            	// put name into newToggle list (rdoRefuse)
-			            	// save to database (in some sort of temp way)
-			            	// reload list ????
-			            }
-			            else {		// radioGroup.getSelectedToggle() == rdoAttente
-			            	// delete name from oldToggle list
-			            	// put name into newToggle list (rdoAttente)
-			            	// save to database (in some sort of temp way)
-			            	// reload list ????
-			            }
-			            
-			          }
-			        });
+			      public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
+			    	  removeAddList(oldToggle, newToggle, radioGroup,  rdoAccepte, rdoRefuse, rdoAttente);
+			      }
+			});
+			    	
 			
+
 			
 			
 			
@@ -213,8 +208,28 @@ public class DirectorRightController {
 		} // end while
 		
 	} // end loadGrid
-		
 	
+	private void removeAddList(Toggle oldToggle, Toggle newToggle, ToggleGroup radioGroup, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
+
+		//refusedList.remove(rb.getUserData());
+		
+		if (radioGroup.getSelectedToggle() == newToggle) {
+  		  if (oldToggle == rdoRefuse){
+  			  try {
+  				  refusedList.remove(rdoRefuse.getUserData());
+  				  System.out.println("in here");
+  				//  System.out.println(rdoAccepte.getUserData());
+  				  System.out.println(rdoRefuse.getUserData());
+  				//  System.out.println(rdoAttente.getUserData()); 				  
+  			  }
+  			  catch (Throwable t) {
+  				  System.err.println("Error removing" + oldToggle.getUserData() + "from" + oldToggle);
+  				  t.printStackTrace();
+  			  }
+  		 
+	}
+		}
+	}
 	
 private void loadButtons(String sessionID){
 		btnCloturer.setText("Clôturer la session");
@@ -256,10 +271,11 @@ private void loadButtons(String sessionID){
 	
 	@FXML
 	private void btnEnvoyerAction(ActionEvent event) {
-		
+		// do I need a list noDecision??
 		//enregBoutonDirecteur(getIdSession(), List<String> accepte, List<String> attente, List<String> refuse);
 		btnEnvoyer.setDisable(true);
 	 }
+	
 	
 	@FXML
 	private void btnSauverAction(ActionEvent event) {
