@@ -36,7 +36,7 @@ public class LoginController {
     void onClicValiderLogin(Event event) {
 		
 	/////// utilisation sans serveur /////////////////
-		
+		/*
 		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
     	currentStage.close();
     	
@@ -54,12 +54,12 @@ public class LoginController {
 			
 		} 
         catch (IOException e) { e.printStackTrace(); } 
-		
+		*/
 		
 		
   /////// utilisation avec serveur /////////////////
 		
-    	/*
+    	
     	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
         
@@ -91,7 +91,7 @@ public class LoginController {
         	loginArea.setText("");
         	mdpArea.setText("");
         }
-        */
+        
     }
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {

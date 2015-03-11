@@ -44,8 +44,8 @@ public interface ClientAppInterface {
 	public boolean testDate(String nomStage);
 
 	// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
-	//public void enregBoutonDirecteur(String UVname, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse);
-	void enregBoutonDirecteur(String session, ListCandidats updatedLists);
+	//public void validBoutonDirecteur(String UVname, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse);
+	void validBoutonDirecteur(String session, ListCandidats updatedLists);
 			
 	// Close the candidatures of a stage : associated to the "Cloturer" button in the director tab
 	public String cloturerCandidature(String nomStage,int jour, int mois, int annee);
