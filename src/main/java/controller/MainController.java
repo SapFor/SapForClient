@@ -25,11 +25,11 @@ public class MainController implements Initializable{
     	 		
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//mainLabelArea.setText("Jean Dupont n°12345"); //test à remplacer par la ligne suivante lors de l'accès au serveur
-		mainLabelArea.setText(ClientApp.getNomPomp());
-		/*if(ClientApp.isDirector()){
+		mainLabelArea.setText("Jean Dupont n°12345"); //test à remplacer par la ligne suivante lors de l'accès au serveur
+		//mainLabelArea.setText(ClientApp.getNomPomp());
+		//if(ClientApp.isDirector()){
 			director.setDisable(false);
-		}*/
+		//}
 					
 	}
 
