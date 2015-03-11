@@ -37,7 +37,7 @@ public class ClientApp {
 		private static List<UVConcret> listUV;
 		private static int nbCandidats = 0;
 		
-		private static HashMap<String,StageConcret> tableDeCorrespondance;
+		private static HashMap<String,StageConcret> tableDeCorrespondanceDir;
 		private static HashMap<String,StageConcret> tableDeCorrespondanceForm;
 
 		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
@@ -128,9 +128,9 @@ public class ClientApp {
 			//WebResource service = connect();
 			// Get list of stages from the server
 			EncapsulationStage encapStage = service.path("directeur/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
-			listSessionDir=encapStage.capsule;
+			listSessionDir = encapStage.capsule;
 			
-			tableDeCorrespondance=new HashMap<String,StageConcret>();
+			tableDeCorrespondanceDir = new HashMap<String,StageConcret>();
 			List<String> listSess = new ArrayList<String>(); // create list of stages for pushing on the tab
 			Calendar dateStage;
 			String nomUV;
@@ -150,7 +150,7 @@ public class ClientApp {
 				nomLieu = newLigne.getLieu();
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
-	    		tableDeCorrespondance.put(ligneSess, newLigne);
+	    		tableDeCorrespondanceDir.put(ligneSess, newLigne);
 	    		}
 			}
 	    	return listSess;	
@@ -170,8 +170,7 @@ public class ClientApp {
 	        	nomUVItem = nomUVItem + mot;
 	        }
 	        */
-	    	System.out.println(ClickedItemSession);
-	    	String correspondance=tableDeCorrespondance.get(ClickedItemSession).getNomStage();
+	    	String correspondance = tableDeCorrespondanceDir.get(ClickedItemSession).getNomStage();
 	        // Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			// when the correct stage is found in the list -> get candidates list (switch case)
 			int i = 0;
@@ -235,19 +234,21 @@ public class ClientApp {
 		
 		
 		// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
-		public static void enregBoutonDirecteur(String session, ListCandidats updatedLists){
-		//public static void enregBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
+		public static void validBoutonDirecteur(String session, ListCandidats updatedLists){
+		//public static void validBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
 				
+			String correspondance = tableDeCorrespondanceDir.get(session).getNomStage(); // A VERIFIE AVEC CARO
 			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
-			String correspondance=tableDeCorrespondance.get(session).getNomStage(); // A VERIFIE AVEC CARO
 			int i = 0;
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 			        
 			StageConcret updatedSession = listSessionDir.get(i);
+			// recovery of updated lists from the client
 			List<String> candidat = updatedLists.getCandidat();
 			List<String> accepte = updatedLists.getAttente();
 			List<String> attente = updatedLists.getAccepte();
 			List<String> refuse = updatedLists.getRefuse();
+			// put these updated lists in the StageConcret object, to push into the server
 			updatedSession.setCandidats(candidat);
 			updatedSession.setAccepte(accepte);
 			updatedSession.setAttente(attente);
@@ -276,10 +277,10 @@ public class ClientApp {
 		// Get boolean if the fireman is already candidate at this stage
 		public static boolean isCandidate(String ClickedItemSession){
 
+			String correspondance = tableDeCorrespondanceForm.get(ClickedItemSession).getNomStage();
 			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
 	        int i = 0;
-	        while( i<moi.getEnCours().size() && !ClickedItemSession.equals(moi.getEnCours().get(i)) ){
-	        	System.out.println(moi.getEnCours().get(i));i++; }
+	        while( i<moi.getEnCours().size() && !correspondance.equals(moi.getEnCours().get(i)) ){ i++; }
 	        
 	        // the correct stage is found in the list -> get detailled infos
 	        return (i<moi.getEnCours().size());
@@ -293,7 +294,7 @@ public class ClientApp {
 		public static List<String> getListUVApprenant(){
 			// Get list of stages from the server
 			EncapsulationUV encapUV = service.path("UVcandidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
-			listUV=encapUV.capsule;
+			listUV = encapUV.capsule;
 			
 			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
 			String nomUV;
@@ -313,7 +314,7 @@ public class ClientApp {
 		public static List<String> getListUVFormateur(){
 			// Get list of stages from the server
 			EncapsulationUV encapUV = service.path("UVformateur/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
-			listUV=encapUV.capsule;
+			listUV = encapUV.capsule;
 						
 			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
 			String nomUV;
@@ -353,9 +354,9 @@ public class ClientApp {
 		public static List<String> getListSessionFormation(String clickedItemUV){
 			// Get list of stages from the server
 			EncapsulationStage encapSession = service.path("UV/" + clickedItemUV).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
-			listSessionForm=encapSession.capsule;
+			listSessionForm = encapSession.capsule;
 			
-			tableDeCorrespondanceForm=new HashMap<String,StageConcret>();
+			tableDeCorrespondanceForm = new HashMap<String,StageConcret>();
 			
 			List<String> listSess = new ArrayList<String>(); // create list of stages for pushing on the tab
 			Calendar dateStage;
@@ -384,9 +385,9 @@ public class ClientApp {
 		
 		// Get detailled infos of the formation stage : to put into the formation tab
 		public static String getInfoDetailsFormation(String ClickedItemSession){
-
+			
+			String correspondance = tableDeCorrespondanceForm.get(ClickedItemSession).getNomStage();
 			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
-			String correspondance=tableDeCorrespondance.get(ClickedItemSession).getNomStage();
 			int i = 0;
 	        while( i<listSessionForm.size() && !correspondance.equals(listSessionForm.get(i).getNomStage()) ){ i++; }
 	        
@@ -443,8 +444,7 @@ public class ClientApp {
 		public static void candidateBoutonFormation(String currentItemStage){
 			
 			//String currentStage = getConcatNameStage(currentItemStage);
-			
-			String currentStage=tableDeCorrespondanceForm.get(currentItemStage).getNomStage();
+			String currentStage = tableDeCorrespondanceForm.get(currentItemStage).getNomStage();
 			
 			// modification on the client side
 			if (moi.getEnCours()==null){moi.setEnCours(new ArrayList<String>());}
@@ -462,8 +462,7 @@ public class ClientApp {
 		public static void retirerBoutonFormation(String currentItemStage){
 			
 			//String currentStage = getConcatNameStage(currentItemStage);
-			
-			String currentStage=tableDeCorrespondanceForm.get(currentItemStage).getNomStage();
+			String currentStage = tableDeCorrespondanceForm.get(currentItemStage).getNomStage();
 			
 			// modification on the client side
 			if (moi.getEnCours()!=null){
