@@ -137,6 +137,7 @@ public class ClientApp {
 			String nomLieu;
 			String ligneSess;
 	    	
+			if (listSessionDir!=null){
 			Iterator<StageConcret> ite = listSessionDir.iterator();
 	    	while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
 	    		StageConcret newLigne = ite.next();
@@ -148,8 +149,9 @@ public class ClientApp {
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
 	    		tableDeCorrespondance.put(ligneSess, newLigne);
-	    	}
-	    	return listSess;
+	    		}
+			}
+	    	return listSess;	
 	    }
 		
 		
