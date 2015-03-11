@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -22,6 +23,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 /**
@@ -31,13 +33,22 @@ import javafx.scene.text.Text;
  */
 
 public class DirectorRightController {
-	String URLRessource=System.getProperty("user.dir")+"/src/main/resources/";
+//	String URLRessource=System.getProperty("user.dir")+"/src/main/resources/";
 	private String sessionToken;
 	private DirectorController director;
 	private ObservableList<String> noDecisionList;
 	private ObservableList<String> acceptedList;
 	private ObservableList<String> refusedList;
-	private ObservableList<String> pendingList;
+	private ObservableList<String> attenteList;
+	private int countAttente = 0;
+	private int countRefuse = 0;
+	private int countAccepte = 0;
+	private Text txtCounter;
+	private Text txtcountAccept;
+	private Text txtcountRefuse;
+	private Text txtcountAttente;
+	private Line line1;
+	private HBox boxCounter;
 	
 	@FXML
     private GridPane gridCandidats;
@@ -54,88 +65,58 @@ public class DirectorRightController {
 	@FXML
     private Button btnSauvTemp;
 	
-
-	/*public void loadCandidats(ObservableList<String> token) {
-		loadGrid(token);
-    }*/
-	
 	public void loadCandidats(String sessionID) {
-		// 0 = candidates without accepted, refused or pending decision
-		//ObservableList<String> noDecisionList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,0));  
-		// 1 = candidates on waiting list
-		//ObservableList<String> pendingList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,1));
-		// 2 = candidates on accepted list
-		//ObservableList<String> acceptedList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,2));
-		// 3 = candidates on refused list
-		//ObservableList<String> refusedList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,3));
-		//LectureUVFichier fichierNoDecision = new LectureUVFichier(URLRessource + "nodecision" , 0); // comment out line once connected to database
-		//LectureUVFichier fichierAccepted = new LectureUVFichier(URLRessource + "accepted" , 0); // comment out line once connected to database
-		//LectureUVFichier fichierRefused = new LectureUVFichier(URLRessource + "refused", 0); // comment out line once connected to database
-		//LectureUVFichier fichierPending = new LectureUVFichier(URLRessource + "pending", 0); // comment out line once connected to database
-		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); // comment out line once connected to database
-		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,1)); // comment out line once connected to database
-		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2)); // comment out line once connected to database
-		pendingList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); // comment out line once connected to database
+		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); 
+		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));
+		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); 
+		attenteList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,1));
 
-		loadGrid(noDecisionList, acceptedList, refusedList, pendingList);
+		loadGrid();
+		loadCounter();
 		loadButtons(sessionID);
 	}
 
 	public void init(DirectorController directorController) {
 		director = directorController;
-		
-		
-		
 	}
 	
-/*	private ObservableMap<K,V> loadHashMap(ObservableList<String> noDecisionList, ObservableList<String> acceptedList, 
-							 ObservableList<String> refusedList, ObservableList<String> pendingList ) {
-		
 
-		
-	}*/
-		
-	private void loadGrid(ObservableList<String> noDecisionList, ObservableList<String> acceptedList, ObservableList<String> refusedList, ObservableList<String> pendingList) {
+	private void loadGrid() {
 
 		gridCandidats.getChildren().clear(); // clear gridPane
 		gridCandidats.setPadding(new Insets(20, 20, 20, 20));
+	//	bdrPaneCandidats.setTop(gridCandidats);
+		//gridCandidats.setAlignment(Pos.TOP_CENTER);
 		
 		// setup column titles
-		//Label counter = new Label("Candidats acceptés");
-		Label candi = new Label(" Candidatures acceptées   ");
-		TextField counter= new TextField("0");
-		counter.setPrefWidth(40);
 		Text txtNameTitle = new Text("Noms des Candidats");
 		Text txtAccepteTitle = new Text("Accepté");
 		Text txtRefuseTitle = new Text("Refusé");
 		Text txtAttenteTitle = new Text("Liste d'Attente");
 		
 		HBox hbTitle = new HBox(txtAccepteTitle, txtRefuseTitle, txtAttenteTitle);
-		HBox boxCounter = new HBox(candi,counter);
-		boxCounter.setPadding(new Insets(10, 10, 10, 10));
 		hbTitle.setSpacing(65);
 		hbTitle.setPadding(new Insets(10, 10, 10, 10));
 		//txtNameTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		
 		gridCandidats.add(txtNameTitle,0,0); // (txtNameTitle, column, row)
 		gridCandidats.add(hbTitle,1,0);
-		gridCandidats.add(boxCounter,0,1000);
 		
 		Iterator<String> noDecisionIter = noDecisionList.iterator();
 		Iterator<String> acceptedIter = acceptedList.iterator();
 		Iterator<String> refusedIter = refusedList.iterator();
-		Iterator<String> pendingIter = pendingList.iterator();
+		Iterator<String> attenteIter = attenteList.iterator();
 		int i=1;
 		String tempName;
 		
-		while (noDecisionIter.hasNext() || acceptedIter.hasNext() || refusedIter.hasNext() || pendingIter.hasNext()) {
+		while (noDecisionIter.hasNext() || acceptedIter.hasNext() || refusedIter.hasNext() || attenteIter.hasNext()) {
 			
 			// setup of RadioButtons
 			final RadioButton rdoAttente = new RadioButton();
 			final RadioButton rdoRefuse = new RadioButton();
 			final RadioButton rdoAccepte = new RadioButton();
 			
-			// only one RadioButton belonging to toggleGroup can be choosen at a given moment 
+			// only one RadioButton belonging to toggleGroup can be chosen at a given moment 
 			final ToggleGroup radioGroup = new ToggleGroup();
 			rdoAttente.setToggleGroup(radioGroup);
 			rdoRefuse.setToggleGroup(radioGroup);
@@ -153,16 +134,19 @@ public class DirectorRightController {
 				tempName = noDecisionIter.next();
 			}
 			else if(acceptedIter.hasNext()) {
+				countAccepte++;
 				radioGroup.selectToggle(rdoAccepte);
 				tempName = acceptedIter.next();
 			}
 			else if(refusedIter.hasNext()) {
+				countRefuse++;
 				radioGroup.selectToggle(rdoRefuse);
 				tempName = refusedIter.next();
 			}
-			else{		// pendingIter
+			else{		// attenteIter
+				countAttente++;
 				radioGroup.selectToggle(rdoAttente);
-				tempName = pendingIter.next();
+				tempName = attenteIter.next();
 			}
 			
 			Text txtName = new Text();
@@ -173,67 +157,134 @@ public class DirectorRightController {
 			
 			// adding names and RadioButtons to gridPane
 			gridCandidats.add(txtName, 0, i);
-			gridCandidats.add(hb,1,i);
+			gridCandidats.add(hb, 1, i);
 			i++;
-		
 
 			radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			      public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
-			    	  removeAddList(oldToggle, newToggle, radioGroup,  rdoAccepte, rdoRefuse, rdoAttente);
+			    	  updateList(oldToggle, newToggle, rdoAccepte, rdoRefuse, rdoAttente);
+			    	  cleanCounter();
+			    	  loadCounter();
 			      }
 			});
-			    	
-			
-
-			
-			
-			
-			// try to increase counter everytime the radio button is selected
-						
-						
-			/*radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
-	        {
-	 			 public void changed(ObservableValue<? extends Toggle> ov, Toggle toggle, Toggle new_toggle)
-	            {
-	 			int count = 0;			        	
-	               if (radioGroup.getSelectedToggle() == rdoAccepte)
-	                     {
-	                       	count ++; counter.setText(""+count);
-	                       	}
-	            	   							                
-	                else
-	                { 
-	                		                  		                    
-	                }
-	            } 
-	        });*/
-		} // end while
-		
-	} // end loadGrid
+		} // end while	
+	} // end loadGrid()
 	
-	private void removeAddList(Toggle oldToggle, Toggle newToggle, ToggleGroup radioGroup, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
-
-		//refusedList.remove(rb.getUserData());
+	private void updateList(Toggle oldToggle, Toggle newToggle, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
+		String nameMoving = oldToggle.getUserData().toString();
 		
-		if (radioGroup.getSelectedToggle() == newToggle) {
-  		  if (oldToggle == rdoRefuse){
-  			  try {
-  				  refusedList.remove(rdoRefuse.getUserData());
-  				  System.out.println("in here");
-  				//  System.out.println(rdoAccepte.getUserData());
-  				  System.out.println(rdoRefuse.getUserData());
-  				//  System.out.println(rdoAttente.getUserData()); 				  
-  			  }
-  			  catch (Throwable t) {
-  				  System.err.println("Error removing" + oldToggle.getUserData() + "from" + oldToggle);
-  				  t.printStackTrace();
-  			  }
-  		 
-	}
+		// Remove from old list
+		if (oldToggle == rdoAccepte){
+			try {
+				acceptedList.remove(nameMoving);
+				countAccepte--;
+			}
+			catch (Throwable t) {
+				System.err.println("Error removing" + nameMoving + "from" + oldToggle);
+				t.printStackTrace();
+			}
+		}
+		else if (oldToggle == rdoRefuse){
+			  try {
+				  refusedList.remove(nameMoving);
+				  countRefuse--;
+			  }
+			  catch (Throwable t) {
+				  System.err.println("Error removing" + nameMoving + "from" + oldToggle);
+				  t.printStackTrace();
+			  }
+		}
+		else if (oldToggle == rdoAttente){
+			  try {
+				  attenteList.remove(nameMoving);
+				  countAttente--;
+			  }
+			  catch (Throwable t) {
+				  System.err.println("Error removing" + nameMoving + "from" + oldToggle);
+				  t.printStackTrace();
+			  }
+		}
+		else {		// noDecisionList
+			  try {
+				  noDecisionList.remove(nameMoving);
+			  }
+			  catch (Throwable t) {
+				  System.err.println("Error removing" + nameMoving + "from noDecisionList");
+				  t.printStackTrace();
+			  }
+		}
+		
+		// Add to new list
+		if (newToggle == rdoAccepte){
+			try {
+				acceptedList.add(nameMoving);
+				countAccepte++;
+			}
+			catch (Throwable t) {
+				System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				t.printStackTrace();
+			}
+		}
+		else if (newToggle == rdoRefuse){
+			try {
+				refusedList.add(nameMoving);
+				countRefuse++;
+			}
+			catch (Throwable t) {
+				System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				t.printStackTrace();
+			}
+		}
+		else if (newToggle == rdoAttente){
+			  try {
+				  attenteList.add(nameMoving);
+				  countAttente++;
+			  }
+			  catch (Throwable t) {
+				  System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				  t.printStackTrace();
+			  }
+		}
+		else {		// noDecisionList
+			  try {
+				  noDecisionList.add(nameMoving);
+			  }
+			  catch (Throwable t) {
+				  System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				  t.printStackTrace();
+			  }
 		}
 	}
+
+	private void loadCounter(){
+		line1 = new Line(0, 0, 600, 0);
+		txtCounter = new Text("Nombre de candidats : ");
+		txtcountAccept = new Text(String.valueOf(countAccepte));
+		txtcountRefuse = new Text(String.valueOf(countRefuse));
+		txtcountAttente = new Text(String.valueOf(countAttente));
+		boxCounter = new HBox(txtcountAccept, txtcountRefuse, txtcountAttente);
+		boxCounter.setSpacing(100);
+		boxCounter.setPadding(new Insets(10, 10, 10, 10));
+		boxCounter.setAlignment(Pos.CENTER);
+		gridCandidats.add(line1, 0, 1000);
+		gridCandidats.add(txtCounter, 0, 1001);
+		gridCandidats.add(boxCounter, 1, 1001);
+		System.out.println("in here first");
+		}
+
+		
+	private void cleanCounter(){
+		gridCandidats.getChildren().remove(txtCounter);
+		gridCandidats.getChildren().remove(txtcountAccept);
+		gridCandidats.getChildren().remove(txtcountRefuse);
+		gridCandidats.getChildren().remove(txtcountAttente);
+		gridCandidats.getChildren().remove(boxCounter);
+		System.out.println("in here second");
+	}
 	
-private void loadButtons(String sessionID){
+	
+	
+	private void loadButtons(String sessionID){
 		btnCloturer.setText("Clôturer la session");
 		btnEnvoyer.setText("Valider les candidatures");
 		btnSauvTemp.setText("Sauvegarde Temporaire");
@@ -244,15 +295,15 @@ private void loadButtons(String sessionID){
 		btnCloturer.setDisable(false); // delete line once connected to database
 		btnEnvoyer.setDisable(false); // delete line once connected to database
 		// if stage is closed testDate returns true
-/*		if(testDate(sessionID)){		// uncomment once connected to database
+	/*	if(ClientApp.testDate(sessionID)){		// uncomment once connected to database
 			btnCloturer.setDisable(true);
 			btnEnvoyer.setDisable(false);
 		}
-		else{
+		else {
 			btnCloturer.setDisable(false);
 			btnEnvoyer.setDisable(true);
-		}
-*/		
+		}*/
+		
 		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer, btnSauvTemp);
 		hbButtons.setSpacing(90);
 		hbButtons.setPadding(new Insets(10, 10, 10, 10));
@@ -286,6 +337,3 @@ private void loadButtons(String sessionID){
 	
 }
 }
-
-
-		
