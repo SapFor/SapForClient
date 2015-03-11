@@ -137,6 +137,7 @@ public class ClientApp {
 			String nomLieu;
 			String ligneSess;
 	    	
+
 			if (listSessionDir!=null){
 			Iterator<StageConcret> ite = listSessionDir.iterator();
 	    	while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
@@ -294,18 +295,17 @@ public class ClientApp {
 			
 			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
 			String nomUV;
-					
-			Iterator<UVConcret> ite = listUV.iterator();
-			while(ite.hasNext()){  // loop to get name of each UV and put into the created list
-				UVConcret newLigne = ite.next();
-				nomUV = newLigne.getNom();
-				listUVDispo.add(nomUV);
-						
+			if(listUV != null){		
+				Iterator<UVConcret> ite = listUV.iterator();
+				while(ite.hasNext()){  // loop to get name of each UV and put into the created list
+					UVConcret newLigne = ite.next();
+					nomUV = newLigne.getNom();
+					listUVDispo.add(nomUV);
+							
+				}
 			}
 			return listUVDispo;
 		}
-		
-		
 		
 		// Get list of the formation UVs, formateur radioButton : to put into the formation tab
 		public static List<String> getListUVFormateur(){
@@ -315,13 +315,14 @@ public class ClientApp {
 						
 			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
 			String nomUV;
-								
-			Iterator<UVConcret> ite = listUV.iterator();
-			while(ite.hasNext()){  // loop to get name of each UV and put into the created list
-				UVConcret newLigne = ite.next();
-				nomUV = newLigne.getNom();
-				listUVDispo.add(nomUV);
-									
+			if(listUV != null){
+				Iterator<UVConcret> ite = listUV.iterator();
+				while(ite.hasNext()){  // loop to get name of each UV and put into the created list
+					UVConcret newLigne = ite.next();
+					nomUV = newLigne.getNom();
+					listUVDispo.add(nomUV);
+										
+				}
 			}
 			return listUVDispo;
 		}
