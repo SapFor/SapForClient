@@ -31,6 +31,7 @@ public class ClientApp {
 		private static int idSession;
 		private static List<StageConcret> listSessionForm;
 		private static List<StageConcret> listSessionDir;
+		private static List<StageConcret> listSessionCand;
 		private static List<UVConcret> listUV;
 		private static int nbCandidats = 0;
 
@@ -406,6 +407,45 @@ public class ClientApp {
 			}
 		}
 		
+	
+//////////////////////Candidate Methods//////////////////////
+		
+		// Get list of the candidate stages : to put into the candidate tab
+		public static List<String> getListSessionCandidate(int statut){
+				
+			List<String> listId = new ArrayList<String>(); // create list of stages for pushing on the tab
+			List<String> listParStatut = new ArrayList<String>();
+			Calendar dateStage;
+			String nomUV;
+			String date;
+			String nomLieu;
+			String ligneSess;
+				        
+			GuideList whichList = GuideList.values()[statut];
+			switch (whichList){  // choice of the candidates list to load
+				case CANDIDAT : listId = moi.getEnCours(); break;
+				case ATTENTE : listId = moi.getAttente(); break;
+				case ACCEPTE : listId = moi.getAccepte(); break;
+				case REFUSE : listId = moi.getGestion(); break;
+				default: System.out.println("Aucune liste trouvee");
+			}
+				
+			    	
+			Iterator<String> ite = listParStatut.iterator();
+			   while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
+			   
+				   String newLigne = ite.next();
+				   System.out.println("toto "+ newLigne.getNomStage());
+				   nomUV = newLigne.getUV();
+				   dateStage = newLigne.getDate();
+				   date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + (dateStage.get(Calendar.MONTH)+1) + "/" + dateStage.get(Calendar.YEAR);
+				   nomLieu = newLigne.getLieu();
+				   ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
+				   listParStatut.add(ligneSess);
+			   }
+			   return listParStatut;
+		}
+		
 		
 		
 		public static void main(String[] args) {
@@ -509,12 +549,15 @@ public class ClientApp {
 			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
 			
 			System.out.println(deconnexion(moi.getIdSession()));
-			
+			*/
 			
 			// Directeur
 			
 			login(1,"12345");
+			List<String> ListeTruc=getListSessionCandidate(3);
+			System.out.println(ListeTruc);
 			
+			/*
 			List<String> ListeAGerer=getListSessionDirecteur();
 			System.out.println(ListeAGerer);
 			
@@ -539,7 +582,7 @@ public class ClientApp {
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			
-		*/
+			*/
 		}
 		
 }

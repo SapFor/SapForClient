@@ -24,10 +24,12 @@ public class CandidatureController {
 
     @FXML
     void onClicCandAccept(Event event) {
-    	List<String> listSession = ClientApp.getListSessionDirecteur();
+    	List<String> listSession = ClientApp.getListSessionCandidate(3);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
     	acceptCandArea.setItems(itemssession);
+    	
+    	
 
     }
 	

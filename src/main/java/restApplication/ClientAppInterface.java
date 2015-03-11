@@ -11,6 +11,8 @@ import java.util.List;
 
 
 
+
+
 import objectsTemplates.ListCandidats;
 import objectsTemplates.PompierConcret;
 import objectsTemplates.StageConcret;
@@ -22,6 +24,13 @@ public interface ClientAppInterface {
 			
 	// Get IdSession
 	public int getIdSession();
+	
+	// Get name fireman
+	public String getNomPomp();
+			
+	
+	// Get boolean if the fireman is director
+	public boolean isDirector();
 			
 	// Deconnect the session
 	public String deconnexion(int idSession);
@@ -56,13 +65,16 @@ public interface ClientAppInterface {
 
 	
 //////////////////////Formation Methods//////////////////////	
-	
+			
 	// Get boolean if the fireman is already candidate at this stage
 	// return true if he's already candidated
 	public boolean isCandidate(String ClickedItemSession);
-			
-	// Get list of the formation UVs : to put into the formation tab
-	public List<String> getListUVFormation();	
+	
+	// Get list of the formation UVs, apprenant radioButton : to put into the formation tab
+	public List<String> getListUVApprenant();	
+	
+	// Get list of the formation UVs, formateur radioButton : to put into the formation tab
+	public List<String> getListUVFormateur();	
 			
 	// Get description of the formation UVs : to put into the formation tab
 	public String getDescriptionUV(String clickedItemUV);
@@ -75,6 +87,10 @@ public interface ClientAppInterface {
 	
 	// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
 	public void candidateBoutonFormation(String currentStage);
+	
+	// Push a fireman who delete his candidacy, for a specific stage to the server : "Retirer" button in the formation tab
+	public void retirerBoutonFormation(String currentStage);
+			
 			
 	
 }
