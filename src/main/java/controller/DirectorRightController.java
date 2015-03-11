@@ -24,6 +24,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 /**
@@ -40,9 +42,9 @@ public class DirectorRightController {
 	private ObservableList<String> acceptedList;
 	private ObservableList<String> refusedList;
 	private ObservableList<String> attenteList;
-	private int countAttente = 0;
-	private int countRefuse = 0;
-	private int countAccepte = 0;
+	private int countAttente;
+	private int countRefuse;
+	private int countAccepte;
 	private Text txtCounter;
 	private Text txtcountAccept;
 	private Text txtcountRefuse;
@@ -93,11 +95,16 @@ public class DirectorRightController {
 		Text txtAccepteTitle = new Text("Accepté");
 		Text txtRefuseTitle = new Text("Refusé");
 		Text txtAttenteTitle = new Text("Liste d'Attente");
+		txtNameTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
+		txtAccepteTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
+		txtRefuseTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
+		txtAttenteTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
 		
 		HBox hbTitle = new HBox(txtAccepteTitle, txtRefuseTitle, txtAttenteTitle);
+		hbTitle.setAlignment(Pos.CENTER);
 		hbTitle.setSpacing(65);
-		hbTitle.setPadding(new Insets(10, 10, 10, 10));
-		//txtNameTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		hbTitle.setPadding(new Insets(50, 10, 50, 10));
+		hbTitle.setMinHeight(100);
 		
 		gridCandidats.add(txtNameTitle,0,0); // (txtNameTitle, column, row)
 		gridCandidats.add(hbTitle,1,0);
@@ -108,6 +115,9 @@ public class DirectorRightController {
 		Iterator<String> attenteIter = attenteList.iterator();
 		int i=1;
 		String tempName;
+		countAttente = 0;
+		countRefuse = 0;
+		countAccepte = 0;
 		
 		while (noDecisionIter.hasNext() || acceptedIter.hasNext() || refusedIter.hasNext() || attenteIter.hasNext()) {
 			
@@ -128,6 +138,7 @@ public class DirectorRightController {
 			// putting RadioButtons into HBox for easy horizontal distribution
 			HBox hb = new HBox(rdoAccepte, rdoRefuse, rdoAttente);
 			hb.setSpacing(100);
+			hb.setAlignment(Pos.CENTER);
 			hb.setPadding(new Insets(10, 10, 10, 10));
 			
 			if(noDecisionIter.hasNext()) {
@@ -263,13 +274,12 @@ public class DirectorRightController {
 		txtcountRefuse = new Text(String.valueOf(countRefuse));
 		txtcountAttente = new Text(String.valueOf(countAttente));
 		boxCounter = new HBox(txtcountAccept, txtcountRefuse, txtcountAttente);
-		boxCounter.setSpacing(100);
+		boxCounter.setSpacing(120);
 		boxCounter.setPadding(new Insets(10, 10, 10, 10));
 		boxCounter.setAlignment(Pos.CENTER);
 		gridCandidats.add(line1, 0, 1000);
 		gridCandidats.add(txtCounter, 0, 1001);
 		gridCandidats.add(boxCounter, 1, 1001);
-		System.out.println("in here first");
 		}
 
 		
@@ -279,7 +289,6 @@ public class DirectorRightController {
 		gridCandidats.getChildren().remove(txtcountRefuse);
 		gridCandidats.getChildren().remove(txtcountAttente);
 		gridCandidats.getChildren().remove(boxCounter);
-		System.out.println("in here second");
 	}
 	
 	
@@ -305,7 +314,8 @@ public class DirectorRightController {
 		}*/
 		
 		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer, btnSauvTemp);
-		hbButtons.setSpacing(90);
+		hbButtons.setAlignment(Pos.CENTER);
+		hbButtons.setSpacing(85);
 		hbButtons.setPadding(new Insets(10, 10, 10, 10));
 		bdrPaneCandidats.setBottom(hbButtons);
 	}	
