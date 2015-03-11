@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
+import restApplication.ClientApp;
 import model.LectureUVFichier;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -67,14 +68,14 @@ public class DirectorRightController {
 		//ObservableList<String> acceptedList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,2));
 		// 3 = candidates on refused list
 		//ObservableList<String> refusedList =FXCollections.observableArrayList (getListCandidatDirecteur(sessionID,3));
-		LectureUVFichier fichierNoDecision = new LectureUVFichier(URLRessource + "nodecision" , 0); // comment out line once connected to database
-		LectureUVFichier fichierAccepted = new LectureUVFichier(URLRessource + "accepted" , 0); // comment out line once connected to database
-		LectureUVFichier fichierRefused = new LectureUVFichier(URLRessource + "refused", 0); // comment out line once connected to database
-		LectureUVFichier fichierPending = new LectureUVFichier(URLRessource + "pending", 0); // comment out line once connected to database
-		noDecisionList =FXCollections.observableArrayList (fichierNoDecision.getListUV()); // comment out line once connected to database
-		acceptedList =FXCollections.observableArrayList (fichierAccepted.getListUV()); // comment out line once connected to database
-		refusedList =FXCollections.observableArrayList (fichierRefused.getListUV()); // comment out line once connected to database
-		pendingList =FXCollections.observableArrayList (fichierPending.getListUV()); // comment out line once connected to database
+		//LectureUVFichier fichierNoDecision = new LectureUVFichier(URLRessource + "nodecision" , 0); // comment out line once connected to database
+		//LectureUVFichier fichierAccepted = new LectureUVFichier(URLRessource + "accepted" , 0); // comment out line once connected to database
+		//LectureUVFichier fichierRefused = new LectureUVFichier(URLRessource + "refused", 0); // comment out line once connected to database
+		//LectureUVFichier fichierPending = new LectureUVFichier(URLRessource + "pending", 0); // comment out line once connected to database
+		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); // comment out line once connected to database
+		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,1)); // comment out line once connected to database
+		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2)); // comment out line once connected to database
+		pendingList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); // comment out line once connected to database
 
 		loadGrid(noDecisionList, acceptedList, refusedList, pendingList);
 		loadButtons(sessionID);
