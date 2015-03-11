@@ -37,7 +37,7 @@ public class LoginController {
 		
 	/////// utilisation sans serveur /////////////////
 		
-		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
+		/*Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
     	currentStage.close();
     	
     	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
@@ -53,13 +53,13 @@ public class LoginController {
 			stage.show();
 			
 		} 
-        catch (IOException e) { e.printStackTrace(); } 
+        catch (IOException e) { e.printStackTrace(); } */
 		
 		
 		
   /////// utilisation avec serveur /////////////////
 		
-    	/*
+    	
     	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
         
@@ -91,7 +91,7 @@ public class LoginController {
         	loginArea.setText("");
         	mdpArea.setText("");
         }
-        */
+        
     }
 	
 	public void initialize(URL arg0, ResourceBundle arg1) {
