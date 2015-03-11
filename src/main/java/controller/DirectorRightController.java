@@ -45,6 +45,9 @@ public class DirectorRightController {
 	
 	@FXML
     private Button btnEnvoyer;
+	
+	@FXML
+    private Button btnSauvTemp;
 
 	/*public void loadCandidats(ObservableList<String> token) {
 		loadGrid(token);
@@ -216,11 +219,13 @@ public class DirectorRightController {
 private void loadButtons(String sessionID){
 		btnCloturer.setText("Clôturer la session");
 		btnEnvoyer.setText("Valider les candidatures");
+		btnSauvTemp.setText("Sauvegarde Temporaire");
 		btnCloturer.setVisible(true);
 		btnEnvoyer.setVisible(true);
+		btnSauvTemp.setVisible(true);
 		
 		btnCloturer.setDisable(false); // delete line once connected to database
-		btnEnvoyer.setDisable(true); // delete line once connected to database
+		btnEnvoyer.setDisable(false); // delete line once connected to database
 		// if stage is closed testDate returns true
 /*		if(testDate(sessionID)){		// uncomment once connected to database
 			btnCloturer.setDisable(true);
@@ -231,8 +236,8 @@ private void loadButtons(String sessionID){
 			btnEnvoyer.setDisable(true);
 		}
 */		
-		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer);
-		hbButtons.setSpacing(100);
+		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer, btnSauvTemp);
+		hbButtons.setSpacing(90);
 		hbButtons.setPadding(new Insets(10, 10, 10, 10));
 		bdrPaneCandidats.setBottom(hbButtons);
 	}	
@@ -246,13 +251,22 @@ private void loadButtons(String sessionID){
 	    int month = cal.get(Calendar.MONTH) + 1; // January is 0
 	    int day = cal.get(Calendar.DAY_OF_MONTH);
 		//cloturerCandidature(getIdSession(), day, month, year);
+	    btnCloturer.setDisable(true);
 	 }
 	
 	@FXML
 	private void btnEnvoyerAction(ActionEvent event) {
 		
 		//enregBoutonDirecteur(getIdSession(), List<String> accepte, List<String> attente, List<String> refuse);
+		btnEnvoyer.setDisable(true);
 	 }
+	
+	@FXML
+	private void btnSauverAction(ActionEvent event) {
+		//enregBoutonDirecteur(getIdSession(), List<String> accepte, List<String> attente, List<String> refuse);
+		
+	
+}
 }
 
 
