@@ -13,6 +13,7 @@ import java.util.List;
 
 
 
+
 import objectsTemplates.ListCandidats;
 import objectsTemplates.PompierConcret;
 import objectsTemplates.StageConcret;
@@ -65,6 +66,10 @@ public interface ClientAppInterface {
 
 	
 //////////////////////Formation Methods//////////////////////	
+	
+	// Get boolean if the fireman is already candidate at this stage
+	// return true if he's already candidated
+	public boolean isCandidate(String ClickedItemSession);
 			
 	// Get list of the formation UVs, apprenant radioButton : to put into the formation tab
 	public List<String> getListUVApprenant();	

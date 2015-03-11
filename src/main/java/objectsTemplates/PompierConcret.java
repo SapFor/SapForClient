@@ -15,7 +15,7 @@ public class PompierConcret {
 	private int idSession;
 	private int id;
 	private String mdp;
-	private boolean directeur;
+	private String directeur;
 	private String nom;
 	private String prenom;
 	private List<String> UV;
@@ -46,10 +46,8 @@ public class PompierConcret {
 	/*
 	 * Is this fireman a director ?
 	 */
-	public void setDirecteur(String directeur) {
-		this.directeur = (directeur.equals("oui"));
-	}
-	public boolean getDirecteur(){ return directeur; }
+	public void setDirecteur(String directeur) { this.directeur = directeur; }
+	public String getDirecteur(){ return directeur; }
 	
 	/*
 	 * Last name of the fireman

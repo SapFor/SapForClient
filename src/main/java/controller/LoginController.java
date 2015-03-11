@@ -35,36 +35,20 @@ public class LoginController {
 		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
     	currentStage.close();
     	
-        try {
-
-        	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
-			Parent root = fxmlLoader.load();
-			Scene scene = new Scene(root);
-			//stage = (Stage) root.getScene().getWindow();
-			scene.getStylesheets().add("/application/application.css");
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-			
-		} 
-        catch (IOException e) { e.printStackTrace(); }
-		
-        // Partie à utiliser lors de l'accès au serveur
-    	/*
-        String idPompier = loginArea.getText();
+    	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
         
         String reponse = ClientApp.login(idPompier, mdp);
         if(reponse == "ok"){
-        	Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
-        	currentStage.close();
+        	Stage myCurrentStage = (Stage) validerLoginButton.getScene().getWindow();
+        	myCurrentStage.close();
         	
         	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
             try {
     			Parent root = fxmlLoader.load();
     			Scene scene = new Scene(root);
     			//stage = (Stage) root.getScene().getWindow();
+    			scene.getStylesheets().add("/application/application.css");
 
     			Stage stage = new Stage();
     			stage.setScene(scene);
@@ -77,7 +61,6 @@ public class LoginController {
         	errorArea.setText(reponse + " : le login et/ou le mot de passe sont incorrects."); 
         	errorArea.setVisible(true);
         }
-        */
     }
     
 	

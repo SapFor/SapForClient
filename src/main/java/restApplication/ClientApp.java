@@ -81,12 +81,13 @@ public class ClientApp {
 		public static int getIdSession(){ return idSession; }
 		
 		// Get name fireman
-		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent n°" + getIdSession(); }
+		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent n°" + moi.getId(); }
 		
 
 		// Get boolean if the fireman is director
 		public static boolean isDirector(){
-			return (moi.getDirecteur());
+			System.out.println(moi.getDirecteur());
+			return (moi.getDirecteur()=="oui");
 		}
 		
 		
@@ -257,12 +258,28 @@ public class ClientApp {
 		}
 				
 				
-//////////////////////Formation Methods//////////////////////	
+//////////////////////Formation Methods//////////////////////
+		
+		// Get boolean if the fireman is already candidate at this stage
+		public static boolean isCandidate(String ClickedItemSession){
+
+			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
+	        int i = 0;
+	        while( i<moi.getEnCours().size() && !ClickedItemSession.equals(moi.getEnCours().get(i)) ){
+	        	System.out.println(moi.getEnCours().get(i));i++; }
+	        
+	        // the correct stage is found in the list -> get detailled infos
+	        return (i<moi.getEnCours().size());
+			
+		}
+		
+		
+		
 		
 		// Get list of the formation UVs, apprenant radioButton : to put into the formation tab
 		public static List<String> getListUVApprenant(){
 			// Get list of stages from the server
-			EncapsulationUV encapUV = service.path("candidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
+			EncapsulationUV encapUV = service.path("UVcandidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
 			listUV=encapUV.capsule;
 			
 			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
@@ -283,7 +300,7 @@ public class ClientApp {
 		// Get list of the formation UVs, formateur radioButton : to put into the formation tab
 		public static List<String> getListUVFormateur(){
 			// Get list of stages from the server
-			EncapsulationUV encapUV = service.path("candidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
+			EncapsulationUV encapUV = service.path("UVformateur/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
 			listUV=encapUV.capsule;
 						
 			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
@@ -363,6 +380,7 @@ public class ClientApp {
 		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
 		public static void candidateBoutonFormation(String currentStage){
 			
+			// modification on the client side
 			if (moi.getEnCours()==null){moi.setEnCours(new ArrayList<String>());}
 			List<String> current = moi.getEnCours();
 			current.add(currentStage);   
@@ -377,10 +395,11 @@ public class ClientApp {
 		// Push a fireman who delete his candidacy, for a specific stage to the server : "Retirer" button in the formation tab
 		public static void retirerBoutonFormation(String currentStage){
 					
+			// modification on the client side
 			if (moi.getEnCours()!=null){
 				List<String> current = moi.getEnCours();
 				current.remove(currentStage);   
-				moi.setEnCours(current);   // adding the new candidated stage on the list of stages of our fireman (adding side client)
+				moi.setEnCours(current);   // deleting the old candidated stage on the list of stages of our fireman (deleting side client)
 					
 				// Add a new stage using the GET HTTP method. managed by the Jersey framework
 				service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
@@ -390,7 +409,7 @@ public class ClientApp {
 		
 		
 		public static void main(String[] args) {
-			
+			/*
 			// candidat 1
 			login(2,"12345");
 						
@@ -520,8 +539,9 @@ public class ClientApp {
 			
 			System.out.println(deconnexion(moi.getIdSession()));
 			
-		
+		*/
 		}
+		
 }
 
 
