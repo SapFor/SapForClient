@@ -135,9 +135,9 @@ public class ClientApp {
 	    	while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
 	    		StageConcret newLigne = ite.next();
 				
-				nomUV = newLigne.getNomStage();
+				nomUV = newLigne.getUV();
 				dateStage = newLigne.getDate();
-				date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + dateStage.get(Calendar.MONTH)+1 + "/" + dateStage.get(Calendar.YEAR);
+				date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + (dateStage.get(Calendar.MONTH)+1) + "/" + dateStage.get(Calendar.YEAR);
 				nomLieu = newLigne.getLieu();
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
