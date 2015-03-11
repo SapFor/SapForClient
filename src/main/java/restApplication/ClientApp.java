@@ -13,6 +13,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -35,6 +36,8 @@ public class ClientApp {
 		private static List<StageConcret> listSessionCand;
 		private static List<UVConcret> listUV;
 		private static int nbCandidats = 0;
+		
+		private static HashMap<String,StageConcret> tableDeCorrespondance;
 
 		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
 		// Working on the assumption that your int value is 
@@ -126,6 +129,7 @@ public class ClientApp {
 			EncapsulationStage encapStage = service.path("directeur/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
 			listSessionDir=encapStage.capsule;
 			
+			tableDeCorrespondance=new HashMap<String,StageConcret>();
 			List<String> listSess = new ArrayList<String>(); // create list of stages for pushing on the tab
 			Calendar dateStage;
 			String nomUV;
@@ -143,6 +147,7 @@ public class ClientApp {
 				nomLieu = newLigne.getLieu();
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
+	    		tableDeCorrespondance.put(ligneSess, newLigne);
 	    	}
 	    	return listSess;
 	    }
@@ -161,11 +166,12 @@ public class ClientApp {
 	        	nomUVItem = nomUVItem + mot;
 	        }
 	        */
-	    	
+	    	System.out.println(ClickedItemSession);
+	    	String correspondance=tableDeCorrespondance.get(ClickedItemSession).getNomStage();
 	        // Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			// when the correct stage is found in the list -> get candidates list (switch case)
 			int i = 0;
-	        while( i<listSessionDir.size() && !ClickedItemSession.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
+	        while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 
 	        List<String> listId = null;
 	        
