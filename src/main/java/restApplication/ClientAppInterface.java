@@ -13,6 +13,7 @@ import java.util.List;
 
 
 
+
 import objectsTemplates.ListCandidats;
 import objectsTemplates.PompierConcret;
 import objectsTemplates.StageConcret;
@@ -53,7 +54,7 @@ public interface ClientAppInterface {
 	public List<String> getListSessionDirecteur();
 			
 	// Get list of director candidates for a specific session : to put into the director tab
-	// listLoading = 0 for "candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
+	// listLoading = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
 	public List<String> getListCandidatDirecteur(String ClickedItemSession, int listLoading);
 	
 	// Get the objet ListCandidats hosting all the list (accepted, refused, pending, no handled candidates) : to put into the director tab
@@ -90,6 +91,14 @@ public interface ClientAppInterface {
 	
 	// Push a fireman who delete his candidacy, for a specific stage to the server : "Retirer" button in the formation tab
 	public void retirerBoutonFormation(String currentStage);
+	
+	
+	
+//////////////////////Candidate Methods//////////////////////
+	
+	// Get list of the candidate stages : to put into the candidate tab
+	// listLoading = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
+	public List<String> getListSessionCandidate(int statut);
 			
 			
 	

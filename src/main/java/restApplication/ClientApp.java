@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import objectsTemplates.*;
 
@@ -381,14 +382,51 @@ public class ClientApp {
 		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
 		public static void candidateBoutonFormation(String currentStage){
 			
+			// Get the three words of the item "NomLieu le Date" and redo a unique completed string
+			// exemple : FDF1broceliande le 15/06/2015 -> FDF1broceliande15juin15
+			String nomStageItem = "";
+			String mot = null;
+			StringTokenizer tok = new StringTokenizer(currentStage);
+
+			mot = tok.nextToken();
+			nomStageItem = nomStageItem + mot;
+			mot = tok.nextToken();
+			mot = tok.nextToken();
+			nomStageItem = nomStageItem + mot;
+			
+			String[] elements =  nomStageItem.split("/");
+			String jour = elements[0];
+			String moisInt = elements[1];
+			String annee = elements[2];
+			String anneeCut = annee.substring(2);
+			
+			int partMois = Integer.parseInt(moisInt)-1; 
+			String mois;
+			switch(partMois){
+			case 0: mois="janv";break;
+			case 1: mois="fev";break;
+			case 2: mois="mars";break;
+			case 3: mois="avr";break;
+			case 4: mois="mai";break;
+			case 5: mois="juin";break;
+			case 6: mois="juil";break;
+			case 7: mois="aout";break;
+			case 8: mois="sept";break;
+			case 9: mois="oct";break;
+			case 10: mois="nov";break;
+			case 11: mois="dec";break;
+			default: mois="erreur";break;
+			}
+			nomStageItem = jour + mois + anneeCut;
+			
 			// modification on the client side
 			if (moi.getEnCours()==null){moi.setEnCours(new ArrayList<String>());}
 			List<String> current = moi.getEnCours();
-			current.add(currentStage);   
+			current.add(nomStageItem);   
 			moi.setEnCours(current);   // adding the new candidated stage on the list of stages of our fireman (adding side client)
 			
 			// Add a new stage using the GET HTTP method. managed by the Jersey framework
-			service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
+			service.path("candidater/" + moi.getIdSession() + "/" + nomStageItem).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 		}
 		
 		
@@ -411,15 +449,11 @@ public class ClientApp {
 //////////////////////Candidate Methods//////////////////////
 		
 		// Get list of the candidate stages : to put into the candidate tab
+		// listLoading = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
 		public static List<String> getListSessionCandidate(int statut){
 				
 			List<String> listId = new ArrayList<String>(); // create list of stages for pushing on the tab
 			List<String> listParStatut = new ArrayList<String>();
-			Calendar dateStage;
-			String nomUV;
-			String date;
-			String nomLieu;
-			String ligneSess;
 				        
 			GuideList whichList = GuideList.values()[statut];
 			switch (whichList){  // choice of the candidates list to load
@@ -430,18 +464,11 @@ public class ClientApp {
 				default: System.out.println("Aucune liste trouvee");
 			}
 				
-			    	
-			Iterator<String> ite = listParStatut.iterator();
+			Iterator<String> ite = listId.iterator();
 			   while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
 			   
 				   String newLigne = ite.next();
-				   System.out.println("toto "+ newLigne.getNomStage());
-				   nomUV = newLigne.getUV();
-				   dateStage = newLigne.getDate();
-				   date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + (dateStage.get(Calendar.MONTH)+1) + "/" + dateStage.get(Calendar.YEAR);
-				   nomLieu = newLigne.getLieu();
-				   ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
-				   listParStatut.add(ligneSess);
+				   listParStatut.add(newLigne);
 			   }
 			   return listParStatut;
 		}
@@ -549,7 +576,7 @@ public class ClientApp {
 			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
 			
 			System.out.println(deconnexion(moi.getIdSession()));
-			*/
+	
 			
 			// Directeur
 			
@@ -557,7 +584,6 @@ public class ClientApp {
 			List<String> ListeTruc=getListSessionCandidate(3);
 			System.out.println(ListeTruc);
 			
-			/*
 			List<String> ListeAGerer=getListSessionDirecteur();
 			System.out.println(ListeAGerer);
 			

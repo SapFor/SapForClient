@@ -31,29 +31,29 @@
                                                             </AnchorPane>
                                                       </content>
                                                     </TitledPane>
-                                                    <TitledPane animated="false" text="Sous liste d'attente">
+                                                    <TitledPane fx:id="titleAttenteCand" animated="false" onMouseClicked="#onClicCandAttent" text="Sous liste d'attente">
                                                       <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                <children>
-                                                                  <ListView layoutY="-57.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <ListView fx:id="attentCandArea" layoutY="-57.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                       </content>
                                                     </TitledPane>
-                                                    <TitledPane animated="false" text="Non cloturées">
+                                                    <TitledPane fx:id="titleNonClotureesCand" animated="false" onMouseClicked="#onClicCandNonClot" text="Non cloturées">
                                                       <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                <children>
-                                                                  <ListView layoutX="24.0" layoutY="-44.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <ListView fx:id="nonClotCandArea" layoutX="24.0" layoutY="-44.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                       </content>
                                                     </TitledPane>
-                                                      <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Refusées">
+                                                      <TitledPane fx:id="titleRefuseesCand" animated="false" onMouseClicked="#onClicCandRefus" layoutX="10.0" layoutY="60.0" text="Refusées">
                                                          <content>
                                                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                                <children>
-                                                                  <ListView layoutX="-22.0" layoutY="-64.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                  <ListView fx:id="refusCandArea" layoutX="-22.0" layoutY="-64.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                </children>
                                                             </AnchorPane>
                                                          </content>
