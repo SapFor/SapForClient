@@ -45,6 +45,8 @@ public class FormationController implements Initializable{
 	private Button candidaterBt;
 	@FXML
 	private Button retirerBt;
+	
+	
 
 	/**
 	 * procédure d'initialisation
@@ -56,46 +58,33 @@ public class FormationController implements Initializable{
 	}
 
 	@FXML
+	/**
+	 * Evenement lors du clic sur le nom d'un UV
+	 * @param event
+	 */
 	void clicUV(Event event) {
-
-		//L'affichage de la descritpion de l'UV
-		String description= new String("la description de l'UV");
-		UVDesc.setText(description);
+		// pour récupérer le nom de l'UV cliqué dans un String
+		String UVSelectionne = UVList.getSelectionModel().getSelectedItem();
+		
+		//Affichge de la description de l'UV
+		UVDesc.setText(ClientApp.getDescriptionUV(UVSelectionne));
 
 		//pour ne pas modifier le text area dans le programme
 		UVDesc.setEditable(false);
 
-		// pour récupérer le nom de l'UV cliqué dans un String
-		String UVclic = UVList.getSelectionModel().getSelectedItem();
+		//Affichage des la liste des sessions
+		ObservableList<String> SessionUV = FXCollections.observableArrayList(ClientApp.getListSessionFormation(UVSelectionne));
+		SessionList.setItems(SessionUV);
+					
+		// Clear le Texte area de info session quand on change d'UV.
+		InfoSession.clear();
+		
+		// Clear la selection de session quand on change d'UV.
+		SessionList.getSelectionModel().clearSelection();
 
-//		if (UVclic=="INC1"){
-//			//l'affichage des sessions 
-//			ArrayList<String> SessionUVList = new  ArrayList<String>();
-//			SessionUVList.add("Rennes");
-//			SessionUVList.add("St Malo");
-//			SessionUVList.add("Redon");
-//			ObservableList<String> SessionUV = FXCollections.observableArrayList(SessionUVList);
-//
-//			SessionList.setItems(SessionUV);}
-//		else {
-//
-//			ArrayList<String> SessionUVList = new  ArrayList<String>();
-//			SessionUVList.add("Nantes");
-//			SessionUVList.add("Laval");
-//			SessionUVList.add("Reims");
-			ObservableList<String> SessionUV = FXCollections.observableArrayList(ClientApp.getListUVApprenant());
-
-			SessionList.setItems(SessionUV);
-		//}
-						
-			// Clear le Texte area de info session quand on change d'UV.
-			InfoSession.clear();
-			
-			// Clear la selection de session quand on change d'UV.
-			SessionList.getSelectionModel().clearSelection();
-
-			candidaterBt.setVisible(false);
-			retirerBt.setVisible(false);
+		//Supprime les boutons de candidature
+		candidaterBt.setVisible(false);
+		retirerBt.setVisible(false);
 	}
 
 
@@ -141,10 +130,8 @@ public class FormationController implements Initializable{
 		InfoSession.clear();
 		// Clear la selection d'UV quand on change de mode apprenant ou formateur.
 		UVList.getSelectionModel().clearSelection();
-
 	}
 
-	
 	/**
 	 * Affichage des UV pour le bouton formateur sélectionné
 	 * @param event
@@ -173,7 +160,6 @@ public class FormationController implements Initializable{
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
 		System.out.println(IdSession);
-
 	}
 	
 	@FXML
@@ -187,6 +173,4 @@ public class FormationController implements Initializable{
 		String IdSession = UVSelect+SessionSelect;
 		System.out.println(IdSession);
 	}
-
-
 }
