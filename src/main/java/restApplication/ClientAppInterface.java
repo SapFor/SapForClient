@@ -11,12 +11,6 @@ import java.util.List;
 
 
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> origin/master
 import objectsTemplates.ListCandidats;
 import objectsTemplates.PompierConcret;
 import objectsTemplates.StageConcret;
