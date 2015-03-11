@@ -12,11 +12,11 @@
          <children>
             <AnchorPane prefHeight="50.0">
                <children>
-                  <HBox layoutX="40.0" layoutY="15.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                  <HBox layoutX="40.0" layoutY="15.0" prefWidth="250.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="816.0" AnchorPane.topAnchor="15.0">
                      <children>
                         <RadioButton fx:id="boutonApprenant" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#boutonApprenantClicked" prefWidth="100.0" selected="true" text="Apprenant">
                            <toggleGroup>
-                              <ToggleGroup fx:id="toggleGroup" />
+                              <ToggleGroup fx:id="ToggleGroup" />
                            </toggleGroup></RadioButton>
                         <RadioButton fx:id="boutonFormateur" layoutX="183.0" layoutY="15.0" mnemonicParsing="false" onAction="#boutonFormateurClicked" prefWidth="100.0" text="Formateur" toggleGroup="$ToggleGroup" />
                      </children>
