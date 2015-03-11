@@ -1,5 +1,6 @@
 package restApplication;
 
+
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
@@ -62,7 +63,7 @@ public class ClientApp {
 		*/
 		
 		// Get idSession by login and password
-		public static String login(String idPompier,String mdp){
+		public static String login(int idPompier,String mdp){
 			config = new DefaultClientConfig();
 			client = Client.create(config);
 			service = client.resource(getBaseURI());
@@ -81,6 +82,12 @@ public class ClientApp {
 		
 		// Get name fireman
 		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent n°" + getIdSession(); }
+		
+
+		// Get boolean if the fireman is director
+		public static boolean isDirector(){
+			return (moi.getDirecteur());
+		}
 		
 		
 		// Deconnect the session
@@ -170,15 +177,17 @@ public class ClientApp {
 			
 		 	List<String> listPompiers = new ArrayList<String>();  // create list of firemen for pushing on the tab
 		 	
-	    	Iterator<String> ite = listId.iterator();
-	    	while(ite.hasNext()){  // loop to get last name/first name of each fireman and put into the created list
-	    		String newLigne = ite.next();
-	    		String path = "pompier/" + newLigne;
-	    		
-	    		PompierConcret pomp = service.path(path).accept(MediaType.APPLICATION_JSON).get(new GenericType<PompierConcret>(){}); 
-
-	    		String namePomp = pomp.getNom() + "\t" + pomp.getPrenom() ;
-	    		listPompiers.add(namePomp);
+		 	if (listId!=null){
+		    	Iterator<String> ite = listId.iterator();
+		    	while(ite.hasNext()){  // loop to get last name/first name of each fireman and put into the created list
+		    		String newLigne = ite.next();
+		    		String path = "pompier/" + newLigne;
+		    		
+		    		PompierConcret pomp = service.path(path).accept(MediaType.APPLICATION_JSON).get(new GenericType<PompierConcret>(){}); 
+	
+		    		String namePomp = pomp.getNom() + "\t" + pomp.getPrenom() ;
+		    		listPompiers.add(namePomp);
+		    	}
 	    	}
 	    	return listPompiers;
 	    }
@@ -231,7 +240,7 @@ public class ClientApp {
 			updatedSession.setRefuse(refuse);
 					
 			// Add a new stage using the PUT HTTP method. managed by the Jersey framework
-			service.path("directeur/" + moi.getIdSession()).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
+			service.path("directeur/selection").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
 		}
 		
 				
@@ -248,10 +257,10 @@ public class ClientApp {
 		}
 				
 				
-//////////////////////Formation Methods//////////////////////					
+//////////////////////Formation Methods//////////////////////	
 		
-		// Get list of the formation UVs : to put into the formation tab
-		public static List<String> getListUVFormation(){
+		// Get list of the formation UVs, apprenant radioButton : to put into the formation tab
+		public static List<String> getListUVApprenant(){
 			// Get list of stages from the server
 			EncapsulationUV encapUV = service.path("candidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
 			listUV=encapUV.capsule;
@@ -265,6 +274,27 @@ public class ClientApp {
 				nomUV = newLigne.getNom();
 				listUVDispo.add(nomUV);
 						
+			}
+			return listUVDispo;
+		}
+		
+		
+		
+		// Get list of the formation UVs, formateur radioButton : to put into the formation tab
+		public static List<String> getListUVFormateur(){
+			// Get list of stages from the server
+			EncapsulationUV encapUV = service.path("candidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
+			listUV=encapUV.capsule;
+						
+			List<String> listUVDispo = new ArrayList<String>(); // create list of UV for pushing on the tab
+			String nomUV;
+								
+			Iterator<UVConcret> ite = listUV.iterator();
+			while(ite.hasNext()){  // loop to get name of each UV and put into the created list
+				UVConcret newLigne = ite.next();
+				nomUV = newLigne.getNom();
+				listUVDispo.add(nomUV);
+									
 			}
 			return listUVDispo;
 		}
@@ -299,9 +329,11 @@ public class ClientApp {
 			String ligneSess;
 			
 			// loop of comparison between the string clickedUV and the correspondent element in the list of UV (of the server)
+
 	        for(int j=0; j<listSessionForm.size(); j++){
 	        	StageConcret newligne = listSessionForm.get(j);
-	        	if(clickedItemUV == newligne.getNomStage()){ // if true, get the place/date of the stage and put into the created list 
+	        	if(clickedItemUV.compareTo(newligne.getUV())==0){ // if true, get the place/date of the stage and put into the created list 
+
 	        		dateStage = newligne.getDate();
 	        		date = dateStage.get(Calendar.DAY_OF_MONTH) + "/" + (dateStage.get(Calendar.MONTH)+1) + "/" + dateStage.get(Calendar.YEAR);
 	        		nomLieu = newligne.getLieu();
@@ -331,6 +363,7 @@ public class ClientApp {
 		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
 		public static void candidateBoutonFormation(String currentStage){
 			
+			if (moi.getEnCours()==null){moi.setEnCours(new ArrayList<String>());}
 			List<String> current = moi.getEnCours();
 			current.add(currentStage);   
 			moi.setEnCours(current);   // adding the new candidated stage on the list of stages of our fireman (adding side client)
@@ -341,25 +374,153 @@ public class ClientApp {
 		
 		
 		
-		public static void main(String[] args) {
-			/*
-			login(1,"12345");
-			List<String> maSession = getListSessionDirecteur();
-			//List<String> mesCandidats = getListCandidatDirecteur(maSession);
-			
-			List<Integer> listeId=new ArrayList<Integer>();
-			System.out.println(login(1,"12345"));
-			listeId.add(idSession);
-			System.out.println(idSession);
-			System.out.println(login(1,"12345"));
-			System.out.println(idSession);
-			System.out.println(login(2,"12345"));
-			listeId.add(idSession);
-			System.out.println(idSession);
-			for(int i=0;i<listeId.size();i++){
-			System.out.println(deconnexion(listeId.get(i)));
+		// Push a fireman who delete his candidacy, for a specific stage to the server : "Retirer" button in the formation tab
+		public static void retirerBoutonFormation(String currentStage){
+					
+			if (moi.getEnCours()!=null){
+				List<String> current = moi.getEnCours();
+				current.remove(currentStage);   
+				moi.setEnCours(current);   // adding the new candidated stage on the list of stages of our fireman (adding side client)
+					
+				// Add a new stage using the GET HTTP method. managed by the Jersey framework
+				service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 			}
-			*/
+		}
+		
+		
+		
+		public static void main(String[] args) {
+			
+			// candidat 1
+			login(2,"12345");
+						
+			List <String> ListeUV=getListUVApprenant();
+			System.out.println("Liste des UVs accessible au candidat :");
+			System.out.println(ListeUV);
+			System.out.println();
+			
+			System.out.println("Description de l'UV "+ListeUV.get(0));
+			System.out.println(getDescriptionUV(ListeUV.get(0))); //affiche la description de la premiere uv)
+			System.out.println();
+			
+			List <String> ListeStage=getListSessionFormation(ListeUV.get(0));
+			System.out.println("Liste des stages associés à "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println();
+			
+			System.out.println("Info du premier stage "+ListeUV.get(0));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
+			System.out.println();
+			
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
+			
+			System.out.println(deconnexion(moi.getIdSession()));
+			
+			
+			// candidat 2
+			login(3,"12345");
+			
+			ListeUV=getListUVFormateur();
+			System.out.println("Liste des UVs accessible au candidat :");
+			System.out.println(ListeUV);
+			System.out.println();
+			
+			System.out.println("Description de l'UV "+ListeUV.get(0));
+			System.out.println(getDescriptionUV(ListeUV.get(0))); //affiche la description de la premiere uv)
+			System.out.println();
+			
+			ListeStage=getListSessionFormation(ListeUV.get(0));
+			System.out.println("Liste des stages associés à "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println();
+			
+			System.out.println("Info du premier stage "+ListeUV.get(0));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
+			System.out.println();
+			
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
+			
+			System.out.println(deconnexion(moi.getIdSession()));
+			
+			// candidat 3
+			login(5,"12345");
+			
+			ListeUV=getListUVFormateur();
+			System.out.println("Liste des UVs accessible au candidat :");
+			System.out.println(ListeUV);
+			System.out.println();
+			
+			System.out.println("Description de l'UV "+ListeUV.get(0));
+			System.out.println(getDescriptionUV(ListeUV.get(0))); //affiche la description de la premiere uv)
+			System.out.println();
+			
+			ListeStage=getListSessionFormation(ListeUV.get(0));
+			System.out.println("Liste des stages associés à "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println();
+			
+			System.out.println("Info du premier stage "+ListeUV.get(0));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
+			System.out.println();
+			
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
+			
+			System.out.println(deconnexion(moi.getIdSession()));
+			
+			// candidat 4
+			login(6,"12345");
+			ListeUV=getListUVFormateur();
+			System.out.println("Liste des UVs accessible au candidat :");
+			System.out.println(ListeUV);
+			System.out.println();
+			
+			System.out.println("Description de l'UV "+ListeUV.get(0));
+			System.out.println(getDescriptionUV(ListeUV.get(0))); //affiche la description de la premiere uv)
+			System.out.println();
+			
+			ListeStage=getListSessionFormation(ListeUV.get(0));
+			System.out.println("Liste des stages associés à "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println();
+			
+			System.out.println("Info du premier stage "+ListeUV.get(0));
+			System.out.println(getInfoDetailsFormation(listSessionForm.get(0).getNomStage()));
+			System.out.println();
+			
+			candidateBoutonFormation(listSessionForm.get(0).getNomStage());
+			
+			System.out.println(deconnexion(moi.getIdSession()));
+			
+			
+			// Directeur
+			
+			login(1,"12345");
+			
+			List<String> ListeAGerer=getListSessionDirecteur();
+			System.out.println(ListeAGerer);
+			
+						
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),0));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),1));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),2));
+			System.out.println(getListCandidatDirecteur(listSessionDir.get(0).getNomStage(),3));
+			
+			ListCandidats listeCand=getListCandidatDirecteurGlobal(listSessionDir.get(0).getNomStage());
+			System.out.println(getListCandidatDirecteurGlobal(listSessionDir.get(0).getNomStage()).getCandidat());
+			
+			//cloturerCandidature(ListeAGerer.get(0),10,3,2015);
+			
+			listeCand.getAccepte().add(listSessionDir.get(0).getCandidats().get(0));
+			listeCand.getAccepte().add(listSessionDir.get(0).getCandidats().get(2));
+			listeCand.getAttente().add(listSessionDir.get(0).getCandidats().get(1));
+			listeCand.getRefuse().add(listSessionDir.get(0).getCandidats().get(3));
+			listeCand.getCandidat().clear();
+			
+			enregBoutonDirecteur(listSessionDir.get(0).getNomStage(),listeCand);
+			
+			System.out.println(deconnexion(moi.getIdSession()));
+			
+		
 		}
 }
 

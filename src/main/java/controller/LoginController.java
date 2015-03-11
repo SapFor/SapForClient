@@ -35,11 +35,13 @@ public class LoginController {
 		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
     	currentStage.close();
     	
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
         try {
+
+        	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
 			//stage = (Stage) root.getScene().getWindow();
+			scene.getStylesheets().add("/application/application.css");
 
 			Stage stage = new Stage();
 			stage.setScene(scene);

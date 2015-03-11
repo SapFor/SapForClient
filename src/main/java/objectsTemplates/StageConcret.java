@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
+
 /*
  * Created with Eclipse.
  * Author : Caroline Chabert
@@ -17,8 +18,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class StageConcret {
 
-	private int directeur;
 	private String uv;
+	private int directeur;
+	private String nomStage;
 	private Calendar date;
 	private Calendar finCandidature;
 	private String lieu;
@@ -29,6 +31,7 @@ public class StageConcret {
 	private List<String> refuse;
 	
 	
+
 	/*
 	 * ID director of the session
 	 */
@@ -38,8 +41,8 @@ public class StageConcret {
 	/*
 	 * UV of the session
 	 */
-	public void setNomStage(String uv) { this.uv = uv; }
-	public String getNomStage() { return uv; }
+	public void setNomStage(String nomStage) { this.nomStage = nomStage; }
+	public String getNomStage() { return nomStage; }
 	
 	/*
 	 * Date of the session
@@ -90,9 +93,19 @@ public class StageConcret {
 	public List<String> getRefuse() { return refuse; }
 
 
-	@Override
-	public String toString() {
-		return uv + date + lieu;
+	
+	public void setUV(String UV) {
+		// TODO Auto-generated method stub
+		this.uv=UV;
 	}
 
+	
+	public String getUV() {
+		// TODO Auto-generated method stub
+		return uv;
+	}
+	
+	
 }
+	
+	

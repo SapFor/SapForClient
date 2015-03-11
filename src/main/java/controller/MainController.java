@@ -19,7 +19,7 @@ public class MainController implements Initializable{
 	@FXML
     private Tab formations;
 	@FXML
-    private Tab Director;
+    private Tab director;
 	@FXML
     private Label mainLabelArea;
     	 		
@@ -27,6 +27,9 @@ public class MainController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		mainLabelArea.setText("Jean Dupont n°12345"); //test à remplacer par la ligne suivante lors de l'accès au serveur
 		//mainLabelArea.setText(ClientApp.getNomPomp());
+		//if(ClientApp.isDirector()){
+			director.setDisable(false);
+		//}
 					
 	}
 
