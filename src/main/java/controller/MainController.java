@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import objectsTemplates.PompierConcret;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +34,8 @@ public class MainController implements Initializable{
 	
 	@FXML
 	private Hyperlink deco;
+	
+	public static PompierConcret moi;
     	 		
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -45,7 +48,8 @@ public class MainController implements Initializable{
 				
     public void onClicDeconnection(Event event) 
 	{
-    	 Stage currentStage = (Stage) deco.getScene().getWindow();
+    	ClientApp.deconnexion(ClientApp.getIdSession());
+    	Stage currentStage = (Stage) deco.getScene().getWindow();
      	currentStage.close();
      	
      	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/login.fxml")); 
