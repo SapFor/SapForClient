@@ -17,7 +17,7 @@ import javafx.scene.control.Tab;
 public class MainController implements Initializable{
 	
 	@FXML
-    private Tab formations;
+    private Tab formation;
 	@FXML
     private Tab director;
 	@FXML

@@ -6,38 +6,95 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="635.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormationController">
+<AnchorPane prefHeight="735.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormationController">
    <children>
-      <TitledPane animated="false" collapsible="false" prefHeight="714.0" prefWidth="335.0" text="UV" textAlignment="CENTER">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+      <VBox prefHeight="806.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="50.0">
                <children>
-                  <Pane layoutX="12.0" layoutY="-3.0" prefHeight="157.0" prefWidth="238.0" />
+                  <HBox layoutX="40.0" layoutY="15.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <RadioButton fx:id="boutonApprenant" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#boutonApprenantClicked" prefWidth="100.0" selected="true" text="Apprenant">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="toggleGroup" />
+                           </toggleGroup></RadioButton>
+                        <RadioButton fx:id="boutonFormateur" layoutX="183.0" layoutY="15.0" mnemonicParsing="false" onAction="#boutonFormateurClicked" prefWidth="100.0" text="Formateur" toggleGroup="$ToggleGroup" />
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
-        </content>
-      </TitledPane>
-      <SplitPane dividerPositions="0.5850556438791733" layoutX="335.0" layoutY="-1.0" prefHeight="716.0" prefWidth="665.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane>
                <children>
-                  <SplitPane dividerPositions="0.5449438202247191" layoutX="121.0" layoutY="134.0" orientation="VERTICAL" prefHeight="714.0" prefWidth="365.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.29759519038076154, 0.6503006012024048" layoutX="87.0" layoutY="59.0" prefHeight="694.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                      <AnchorPane prefWidth="200.0">
                            <children>
-                              <TitledPane animated="false" collapsible="false" layoutX="58.0" layoutY="58.0" prefHeight="385.0" prefWidth="363.0" text="Session" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TitledPane animated="false" collapsible="false" layoutX="66.0" layoutY="148.0" prefHeight="688.0" prefWidth="294.0" text="Liste des UV" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ListView fx:id="UVList" layoutX="39.0" layoutY="104.0" onMouseClicked="#clicUV" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
                                 </content>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
                               </TitledPane>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                        <AnchorPane>
                            <children>
-                              <TitledPane animated="false" collapsible="false" layoutX="58.0" layoutY="51.0" prefHeight="321.0" prefWidth="363.0" text="Infos detaillées" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <SplitPane dividerPositions="0.5" layoutX="-13.0" layoutY="77.0" orientation="VERTICAL" prefHeight="688.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <items>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <TitledPane animated="false" collapsible="false" layoutX="26.0" layoutY="41.0" prefHeight="340.0" prefWidth="344.0" text="Sessions" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <ListView fx:id="SessionList" layoutX="100.0" layoutY="57.0" onMouseClicked="#clicSession" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <children>
+                                          <TitledPane animated="false" collapsible="false" layoutX="48.0" layoutY="34.0" prefHeight="340.0" prefWidth="344.0" text="Informations détaillées" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <TextArea fx:id="InfoSession" layoutX="22.0" layoutY="8.0" prefHeight="312.0" prefWidth="340.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </TitledPane>
+                                          <Button fx:id="retirerBt" layoutX="132.0" layoutY="298.0" mnemonicParsing="false" onAction="#clicRetirer" prefWidth="110.0" text="Retirer" visible="false" AnchorPane.bottomAnchor="15.0" />
+                                          <Button fx:id="candidaterBt" layoutX="132.0" layoutY="296.0" mnemonicParsing="false" onAction="#clicCandidater" prefWidth="110.0" text="Candidater" visible="false" AnchorPane.bottomAnchor="15.0" />
+                                       </children>
+                                       
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane>
+                           <children>
+                              <TitledPane animated="false" collapsible="false" layoutX="72.0" layoutY="93.0" prefHeight="688.0" prefWidth="346.0" text="Description" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TextArea fx:id="UVDesc" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children></AnchorPane>
                                 </content>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
                               </TitledPane>
                            </children>
                         </AnchorPane>
@@ -45,16 +102,7 @@
                   </SplitPane>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="714.0" prefWidth="298.0">
-               <children>
-                  <TitledPane animated="false" collapsible="false" prefHeight="714.0" prefWidth="258.0" text="Description" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    </content>
-                  </TitledPane>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
