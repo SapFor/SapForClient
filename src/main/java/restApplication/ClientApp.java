@@ -377,62 +377,70 @@ public class ClientApp {
 		}
 		
 		
-		
-		
-		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
-		public static void candidateBoutonFormation(String currentStage){
-			
-			// Get the three words of the item "NomLieu le Date" and redo a unique completed string
-			// exemple : FDF1broceliande le 15/06/2015 -> FDF1broceliande15juin15
-			String nomStageItem = "";
+
+		// auxiliary method : Get the three words of the item "NomLieu le Date" and redo a unique completed string
+		// exemple : FDF1broceliande le 15/06/2015 -> FDF1broceliande15juin15
+		public static String getConcatNameStage(String nomStage){
+			String newNomStage = "";
 			String mot = null;
-			StringTokenizer tok = new StringTokenizer(currentStage);
+			StringTokenizer tok = new StringTokenizer(nomStage);
 
 			mot = tok.nextToken();
-			nomStageItem = nomStageItem + mot;
+			newNomStage = newNomStage + mot;
 			mot = tok.nextToken();
 			mot = tok.nextToken();
-			nomStageItem = nomStageItem + mot;
-			
-			String[] elements =  nomStageItem.split("/");
+			newNomStage = newNomStage + mot;
+						
+			String[] elements =  newNomStage.split("/");
 			String jour = elements[0];
 			String moisInt = elements[1];
 			String annee = elements[2];
 			String anneeCut = annee.substring(2);
-			
+						
 			int partMois = Integer.parseInt(moisInt)-1; 
 			String mois;
 			switch(partMois){
-			case 0: mois="janv";break;
-			case 1: mois="fev";break;
-			case 2: mois="mars";break;
-			case 3: mois="avr";break;
-			case 4: mois="mai";break;
-			case 5: mois="juin";break;
-			case 6: mois="juil";break;
-			case 7: mois="aout";break;
-			case 8: mois="sept";break;
-			case 9: mois="oct";break;
-			case 10: mois="nov";break;
-			case 11: mois="dec";break;
-			default: mois="erreur";break;
+				case 0: mois="janv";break;
+				case 1: mois="fev";break;
+				case 2: mois="mars";break;
+				case 3: mois="avr";break;
+				case 4: mois="mai";break;
+				case 5: mois="juin";break;
+				case 6: mois="juil";break;
+				case 7: mois="aout";break;
+				case 8: mois="sept";break;
+				case 9: mois="oct";break;
+				case 10: mois="nov";break;
+				case 11: mois="dec";break;
+				default: mois="erreur";break;
 			}
-			nomStageItem = jour + mois + anneeCut;
+			newNomStage = jour + mois + anneeCut;
+			return newNomStage;
+						
+		}
+		
+		
+		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
+		public static void candidateBoutonFormation(String currentItemStage){
+			
+			String currentStage = getConcatNameStage(currentItemStage);
 			
 			// modification on the client side
 			if (moi.getEnCours()==null){moi.setEnCours(new ArrayList<String>());}
 			List<String> current = moi.getEnCours();
-			current.add(nomStageItem);   
+			current.add(currentStage);   
 			moi.setEnCours(current);   // adding the new candidated stage on the list of stages of our fireman (adding side client)
 			
 			// Add a new stage using the GET HTTP method. managed by the Jersey framework
-			service.path("candidater/" + moi.getIdSession() + "/" + nomStageItem).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
+			service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 		}
 		
 		
 		
 		// Push a fireman who delete his candidacy, for a specific stage to the server : "Retirer" button in the formation tab
-		public static void retirerBoutonFormation(String currentStage){
+		public static void retirerBoutonFormation(String currentItemStage){
+			
+			String currentStage = getConcatNameStage(currentItemStage);
 					
 			// modification on the client side
 			if (moi.getEnCours()!=null){
@@ -460,17 +468,22 @@ public class ClientApp {
 				case CANDIDAT : listId = moi.getEnCours(); break;
 				case ATTENTE : listId = moi.getAttente(); break;
 				case ACCEPTE : listId = moi.getAccepte(); break;
-				case REFUSE : listId = moi.getGestion(); break;
+				case REFUSE : listId = moi.getRefuse(); break;
 				default: System.out.println("Aucune liste trouvee");
 			}
 				
-			Iterator<String> ite = listId.iterator();
-			   while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
-			   
+			if (listId!=null){
+				Iterator<String> ite = listId.iterator();
+				while(ite.hasNext()){  // loop to get name/date/place of each stage and put into the created list
 				   String newLigne = ite.next();
 				   listParStatut.add(newLigne);
-			   }
-			   return listParStatut;
+				}
+			}
+			else{
+				listParStatut.add("Il n'y a pas encore d'historique de sessions.");
+				listParStatut.add("Veuillez candidater à une session pour afficher l'historique.");
+			}
+			return listParStatut;
 		}
 		
 		

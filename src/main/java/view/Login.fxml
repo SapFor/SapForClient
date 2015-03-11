@@ -53,7 +53,7 @@
                         <Font name="Calibri Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="errorArea" layoutX="123.0" layoutY="211.0" prefHeight="21.0" prefWidth="195.0" text="Label" visible="false" />
+                  <Label fx:id="errorArea" layoutX="157.0" layoutY="185.0" prefHeight="21.0" prefWidth="500.0" text="Label" visible="false" />
                </children>
             </Group>
          </children>
