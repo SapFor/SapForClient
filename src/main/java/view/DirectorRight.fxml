@@ -32,7 +32,8 @@
                      </center>
                   </BorderPane>
                   <Button fx:id="btnCloturer" layoutX="98.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnCloturerAction" text="Button" visible="false" />
-                  <Button fx:id="btnEnvoyer" layoutX="189.0" layoutY="303.0" mnemonicParsing="false" text="Button" visible="false" />
+                  <Button fx:id="btnEnvoyer" layoutX="189.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnEnvoyerAction" text="Button" visible="false" />
+                  <Button fx:id="btnSauvTemp" layoutX="325.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnSauverAction" visible="false" />
                </children>
             </AnchorPane>
         </content>
