@@ -175,6 +175,7 @@ public class DirectorRightController {
 			gridCandidats.add(txtName, 0, i);
 			gridCandidats.add(hb,1,i);
 			i++;
+		
 
 			radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			      public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
