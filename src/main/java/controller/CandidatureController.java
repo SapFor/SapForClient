@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
 
 
@@ -39,6 +40,9 @@ public class CandidatureController {
 	
 	@FXML
     private ListView<String> refusCandArea;
+	
+	@FXML
+    private TextArea UVInfosCand;
 
     @FXML
     void onClicCandAccept(Event event) {
@@ -46,6 +50,7 @@ public class CandidatureController {
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
     	acceptCandArea.setItems(itemssession);
+    	putInfosUV();
     }
     
     @FXML
@@ -54,6 +59,7 @@ public class CandidatureController {
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
     	attentCandArea.setItems(itemssession);
+    	putInfosUV();
     }
     
     @FXML
@@ -61,7 +67,8 @@ public class CandidatureController {
     	List<String> listSession = ClientApp.getListSessionCandidate(0);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
-    	nonClotCandArea.setItems(itemssession);
+    	nonClotCandArea.setItems(itemssession);  
+    	putInfosUV();
     }
     
     @FXML
@@ -69,10 +76,18 @@ public class CandidatureController {
     	List<String> listSession = ClientApp.getListSessionCandidate(3);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
-    	refusCandArea.setItems(itemssession);
+    	refusCandArea.setItems(itemssession);  
+    	putInfosUV();
+    }
+    
+    public void putInfosUV(){
+    	String infos = "Pas d'informations complémentaires disponibles pour cette UV.";
+    	UVInfosCand.setText(infos);
+    	UVInfosCand.setEditable(false); //pour ne pas modifier le text area dans le programme
     }
 	
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-		}
+		
+	}
 
 }
