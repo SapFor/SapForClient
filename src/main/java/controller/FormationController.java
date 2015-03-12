@@ -112,15 +112,14 @@ public class FormationController implements Initializable{
     void clicSession(Event event) {
     	
 		//L'affichage des infos détaillées de la session 
-		String infos= new String("les infos détaillées de la session"+
-				"\n"+"La session se déroule à:...");
-		InfoSession.setText(infos);
+		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
+		InfoSession.setText(ClientApp.getInfoDetailsFormation(SessionSelect));
+	
 
 		//pour ne pas modifier le text area dans le programme
 		InfoSession.setEditable(false);
 
-		//afficher le bouton adequat une fois une session selectionnée
-		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
+		
 		
 		if(!ClientApp.isCandidate(SessionSelect)){
 			candidaterBt.setVisible(true);
