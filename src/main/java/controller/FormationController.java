@@ -104,10 +104,10 @@ public class FormationController implements Initializable{
 		//afficher le bouton adequat une fois une session selectionnée
 		boolean bool=ClientApp.isCandidate(SessionSelectionnee);
 		if (bool){
-			candidaterBt.setVisible(true);
+			retirerBt.setVisible(true);
 		}
 		else {
-			retirerBt.setVisible(true);
+			candidaterBt.setVisible(true);
 		}
 	}
 
@@ -123,7 +123,7 @@ public class FormationController implements Initializable{
 		
 		//clear des autres zones
 		UVDesc.clear();
-		SessionList.getSelectionModel().clearSelection();
+		SessionList.getItems().clear();
 		InfoSession.clear();
 		// Clear la selection d'UV quand on change de mode apprenant ou formateur.
 		UVList.getSelectionModel().clearSelection();
@@ -141,7 +141,7 @@ public class FormationController implements Initializable{
 		
 		//Clear des autres zones
 		UVDesc.clear();
-		SessionList.getSelectionModel().clearSelection();
+		SessionList.getItems().clear();
 		InfoSession.clear();
 		UVList.getSelectionModel().clearSelection();
 	}
@@ -154,7 +154,7 @@ public class FormationController implements Initializable{
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
-		ClientApp.candidateBoutonFormation(IdSession);
+		ClientApp.candidateBoutonFormation(SessionSelect);
 	}
 	
 	@FXML
@@ -166,6 +166,6 @@ public class FormationController implements Initializable{
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
-		ClientApp.retirerBoutonFormation(IdSession);
+		ClientApp.retirerBoutonFormation(SessionSelect);
 	}
 }
