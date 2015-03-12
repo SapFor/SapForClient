@@ -145,7 +145,7 @@ public class FormationController implements Initializable{
 		
 		//Vidage des champs et désélection de l'UV dans la liste
 		UVDesc.clear();
-		SessionList.getSelectionModel().clearSelection();
+		SessionList.getItems().clear();
 		InfoSession.clear();
 		UVList.getSelectionModel().clearSelection();
 	}
@@ -163,7 +163,7 @@ public class FormationController implements Initializable{
 		
 		//Vidage des champs et désélection de l'UV dans la liste
 		UVDesc.clear();
-		SessionList.getSelectionModel().clearSelection();
+		SessionList.getItems().clear();
 		InfoSession.clear();
 		UVList.getSelectionModel().clearSelection();
 	}
