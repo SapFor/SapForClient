@@ -51,9 +51,11 @@ public class FormationController implements Initializable{
 	 * procédure d'initialisation
 	 */
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-
+		//Affichage des UV pour un apprenant
 		ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVApprenant());
 		UVList.setItems(ListeUV);
+		//Gestion du bouton radio "formateur" si le pompier n'y a pas accès
+		boutonFormateur.setDisable(ClientApp.getListUVFormateur().isEmpty());
 	}
 
 	@FXML
