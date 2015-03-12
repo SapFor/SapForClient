@@ -107,7 +107,21 @@ public class LoginController {
 	                }
 	            }
 	        });
-					
+		mdpArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.TAB) {
+                	validerLoginButton.requestFocus();
+                }
+            }
+        });
+			
+		validerLoginButton.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.TAB) {
+                	loginArea.requestFocus();
+                }
+            }
+        });
 	}
     
 	
