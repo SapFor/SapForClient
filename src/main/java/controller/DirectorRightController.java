@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
+import objectsTemplates.*;
 import restApplication.ClientApp;
 import model.LectureUVFichier;
 import javafx.beans.value.ChangeListener;
@@ -17,16 +18,20 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.geometry.Orientation;
 
 /**
  * 
@@ -35,8 +40,7 @@ import javafx.scene.text.Text;
  */
 
 public class DirectorRightController {
-//	String URLRessource=System.getProperty("user.dir")+"/src/main/resources/";
-	private String sessionToken;
+	private String session;
 	private DirectorController director;
 	private ObservableList<String> noDecisionList;
 	private ObservableList<String> acceptedList;
@@ -51,6 +55,7 @@ public class DirectorRightController {
 	private Text txtcountAttente;
 	private Line line1;
 	private HBox boxCounter;
+	private ScrollPane scroll;
 	
 	@FXML
     private GridPane gridCandidats;
@@ -68,6 +73,8 @@ public class DirectorRightController {
     private Button btnSauvTemp;
 	
 	public void loadCandidats(String sessionID) {
+		this.session = sessionID;
+		System.out.println(" session =" + session);
 		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); 
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));
 		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); 
@@ -75,7 +82,7 @@ public class DirectorRightController {
 
 		loadGrid();
 		loadCounter();
-		loadButtons(sessionID);
+		loadButtons();
 	}
 
 	public void init(DirectorController directorController) {
@@ -84,11 +91,12 @@ public class DirectorRightController {
 	
 
 	private void loadGrid() {
-
+		
+		// setup scrollPane
+	
 		gridCandidats.getChildren().clear(); // clear gridPane
 		gridCandidats.setPadding(new Insets(20, 20, 20, 20));
-	//	bdrPaneCandidats.setTop(gridCandidats);
-		//gridCandidats.setAlignment(Pos.TOP_CENTER);
+
 		
 		// setup column titles
 		Text txtNameTitle = new Text("Noms des Candidats");
@@ -102,7 +110,7 @@ public class DirectorRightController {
 		
 		HBox hbTitle = new HBox(txtAccepteTitle, txtRefuseTitle, txtAttenteTitle);
 		hbTitle.setAlignment(Pos.CENTER);
-		hbTitle.setSpacing(65);
+		hbTitle.setSpacing(55);
 		hbTitle.setPadding(new Insets(50, 10, 50, 10));
 		hbTitle.setMinHeight(100);
 		
@@ -293,7 +301,7 @@ public class DirectorRightController {
 	
 	
 	
-	private void loadButtons(String sessionID){
+	private void loadButtons(){
 		btnCloturer.setText("Clôturer la session");
 		btnEnvoyer.setText("Valider les candidatures");
 		btnSauvTemp.setText("Sauvegarde Temporaire");
@@ -301,21 +309,19 @@ public class DirectorRightController {
 		btnEnvoyer.setVisible(true);
 		btnSauvTemp.setVisible(true);
 		
-		btnCloturer.setDisable(false); // delete line once connected to database
-		btnEnvoyer.setDisable(false); // delete line once connected to database
 		// if stage is closed testDate returns true
-	/*	if(ClientApp.testDate(sessionID)){		// uncomment once connected to database
+		if(ClientApp.testDate(session)){
 			btnCloturer.setDisable(true);
 			btnEnvoyer.setDisable(false);
 		}
 		else {
 			btnCloturer.setDisable(false);
 			btnEnvoyer.setDisable(true);
-		}*/
+		}
 		
 		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer, btnSauvTemp);
 		hbButtons.setAlignment(Pos.CENTER);
-		hbButtons.setSpacing(85);
+		hbButtons.setSpacing(90);
 		hbButtons.setPadding(new Insets(10, 10, 10, 10));
 		bdrPaneCandidats.setBottom(hbButtons);
 	}	
@@ -328,22 +334,30 @@ public class DirectorRightController {
 	    int year = cal.get(Calendar.YEAR);
 	    int month = cal.get(Calendar.MONTH) + 1; // January is 0
 	    int day = cal.get(Calendar.DAY_OF_MONTH);
-		//cloturerCandidature(getIdSession(), day, month, year);
+	    ClientApp.cloturerCandidature(session, day, month, year);
 	    btnCloturer.setDisable(true);
+	    btnEnvoyer.setDisable(false);
 	 }
 	
 	@FXML
 	private void btnEnvoyerAction(ActionEvent event) {
-		// do I need a list noDecision??
-		//enregBoutonDirecteur(getIdSession(), List<String> accepte, List<String> attente, List<String> refuse);
+		ListCandidats list = new ListCandidats();
+		list.setAccepte(noDecisionList);
+		list.setAccepte(acceptedList);
+		list.setAccepte(refusedList);
+		list.setAccepte(attenteList);
+		ClientApp.validBoutonDirecteur(session, list);
 		btnEnvoyer.setDisable(true);
 	 }
 	
 	
 	@FXML
 	private void btnSauverAction(ActionEvent event) {
-		//enregBoutonDirecteur(getIdSession(), List<String> accepte, List<String> attente, List<String> refuse);
-		
-	
-}
+		ListCandidats list = new ListCandidats();
+		list.setAccepte(noDecisionList);
+		list.setAccepte(acceptedList);
+		list.setAccepte(refusedList);
+		list.setAccepte(attenteList);
+		//ClientApp.validBoutonDirecteur(session, list);
+	}
 }
