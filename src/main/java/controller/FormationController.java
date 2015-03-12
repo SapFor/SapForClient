@@ -86,15 +86,17 @@ public class FormationController implements Initializable{
 		candidaterBt.setVisible(false);
 		retirerBt.setVisible(false);
 	}
-
-
+	
 	@FXML
-    void clicSession(Event event) {
-    	
-		//L'affichage des infos détaillées de la session 
-		String infos= new String("les infos détaillées de la session"+
-				"\n"+"La session se déroule à:...");
-		InfoSession.setText(infos);
+	/**
+	 * évenement lors du clic sur le nom d'une session
+	 * @param event
+	 */
+	void clicSession(Event event) {
+		//Pour récupérer le nom de la sessions cliquée dans un String
+		String SessionSelectionne = UVList.getSelectionModel().getSelectedItem();
+		//L'affichage des infos détaillées de la session
+		InfoSession.setText(ClientApp.getInfoDetailsFormation(SessionSelectionne));
 
 		//pour ne pas modifier le text area dans le programme
 		InfoSession.setEditable(false);
@@ -115,16 +117,11 @@ public class FormationController implements Initializable{
 	 */
 	@FXML
 	private void boutonApprenantClicked(ActionEvent event){
-//		ArrayList<String> ListeUVList = new  ArrayList<String>();
-//		ListeUVList.add("INC1");
-//		ListeUVList.add("INC2");
-//		ListeUVList.add("DEV1");
-//		ListeUVList.add("OC1");
-		
+		//Affichage de la liste des UV lorsque le bouton radio "apprenant" est sélectionné
 		ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVApprenant());
-		
 		UVList.setItems(ListeUV);
 		
+		//clear des autres zones
 		UVDesc.clear();
 		SessionList.getSelectionModel().clearSelection();
 		InfoSession.clear();
@@ -138,13 +135,11 @@ public class FormationController implements Initializable{
 	 */
 	@FXML
 	private void boutonFormateurClicked(ActionEvent event){
-		ArrayList<String> ListeUVList = new  ArrayList<String>();
-		ListeUVList.add("FORM1");
-		ListeUVList.add("FORM2");
-
-		ObservableList<String> ListeUV = FXCollections.observableArrayList(ListeUVList);
+		//Affichage de la list des UV lorsque le bouton "formateur" est sélectionné
+		ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVFormateur());
 		UVList.setItems(ListeUV);
 		
+		//Clear des autres zones
 		UVDesc.clear();
 		SessionList.getSelectionModel().clearSelection();
 		InfoSession.clear();
