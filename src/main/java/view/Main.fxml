@@ -18,7 +18,7 @@
       </SubScene>
       <Label fx:id="mainLabelArea" layoutX="96.0" layoutY="43.0" prefHeight="17.0" prefWidth="338.0" text="John Doe n°008" AnchorPane.leftAnchor="96.0" AnchorPane.topAnchor="43.0" />
       <Hyperlink layoutX="437.0" layoutY="39.0" mnemonicParsing="false" text="Profil" AnchorPane.rightAnchor="115.0" />
-      <Hyperlink fx:id="deco" layoutX="500.0" layoutY="39.0" mnemonicParsing="false" text="Déconnexion" AnchorPane.rightAnchor="14.0" />
+      <Hyperlink fx:id="deco" layoutX="500.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#onClicDeconnexion" text="Déconnexion" AnchorPane.rightAnchor="14.0" />
       <Separator layoutX="95.0" layoutY="76.0" prefHeight="0.0" prefWidth="491.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="76.0" />
       <TabPane layoutX="-1.0" layoutY="102.0" prefHeight="303.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="97.0">
         <tabs>
