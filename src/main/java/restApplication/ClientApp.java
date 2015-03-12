@@ -87,7 +87,7 @@ public class ClientApp {
 		public static int getIdSession(){ return idSession; }
 		
 		// Get name fireman
-		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent n°" + moi.getId(); }
+		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent nï¿½" + moi.getId(); }
 		
 
 		// Get boolean if the fireman is director
@@ -266,9 +266,9 @@ public class ClientApp {
 			String date = jour + "/" + mois + "/" + annee;
 			reponse = service.path("directeur/" + nomStage + "/" + date).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 			if(reponse == "OK"){
-				return "date changée";
+				return "date changé–‘";
 			}
-			else { return "Problème lors du changement de date";}
+			else { return "Problé‘e lors du changement de date";}
 		}
 				
 				
@@ -280,6 +280,7 @@ public class ClientApp {
 			String correspondance = tableDeCorrespondanceForm.get(ClickedItemSession).getNomStage();
 			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
 	        int i = 0;
+	        if(moi.getEnCours()==null)return false;
 	        while( i<moi.getEnCours().size() && !correspondance.equals(moi.getEnCours().get(i)) ){ i++; }
 	        
 	        // the correct stage is found in the list -> get detailled infos
@@ -503,7 +504,7 @@ public class ClientApp {
 			}
 			else{
 				listParStatut.add("Il n'y a pas encore d'historique de sessions.");
-				listParStatut.add("Veuillez candidater à une session pour afficher l'historique.");
+				listParStatut.add("Veuillez candidater ï¿½ une session pour afficher l'historique.");
 			}
 			return listParStatut;
 		}
@@ -525,8 +526,8 @@ public class ClientApp {
 			System.out.println();
 			
 			List <String> ListeStage=getListSessionFormation(ListeUV.get(0));
-			System.out.println("Liste des stages associés à "+ListeUV.get(0));
-			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println("Liste des stages associé–Ÿ ï¿½ "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associï¿½ ï¿½ la premiere UV
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
@@ -551,8 +552,8 @@ public class ClientApp {
 			System.out.println();
 			
 			ListeStage=getListSessionFormation(ListeUV.get(0));
-			System.out.println("Liste des stages associés à "+ListeUV.get(0));
-			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println("Liste des stages associé–Ÿ ï¿½ "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associï¿½ ï¿½ la premiere UV
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
@@ -576,8 +577,8 @@ public class ClientApp {
 			System.out.println();
 			
 			ListeStage=getListSessionFormation(ListeUV.get(0));
-			System.out.println("Liste des stages associés à "+ListeUV.get(0));
-			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println("Liste des stages associé–Ÿ ï¿½ "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associï¿½ ï¿½ la premiere UV
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));
@@ -600,8 +601,8 @@ public class ClientApp {
 			System.out.println();
 			
 			ListeStage=getListSessionFormation(ListeUV.get(0));
-			System.out.println("Liste des stages associés à "+ListeUV.get(0));
-			System.out.println(ListeStage); // affiche la liste des stage associé à la premiere UV
+			System.out.println("Liste des stages associé–Ÿ ï¿½ "+ListeUV.get(0));
+			System.out.println(ListeStage); // affiche la liste des stage associï¿½ ï¿½ la premiere UV
 			System.out.println();
 			
 			System.out.println("Info du premier stage "+ListeUV.get(0));

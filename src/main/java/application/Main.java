@@ -1,5 +1,8 @@
 package application;
 	
+import java.util.List;
+
+import restApplication.ClientApp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -26,5 +29,25 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+		/*
+		ClientApp.login(5,"12345");
+		List <String> ListeUV=ClientApp.getListUVApprenant();
+		System.out.println("Liste des UVs accessible au candidat :");
+		System.out.println(ListeUV);
+		System.out.println();
+		
+		ListeUV=ClientApp.getListUVFormateur();
+		System.out.println("Liste des UVs accessible au formateur :");
+		System.out.println(ListeUV);
+		System.out.println();
+		
+		List <String> ListeStage=ClientApp.getListSessionFormation(ListeUV.get(0));
+		System.out.println("Liste des stages associ閟 � "+ListeUV.get(0));
+		System.out.println(ListeStage); // affiche la liste des stage associ� � la premiere UV
+		System.out.println();
+		
+		*/
+		int i = ClientApp.getIdSession();
+		ClientApp.deconnexion(i);
 	}
 }

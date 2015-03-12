@@ -100,12 +100,15 @@ public class FormationController implements Initializable{
 		InfoSession.setEditable(false);
 
 		//afficher le bouton adequat une fois une session selectionnée
-		boolean bool=true;
-		if (bool){
+		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
+		
+		if(!ClientApp.isCandidate(SessionSelect)){
 			candidaterBt.setVisible(true);
+			retirerBt.setVisible(false);
 		}
-		else {
+		else{
 			retirerBt.setVisible(true);
+			candidaterBt.setVisible(false);
 		}
 	}
 
@@ -138,11 +141,11 @@ public class FormationController implements Initializable{
 	 */
 	@FXML
 	private void boutonFormateurClicked(ActionEvent event){
-		ArrayList<String> ListeUVList = new  ArrayList<String>();
-		ListeUVList.add("FORM1");
-		ListeUVList.add("FORM2");
+		//ArrayList<String> ListeUVList = new  ArrayList<String>();
+		//ListeUVList.add("FORM1");
+		//ListeUVList.add("FORM2");
 
-		ObservableList<String> ListeUV = FXCollections.observableArrayList(ListeUVList);
+		ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVFormateur());
 		UVList.setItems(ListeUV);
 		
 		UVDesc.clear();
@@ -154,23 +157,34 @@ public class FormationController implements Initializable{
 
 	@FXML
 	void clicCandidater(Event event) {
-		candidaterBt.setVisible(false);
-		retirerBt.setVisible(true);
+		
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
-		System.out.println(IdSession);
+		
+		//if(ClientApp.isCandidate(SessionSelect)){
+			candidaterBt.setVisible(false);
+			retirerBt.setVisible(true);
+			ClientApp.candidateBoutonFormation(SessionSelect);
+
+		//}
+
+		//System.out.println(IdSession);
 	}
 	
 	@FXML
 	void clicRetirer(Event event) {
 		
-		candidaterBt.setVisible(true);
-		retirerBt.setVisible(false);
-		
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
-		System.out.println(IdSession);
+	
+		candidaterBt.setVisible(true);
+		retirerBt.setVisible(false);
+		ClientApp.retirerBoutonFormation(SessionSelect);
+
+		
+
+		//System.out.println(IdSession);
 	}
 }
