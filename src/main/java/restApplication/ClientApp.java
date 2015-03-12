@@ -38,6 +38,7 @@ public class ClientApp {
 		
 		private static HashMap<String,StageConcret> tableDeCorrespondanceDir;
 		private static HashMap<String,StageConcret> tableDeCorrespondanceForm;
+		private static HashMap<String,Integer> tableDeCorrespondancePomp;
 
 		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
 		// Working on the assumption that your int value is 
@@ -177,6 +178,7 @@ public class ClientApp {
 	        while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 
 	        List<String> listId = null;
+	        tableDeCorrespondancePomp = new HashMap<String,Integer>();
 	        
 	        GuideList whichList = GuideList.values()[listLoading];
 			switch (whichList){  // choice of the candidates list to load
@@ -199,6 +201,7 @@ public class ClientApp {
 	
 		    		String namePomp = pomp.getNom() + "\t" + pomp.getPrenom() ;
 		    		listPompiers.add(namePomp);
+		    		tableDeCorrespondancePomp.put(namePomp, pomp.getId());
 		    	}
 	    	}
 	    	return listPompiers;
@@ -243,11 +246,33 @@ public class ClientApp {
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 			        
 			StageConcret updatedSession = listSessionDir.get(i);
+			
 			// recovery of updated lists from the client
-			List<String> candidat = updatedLists.getCandidat();
-			List<String> accepte = updatedLists.getAttente();
-			List<String> attente = updatedLists.getAccepte();
-			List<String> refuse = updatedLists.getRefuse();
+			List<String> candidat=new ArrayList<String>();
+			List<String> accepte = new ArrayList<String>();
+			List<String> attente = new ArrayList<String>();
+			List<String> refuse = new ArrayList<String>();
+			
+			for(int j=0; j<updatedLists.getCandidat().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getCandidat().get(j));
+				candidat.add(""+correspId);	
+			}
+			
+			for(int j=0; j<updatedLists.getAccepte().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(j));
+				accepte.add(""+correspId);	
+			}
+			
+			for(int j=0; j<updatedLists.getAttente().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getAttente().get(j));
+				attente.add(""+correspId);	
+			}
+			
+			for(int j=0; j<updatedLists.getRefuse().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getRefuse().get(j));
+				refuse.add(""+correspId);	
+			}
+			
 			// put these updated lists in the StageConcret object, to push into the server
 			updatedSession.setCandidats(candidat);
 			updatedSession.setAccepte(accepte);
@@ -268,11 +293,33 @@ public class ClientApp {
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 					        
 			StageConcret updatedSession = listSessionDir.get(i);
+			
 			// recovery of updated lists from the client
-			List<String> candidat = updatedLists.getCandidat();
-			List<String> accepte = updatedLists.getAttente();
-			List<String> attente = updatedLists.getAccepte();
-			List<String> refuse = updatedLists.getRefuse();
+			List<String> candidat=new ArrayList<String>();
+			List<String> accepte = new ArrayList<String>();
+			List<String> attente = new ArrayList<String>();
+			List<String> refuse = new ArrayList<String>();
+			
+			for(int j=0; j<updatedLists.getCandidat().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getCandidat().get(j));
+				candidat.add(""+correspId);	
+			}
+			
+			for(int j=0; j<updatedLists.getAccepte().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(j));
+				accepte.add(""+correspId);	
+			}
+			
+			for(int j=0; j<updatedLists.getAttente().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getAttente().get(j));
+				attente.add(""+correspId);	
+			}
+			
+			for(int j=0; j<updatedLists.getRefuse().size();j++){
+				int correspId = tableDeCorrespondancePomp.get(updatedLists.getRefuse().get(j));
+				refuse.add(""+correspId);	
+			}
+			
 			// put these updated lists in the StageConcret object, to push into the server
 			updatedSession.setCandidats(candidat);
 			updatedSession.setAccepte(accepte);

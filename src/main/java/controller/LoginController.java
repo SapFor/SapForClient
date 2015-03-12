@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -94,7 +97,16 @@ public class LoginController {
         
     }
 	
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize() {
+		loginArea.requestFocus();
+		
+		loginArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+	            public void handle(KeyEvent event) {
+	                if (event.getCode() == KeyCode.TAB) {
+	                    mdpArea.requestFocus();
+	                }
+	            }
+	        });
 					
 	}
     
