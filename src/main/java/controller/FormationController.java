@@ -154,7 +154,7 @@ public class FormationController implements Initializable{
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
-		System.out.println(IdSession);
+		ClientApp.candidateBoutonFormation(IdSession);
 	}
 	
 	@FXML
@@ -166,6 +166,6 @@ public class FormationController implements Initializable{
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		String UVSelect = UVList.getSelectionModel().getSelectedItem();
 		String IdSession = UVSelect+SessionSelect;
-		System.out.println(IdSession);
+		ClientApp.retirerBoutonFormation(IdSession);
 	}
 }
