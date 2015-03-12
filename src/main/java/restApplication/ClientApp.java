@@ -33,7 +33,6 @@ public class ClientApp {
 		private static int idSession;
 		private static List<StageConcret> listSessionForm;
 		private static List<StageConcret> listSessionDir;
-		private static List<StageConcret> listSessionCand;
 		private static List<UVConcret> listUV;
 		private static int nbCandidats = 0;
 		
@@ -48,7 +47,6 @@ public class ClientApp {
 		private static ClientConfig config;
 		private static Client client;
 		private static WebResource service;
-		//private List<?> abstractList;
 		
 //////////////////////Methods//////////////////////
 		
@@ -92,12 +90,11 @@ public class ClientApp {
 
 		// Get boolean if the fireman is director
 		public static boolean isDirector(){
-			System.out.println(moi.getDirecteur());
-			return (moi.getDirecteur()=="oui");
+			return (moi.getDirecteur().compareTo("oui")==0);
 		}
 		
 		
-		// Deconnect the session
+		// Deconnect the session (idSession is the number of the session)
 		public static String deconnexion(int idSession){
 			String reponse;
 			String nSession = "" + idSession;
@@ -111,11 +108,14 @@ public class ClientApp {
 //////////////////////Director Methods//////////////////////	
 		
 
-		// Test if the stage is closed
+		// Test if the stage is closed 
+		// return true if the stage is closed
 		public static boolean testDate(String nomStage){
 			StageConcret test;
+			String correspondance = tableDeCorrespondanceForm.get(nomStage).getNomStage();
+			
 			int i = 0;
-			while( i<listSessionDir.size() && !nomStage.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
+			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
 			test = listSessionDir.get(i);
 			
 			if( test.getFinCandidature().after(Calendar.getInstance().getTime()) ){ return true; }
@@ -234,10 +234,10 @@ public class ClientApp {
 		
 		
 		// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
-		public static void validBoutonDirecteur(String session, ListCandidats updatedLists){
+		public static String validBoutonDirecteur(String clicItemSession, ListCandidats updatedLists){
 		//public static void validBoutonDirecteur(String session, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
 				
-			String correspondance = tableDeCorrespondanceDir.get(session).getNomStage(); // A VERIFIE AVEC CARO
+			String correspondance = tableDeCorrespondanceDir.get(clicItemSession).getNomStage(); // A VERIFIE AVEC CARO
 			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			int i = 0;
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
@@ -255,7 +255,33 @@ public class ClientApp {
 			updatedSession.setRefuse(refuse);
 					
 			// Add a new stage using the PUT HTTP method. managed by the Jersey framework
-			service.path("directeur/selection").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
+			String reponse = service.path("directeur/selection").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
+			return reponse;
+		}
+		
+		// Push a updated list of candidates for a specific stage to the server : "Sauvegarde temporaire" button in the director tab
+		public static String sauvTempBoutonDirecteur(String clicItemSession, ListCandidats updatedLists){
+					
+			String correspondance = tableDeCorrespondanceDir.get(clicItemSession).getNomStage(); // A VERIFIE AVEC CARO
+			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
+			int i = 0;
+			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
+					        
+			StageConcret updatedSession = listSessionDir.get(i);
+			// recovery of updated lists from the client
+			List<String> candidat = updatedLists.getCandidat();
+			List<String> accepte = updatedLists.getAttente();
+			List<String> attente = updatedLists.getAccepte();
+			List<String> refuse = updatedLists.getRefuse();
+			// put these updated lists in the StageConcret object, to push into the server
+			updatedSession.setCandidats(candidat);
+			updatedSession.setAccepte(accepte);
+			updatedSession.setAttente(attente);
+			updatedSession.setRefuse(refuse);
+							
+			// Add a new stage using the PUT HTTP method. managed by the Jersey framework
+			String reponse = service.path("directeur/sauvegarde").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
+			return reponse;
 		}
 		
 				
@@ -280,11 +306,14 @@ public class ClientApp {
 			String correspondance = tableDeCorrespondanceForm.get(ClickedItemSession).getNomStage();
 			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
 	        int i = 0;
+	        if (moi.getEnCours()!=null){
 	        while( i<moi.getEnCours().size() && !correspondance.equals(moi.getEnCours().get(i)) ){ i++; }
 	        
 	        // the correct stage is found in the list -> get detailled infos
 	        return (i<moi.getEnCours().size());
-			
+	        }
+	        
+	        else {return false;}
 		}
 		
 		
@@ -479,7 +508,7 @@ public class ClientApp {
 //////////////////////Candidate Methods//////////////////////
 		
 		// Get list of the candidate stages : to put into the candidate tab
-		// listLoading = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
+		// statut = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
 		public static List<String> getListSessionCandidate(int statut){
 				
 			List<String> listId = new ArrayList<String>(); // create list of stages for pushing on the tab
