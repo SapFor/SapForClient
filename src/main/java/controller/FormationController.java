@@ -94,15 +94,15 @@ public class FormationController implements Initializable{
 	 */
 	void clicSession(Event event) {
 		//Pour récupérer le nom de la sessions cliquée dans un String
-		String SessionSelectionne = UVList.getSelectionModel().getSelectedItem();
+		String SessionSelectionnee = SessionList.getSelectionModel().getSelectedItem();
 		//L'affichage des infos détaillées de la session
-		InfoSession.setText(ClientApp.getInfoDetailsFormation(SessionSelectionne));
+		InfoSession.setText(ClientApp.getInfoDetailsFormation(SessionSelectionnee));
 
 		//pour ne pas modifier le text area dans le programme
 		InfoSession.setEditable(false);
 
 		//afficher le bouton adequat une fois une session selectionnée
-		boolean bool=true;
+		boolean bool=ClientApp.isCandidate(SessionSelectionnee);
 		if (bool){
 			candidaterBt.setVisible(true);
 		}
