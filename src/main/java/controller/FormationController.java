@@ -51,11 +51,25 @@ public class FormationController implements Initializable{
 	 * procédure d'initialisation
 	 */
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-		//Affichage des UV pour un apprenant
-		ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVApprenant());
-		UVList.setItems(ListeUV);
-		//Gestion du bouton radio "formateur" si le pompier n'y a pas accès
-		boutonFormateur.setDisable(ClientApp.getListUVFormateur().isEmpty());
+		//Définition du bouton radio activé par défaut
+		if(ClientApp.getListUVApprenant().isEmpty()){
+			//Affichage des UV pour un apprenant
+			ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVFormateur());
+			UVList.setItems(ListeUV);
+			//Bouton "formateur" sélectionné
+			boutonFormateur.setSelected(true);
+			//Gestion du bouton radio "formateur" si le pompier n'y a pas accès
+			boutonApprenant.setDisable(true);
+		}
+		else{
+			//Affichage des UV pour un apprenant
+			ObservableList<String> ListeUV = FXCollections.observableArrayList(ClientApp.getListUVApprenant());
+			UVList.setItems(ListeUV);
+			//Bouton "apprenant" sélectionné
+			boutonApprenant.setSelected(true);
+			//Gestion du bouton radio "formateur" si le pompier n'y a pas accès
+			boutonFormateur.setDisable(ClientApp.getListUVFormateur().isEmpty());
+		}		
 	}
 
 	@FXML
@@ -119,7 +133,7 @@ public class FormationController implements Initializable{
 	}
 
 	/**
-	 * Action à la sélection du bouton radio "Apprenant" (par défaut)
+	 * Action à la sélection du bouton radio "Apprenant"
 	 * Affichage de la liste d'UV et vidage des autres champs
 	 * @param event
 	 */
