@@ -51,6 +51,11 @@ public class FormationController implements Initializable{
 	 * procédure d'initialisation
 	 */
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+		
+		//pour ne pas modifier le text area dans le programme
+		UVDesc.setEditable(false);
+		InfoSession.setEditable(false);
+		
 		//Définition du bouton radio activé par défaut
 		if(ClientApp.getListUVApprenant().isEmpty()){
 			//Affichage des UV pour un apprenant
@@ -84,9 +89,6 @@ public class FormationController implements Initializable{
 		
 		//Affichge de la description de l'UV
 		UVDesc.setText(ClientApp.getDescriptionUV(UVSelectionne));
-
-		//pour ne pas modifier le text area dans le programme
-		UVDesc.setEditable(false);
 
 		//Affichage des la liste des sessions
 		ObservableList<String> SessionUV = FXCollections.observableArrayList(ClientApp.getListSessionFormation(UVSelectionne));

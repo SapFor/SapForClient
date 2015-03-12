@@ -106,12 +106,9 @@ public class LoginController {
 	        }
 	    });
 		
-		//validerLoginButton.defaultButtonProperty().bind(validerLoginButton.focusedProperty());
-
-		
 		loginArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 	            public void handle(KeyEvent event) {
-	                if (event.getCode() == KeyCode.TAB) {
+	                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER ) {
 	                    mdpArea.requestFocus();
 	                    event.consume();
 	                }
@@ -119,17 +116,16 @@ public class LoginController {
 	        });
 		mdpArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.TAB) {
+                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER) {
                 	validerLoginButton.requestFocus();
                     event.consume();
-
                 }
             }
         });
 			
 		validerLoginButton.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.TAB) {
+                if (event.getCode() == KeyCode.TAB ) {
                 	loginArea.requestFocus();
                     event.consume();
 
@@ -137,8 +133,5 @@ public class LoginController {
             }
         });
 	}
-    
-	
-	
 
 }
