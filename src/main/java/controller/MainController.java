@@ -38,9 +38,9 @@ public class MainController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//mainLabelArea.setText("Jean Dupont n°12345"); //test à remplacer par la ligne suivante lors de l'accès au serveur
 		mainLabelArea.setText(ClientApp.getNomPomp());
-		//if(ClientApp.isDirector()){
+		if(ClientApp.isDirector()){
 			director.setDisable(false);
-		//}
+		}
 					
 	}
 	
@@ -53,7 +53,6 @@ public class MainController implements Initializable{
         try {
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
-			//stage = (Stage) root.getScene().getWindow();
 			scene.getStylesheets().add("/application/application.css");
 
 			Stage stage = new Stage();
