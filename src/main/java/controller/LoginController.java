@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -99,7 +100,11 @@ public class LoginController {
 	
 	
 	public void initialize() {
-		loginArea.requestFocus();
+		Platform.runLater(new Runnable() {
+	        public void run() {
+	        	loginArea.requestFocus();
+	        }
+	    });
 		
 		//validerLoginButton.defaultButtonProperty().bind(validerLoginButton.focusedProperty());
 
