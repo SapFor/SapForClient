@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import objectsTemplates.*;
 import restApplication.ClientApp;
-import model.LectureUVFichier;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,22 +15,19 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.geometry.Orientation;
 
 /**
  * 
@@ -55,13 +51,19 @@ public class DirectorRightController {
 	private Text txtcountAttente;
 	private Line line1;
 	private HBox boxCounter;
-	private ScrollPane scroll;
+
 	
 	@FXML
     private GridPane gridCandidats;
 	
 	@FXML
-    private BorderPane bdrPaneCandidats;
+	private BorderPane bdrPaneCandidats;
+	
+	@FXML
+    private ScrollPane scrollCandidats;
+	
+	@FXML
+    private TitledPane titleCandidats;
 	
 	@FXML
     private Button btnCloturer;
@@ -74,7 +76,6 @@ public class DirectorRightController {
 	
 	public void loadCandidats(String sessionID) {
 		this.session = sessionID;
-		System.out.println(" session =" + session);
 		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); 
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));
 		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); 
@@ -91,37 +92,39 @@ public class DirectorRightController {
 	
 
 	private void loadGrid() {
-		
-		// setup scrollPane
 	
-		gridCandidats.getChildren().clear(); // clear gridPane
+		scrollCandidats.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		scrollCandidats.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+				
+		// setup gridPane
+		gridCandidats.getChildren().clear(); 
 		gridCandidats.setPadding(new Insets(20, 20, 20, 20));
 
-		
 		// setup column titles
 		Text txtNameTitle = new Text("Noms des Candidats");
 		Text txtAccepteTitle = new Text("Accepté");
 		Text txtRefuseTitle = new Text("Refusé");
 		Text txtAttenteTitle = new Text("Liste d'Attente");
-		txtNameTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
-		txtAccepteTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
-		txtRefuseTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
-		txtAttenteTitle.setFont(Font.font(null, FontWeight.BOLD, 15));
+	//	txtNameTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
+	//	txtAccepteTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
+	//	txtRefuseTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
+	//	txtAttenteTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
 		
+		// setup HBox containing column titles
 		HBox hbTitle = new HBox(txtAccepteTitle, txtRefuseTitle, txtAttenteTitle);
 		hbTitle.setAlignment(Pos.CENTER);
 		hbTitle.setSpacing(55);
 		hbTitle.setPadding(new Insets(50, 10, 50, 10));
 		hbTitle.setMinHeight(100);
-		
 		gridCandidats.add(txtNameTitle,0,0); // (txtNameTitle, column, row)
 		gridCandidats.add(hbTitle,1,0);
 		
+		// setup necessary to begin accessing data in lists
 		Iterator<String> noDecisionIter = noDecisionList.iterator();
 		Iterator<String> acceptedIter = acceptedList.iterator();
 		Iterator<String> refusedIter = refusedList.iterator();
 		Iterator<String> attenteIter = attenteList.iterator();
-		int i=1;
+		int countLines=1;		// number of candidate rows, not including titles
 		String tempName;
 		countAttente = 0;
 		countRefuse = 0;
@@ -143,7 +146,7 @@ public class DirectorRightController {
 			rdoRefuse.setVisible(true);
 			rdoAccepte.setVisible(true);
 			
-			// putting RadioButtons into HBox for easy horizontal distribution
+			// put RadioButtons into HBox for easy horizontal distribution
 			HBox hb = new HBox(rdoAccepte, rdoRefuse, rdoAttente);
 			hb.setSpacing(100);
 			hb.setAlignment(Pos.CENTER);
@@ -168,16 +171,19 @@ public class DirectorRightController {
 				tempName = attenteIter.next();
 			}
 			
+			// setup of Text node 
 			Text txtName = new Text();
 			txtName.setText(tempName);
+			
+			// associate the candidates name (tempName) with each radioButton
 			rdoAccepte.setUserData(tempName);
 			rdoRefuse.setUserData(tempName);
 			rdoAttente.setUserData(tempName);
 			
 			// adding names and RadioButtons to gridPane
-			gridCandidats.add(txtName, 0, i);
-			gridCandidats.add(hb, 1, i);
-			i++;
+			gridCandidats.add(txtName, 0, countLines);
+			gridCandidats.add(hb, 1, countLines);
+			countLines++;
 
 			radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			      public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
@@ -190,6 +196,7 @@ public class DirectorRightController {
 	} // end loadGrid()
 	
 	private void updateList(Toggle oldToggle, Toggle newToggle, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
+		
 		String nameMoving = oldToggle.getUserData().toString();
 		
 		// Remove from old list
@@ -273,7 +280,7 @@ public class DirectorRightController {
 				  t.printStackTrace();
 			  }
 		}
-	}
+	} // end updateList()
 
 	private void loadCounter(){
 		line1 = new Line(0, 0, 600, 0);
@@ -288,10 +295,11 @@ public class DirectorRightController {
 		gridCandidats.add(line1, 0, 1000);
 		gridCandidats.add(txtCounter, 0, 1001);
 		gridCandidats.add(boxCounter, 1, 1001);
-		}
+	}
 
 		
 	private void cleanCounter(){
+		gridCandidats.getChildren().remove(line1);
 		gridCandidats.getChildren().remove(txtCounter);
 		gridCandidats.getChildren().remove(txtcountAccept);
 		gridCandidats.getChildren().remove(txtcountRefuse);

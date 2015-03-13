@@ -9,31 +9,39 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DirectorRightController">
    <children>
-      <SubScene height="400.0" width="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SubScene height="412.0" width="645.0">
         <root>
           <Region />
         </root>
       </SubScene>
-      <TitledPane alignment="CENTER" animated="false" collapsible="false" layoutX="87.0" layoutY="26.0" prefHeight="400.0" prefWidth="600.0" text="CANDIDATS DE LA SESSION" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TitledPane fx:id="titleCandidats" alignment="CENTER" animated="false" collapsible="false" text="CANDIDATS DE LA SESSION" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="374.0" prefWidth="143.0">
+          <AnchorPane>
                <children>
-                  <BorderPane fx:id="bdrPaneCandidats">
-                     <center>
-                        <GridPane fx:id="gridCandidats" prefHeight="200.0" prefWidth="589.0" BorderPane.alignment="CENTER">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                     </center>
-                  </BorderPane>
-                  <Button fx:id="btnCloturer" layoutX="98.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnCloturerAction" text="Button" visible="false" />
-                  <Button fx:id="btnEnvoyer" layoutX="189.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnEnvoyerAction" text="Button" visible="false" />
-                  <Button fx:id="btnSauvTemp" layoutX="325.0" layoutY="303.0" mnemonicParsing="false" onAction="#btnSauverAction" visible="false" />
+                  <ScrollPane fx:id="scrollCandidats" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                      <AnchorPane>
+                           <children>
+                              <BorderPane fx:id="bdrPaneCandidats">
+                                 <center>
+                                    <GridPane fx:id="gridCandidats" BorderPane.alignment="CENTER">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                    </GridPane>
+                                 </center>
+                              </BorderPane>
+                              <Button fx:id="btnCloturer" mnemonicParsing="false" onAction="#btnCloturerAction" text="Button" visible="false" />
+                              <Button fx:id="btnEnvoyer" mnemonicParsing="false" onAction="#btnEnvoyerAction" text="Button" visible="false" />
+                              <Button fx:id="btnSauvTemp" mnemonicParsing="false" onAction="#btnSauverAction" visible="false" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
                </children>
             </AnchorPane>
         </content>
