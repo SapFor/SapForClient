@@ -74,7 +74,6 @@ public class DirectorRightController {
 	
 	public void loadCandidats(String sessionID) {
 		this.session = sessionID;
-		System.out.println(" session =" + session);
 		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); 
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));
 		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); 
@@ -309,15 +308,24 @@ public class DirectorRightController {
 		btnEnvoyer.setVisible(true);
 		btnSauvTemp.setVisible(true);
 		
-		// if stage is closed testDate returns true
+		// if stage candidature date is over testDate returns false
 		if(ClientApp.testDate(session)){
-			btnCloturer.setDisable(true);
-			btnEnvoyer.setDisable(false);
-		}
-		else {
 			btnCloturer.setDisable(false);
+			// if stage has started testDateDebutStage returns false
 			btnEnvoyer.setDisable(true);
 		}
+		else {
+			btnCloturer.setDisable(true);
+			if(ClientApp.testDateDebutStage(session)){
+				btnEnvoyer.setDisable(true);
+			}
+			else{btnEnvoyer.setDisable(false);}
+			
+		}
+		
+		
+		
+		
 		
 		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer, btnSauvTemp);
 		hbButtons.setAlignment(Pos.CENTER);
@@ -342,22 +350,22 @@ public class DirectorRightController {
 	@FXML
 	private void btnEnvoyerAction(ActionEvent event) {
 		ListCandidats list = new ListCandidats();
-		list.setAccepte(noDecisionList);
+		list.setCandidat(noDecisionList);
 		list.setAccepte(acceptedList);
-		list.setAccepte(refusedList);
-		list.setAccepte(attenteList);
+		list.setRefuse(refusedList);
+		list.setAttente(attenteList);
 		ClientApp.validBoutonDirecteur(session, list);
-		btnEnvoyer.setDisable(true);
+		//btnEnvoyer.setDisable(true);
 	 }
 	
 	
 	@FXML
 	private void btnSauverAction(ActionEvent event) {
 		ListCandidats list = new ListCandidats();
-		list.setAccepte(noDecisionList);
+		list.setCandidat(noDecisionList);
 		list.setAccepte(acceptedList);
-		list.setAccepte(refusedList);
-		list.setAccepte(attenteList);
-		//ClientApp.validBoutonDirecteur(session, list);
+		list.setRefuse(refusedList);
+		list.setAttente(attenteList);
+		ClientApp.sauvTempBoutonDirecteur(session, list);
 	}
 }
