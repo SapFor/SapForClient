@@ -14,7 +14,7 @@
                <children>
                   <HBox layoutX="40.0" layoutY="15.0" prefWidth="250.0" spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="816.0" AnchorPane.topAnchor="15.0">
                      <children>
-                        <RadioButton fx:id="boutonApprenant" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#boutonApprenantClicked" prefWidth="100.0" selected="true" text="Apprenant">
+                        <RadioButton fx:id="boutonApprenant" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#boutonApprenantClicked" prefWidth="100.0" text="Apprenant">
                            <toggleGroup>
                               <ToggleGroup fx:id="ToggleGroup" />
                            </toggleGroup></RadioButton>

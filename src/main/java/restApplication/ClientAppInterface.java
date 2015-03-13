@@ -51,7 +51,6 @@ public interface ClientAppInterface {
 	// Push a updated list of candidates for a specific stage to the server : "Sauvegarde temporaire" button in the director tab
 	public void sauvTempBoutonDirecteur(String clicItemSession, ListCandidats updatedLists);
 			
-			
 	// Close the candidatures of a stage : associated to the "Cloturer" button in the director tab
 	public String cloturerCandidature(String nomStage,int jour, int mois, int annee);
 			
