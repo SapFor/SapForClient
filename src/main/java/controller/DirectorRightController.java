@@ -190,6 +190,7 @@ public class DirectorRightController {
 			    	  updateList(oldToggle, newToggle, rdoAccepte, rdoRefuse, rdoAttente);
 			    	  cleanCounter();
 			    	  loadCounter();
+			    	  btnSauvTemp.setDisable(false);
 			      }
 			});
 		} // end while	
@@ -316,6 +317,7 @@ public class DirectorRightController {
 		btnCloturer.setVisible(true);
 		btnEnvoyer.setVisible(true);
 		btnSauvTemp.setVisible(true);
+		btnSauvTemp.setDisable(true);
 		
 		// if stage candidature date is over testDate returns false
 		if(ClientApp.testDate(session)){
@@ -329,13 +331,8 @@ public class DirectorRightController {
 				btnEnvoyer.setDisable(true);
 			}
 			else{btnEnvoyer.setDisable(false);}
-			
 		}
-		
-		
-		
-		
-		
+
 		HBox hbButtons = new HBox(btnCloturer, btnEnvoyer, btnSauvTemp);
 		hbButtons.setAlignment(Pos.CENTER);
 		hbButtons.setSpacing(90);
@@ -346,35 +343,55 @@ public class DirectorRightController {
 	@FXML
 	private void btnCloturerAction(ActionEvent event) {
 		Date date = new Date();
-	    Calendar cal = Calendar.getInstance();
-	    cal.setTime(date);
-	    int year = cal.get(Calendar.YEAR);
-	    int month = cal.get(Calendar.MONTH) + 1; // January is 0
-	    int day = cal.get(Calendar.DAY_OF_MONTH);
-	    ClientApp.cloturerCandidature(session, day, month, year);
-	    btnCloturer.setDisable(true);
-	    btnEnvoyer.setDisable(false);
+		try{
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1; // January is 0
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			ClientApp.cloturerCandidature(session, day, month, year);
+		    btnCloturer.setDisable(true);
+		    btnEnvoyer.setDisable(false);
+		}
+		catch (Throwable t) {
+			System.err.println("Error closing session.");
+			t.printStackTrace();
+		}
 	 }
 	
 	@FXML
 	private void btnEnvoyerAction(ActionEvent event) {
 		ListCandidats list = new ListCandidats();
-		list.setCandidat(noDecisionList);
-		list.setAccepte(acceptedList);
-		list.setRefuse(refusedList);
-		list.setAttente(attenteList);
-		ClientApp.validBoutonDirecteur(session, list);
-		//btnEnvoyer.setDisable(true);
+		try {
+			list.setCandidat(noDecisionList);
+			list.setAccepte(acceptedList);
+			list.setRefuse(refusedList);
+			list.setAttente(attenteList);
+			ClientApp.validBoutonDirecteur(session, list);
+			btnEnvoyer.setDisable(true);
+		}
+		catch (Throwable t) {
+			System.err.println("Error validating candidate changes.");
+			t.printStackTrace();
+		}
+		
 	 }
 	
 	
 	@FXML
 	private void btnSauverAction(ActionEvent event) {
 		ListCandidats list = new ListCandidats();
-		list.setCandidat(noDecisionList);
-		list.setAccepte(acceptedList);
-		list.setRefuse(refusedList);
-		list.setAttente(attenteList);
-		ClientApp.sauvTempBoutonDirecteur(session, list);
+		try {
+			list.setCandidat(noDecisionList);
+			list.setAccepte(acceptedList);
+			list.setRefuse(refusedList);
+			list.setAttente(attenteList);
+			ClientApp.sauvTempBoutonDirecteur(session, list);
+			btnSauvTemp.setDisable(true);
+		}
+		catch (Throwable t) {
+			System.err.println("Error saving candidate changes.");
+			t.printStackTrace();
+		}
 	}
 }
