@@ -118,14 +118,7 @@ public class ClientApp {
 			int i = 0;
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
 			test = listSessionDir.get(i);
-			
-			System.out.println(test.getFinCandidature().getTime());
-			System.out.println(Calendar.getInstance().getTime());
-			
-			System.out.println(test.getFinCandidature().getTime().after(Calendar.getInstance().getTime()));
-			
-			
-			
+
 			return test.getFinCandidature().getTime().after(Calendar.getInstance().getTime());
 		}
 		
@@ -172,9 +165,7 @@ public class ClientApp {
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
 	    		tableDeCorrespondanceDir.put(ligneSess, newLigne);
-	    		  for (Entry<String, StageConcret> entry : tableDeCorrespondanceDir.entrySet()) {
-	    		       System.out.println(entry.getKey()+" : "+entry.getValue());
-	    		      }
+
 	    		}
 			}
 	    	return listSess;	
@@ -225,14 +216,6 @@ public class ClientApp {
 		    		listPompiers.add(namePomp);
 		    		tableDeCorrespondancePomp.put(namePomp, pomp.getId());
 
-
-       //check de remplissage de Hashmap
-		    		System.out.println(tableDeCorrespondancePomp.size());
-      for (Entry<String, Integer> entry : tableDeCorrespondancePomp.entrySet()) {
-       System.out.println(entry.getKey()+" : "+entry.getValue());
-      }
-
-
 		    	}
 	    	}
 	    	return listPompiers;
@@ -278,7 +261,7 @@ public class ClientApp {
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 			      
 			StageConcret updatedSession = listSessionDir.get(i);
-			System.out.println(updatedSession);
+			
 			// recovery of updated lists from the client
 			List<String> candidat=new ArrayList<String>();
 			List<String> accepte = new ArrayList<String>();
@@ -583,7 +566,7 @@ public class ClientApp {
 				moi.setEnCours(current);   // deleting the old candidated stage on the list of stages of our fireman (deleting side client)
 					
 				// Add a new stage using the GET HTTP method. managed by the Jersey framework
-				service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
+				service.path("desincription/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 			}
 		}
 		
