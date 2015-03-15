@@ -51,6 +51,7 @@ public class DirectorRightController {
 	private Text txtcountAttente;
 	private Line line1;
 	private HBox boxCounter;
+	private HBox hbButtons;
 
 	
 	@FXML
@@ -80,6 +81,10 @@ public class DirectorRightController {
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));
 		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); 
 		attenteList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,1));
+		System.out.println(noDecisionList);
+		System.out.println(acceptedList);
+		System.out.println(refusedList);
+		System.out.println(attenteList);
 
 		loadGrid();
 		loadCounter();
@@ -92,13 +97,12 @@ public class DirectorRightController {
 	
 
 	private void loadGrid() {
-	
-		scrollCandidats.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		scrollCandidats.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-				
+
 		// setup gridPane
 		gridCandidats.getChildren().clear(); 
 		gridCandidats.setPadding(new Insets(20, 20, 20, 20));
+		scrollCandidats.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		scrollCandidats.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
 		// setup column titles
 		Text txtNameTitle = new Text("Noms des Candidats");
@@ -187,18 +191,24 @@ public class DirectorRightController {
 
 			radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			      public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
+
 			    	  updateList(oldToggle, newToggle, rdoAccepte, rdoRefuse, rdoAttente);
 			    	  cleanCounter();
 			    	  loadCounter();
 			    	  btnSauvTemp.setDisable(false);
+			    	  btnEnvoyer.setDisable(false);
 			      }
 			});
 		} // end while	
 	} // end loadGrid()
 	
 	private void updateList(Toggle oldToggle, Toggle newToggle, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
-		
-		String nameMoving = oldToggle.getUserData().toString();
+
+		// UserData() is the same name stored at each radioButton for each person
+		// so can get nameMoving from any one of the three radioButtons.
+		// Cannot get it from oldToggle because oldToggle is null in the case of 
+		// no previous radioButton selected (noDecision).
+		String nameMoving = rdoAccepte.getUserData().toString();
 		
 		// Remove from old list
 		if (oldToggle == rdoAccepte){
@@ -207,7 +217,7 @@ public class DirectorRightController {
 				countAccepte--;
 			}
 			catch (Throwable t) {
-				System.err.println("Error removing" + nameMoving + "from" + oldToggle);
+				System.err.println("**********Error removing" + nameMoving + "from" + oldToggle);
 				t.printStackTrace();
 			}
 		}
@@ -217,7 +227,7 @@ public class DirectorRightController {
 				  countRefuse--;
 			  }
 			  catch (Throwable t) {
-				  System.err.println("Error removing" + nameMoving + "from" + oldToggle);
+				  System.err.println("**********Error removing" + nameMoving + "from" + oldToggle);
 				  t.printStackTrace();
 			  }
 		}
@@ -227,16 +237,17 @@ public class DirectorRightController {
 				  countAttente--;
 			  }
 			  catch (Throwable t) {
-				  System.err.println("Error removing" + nameMoving + "from" + oldToggle);
+				  System.err.println("**********Error removing" + nameMoving + "from" + oldToggle);
 				  t.printStackTrace();
 			  }
 		}
 		else {		// noDecisionList
 			  try {
+				  System.out.println("in here oldToggle");
 				  noDecisionList.remove(nameMoving);
 			  }
 			  catch (Throwable t) {
-				  System.err.println("Error removing" + nameMoving + "from noDecisionList");
+				  System.err.println("**********Error removing" + nameMoving + "from noDecisionList");
 				  t.printStackTrace();
 			  }
 		}
@@ -248,7 +259,7 @@ public class DirectorRightController {
 				countAccepte++;
 			}
 			catch (Throwable t) {
-				System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				System.err.println("**********Error adding" + nameMoving + "to" + newToggle);
 				t.printStackTrace();
 			}
 		}
@@ -258,7 +269,7 @@ public class DirectorRightController {
 				countRefuse++;
 			}
 			catch (Throwable t) {
-				System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				System.err.println("**********Error adding" + nameMoving + "to" + newToggle);
 				t.printStackTrace();
 			}
 		}
@@ -268,23 +279,24 @@ public class DirectorRightController {
 				  countAttente++;
 			  }
 			  catch (Throwable t) {
-				  System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				  System.err.println("**********Error adding" + nameMoving + "to" + newToggle);
 				  t.printStackTrace();
 			  }
 		}
 		else {		// noDecisionList
 			  try {
+				  System.out.println("in here2 oldToggle");
 				  noDecisionList.add(nameMoving);
 			  }
 			  catch (Throwable t) {
-				  System.err.println("Error adding" + nameMoving + "to" + newToggle);
+				  System.err.println("**********Error adding" + nameMoving + "to" + newToggle);
 				  t.printStackTrace();
 			  }
 		}
 	} // end updateList()
 
 	private void loadCounter(){
-		line1 = new Line(0, 0, 600, 0);
+		line1 = new Line(0, 0, 625, 0);
 		txtCounter = new Text("Nombre de candidats : ");
 		txtcountAccept = new Text(String.valueOf(countAccepte));
 		txtcountRefuse = new Text(String.valueOf(countRefuse));
@@ -354,7 +366,7 @@ public class DirectorRightController {
 		    btnEnvoyer.setDisable(false);
 		}
 		catch (Throwable t) {
-			System.err.println("Error closing session.");
+			System.err.println("**********Error closing session.**********");
 			t.printStackTrace();
 		}
 	 }
@@ -371,7 +383,7 @@ public class DirectorRightController {
 			btnEnvoyer.setDisable(true);
 		}
 		catch (Throwable t) {
-			System.err.println("Error validating candidate changes.");
+			System.err.println("**********Error validating candidate changes.**********");
 			t.printStackTrace();
 		}
 		
@@ -382,6 +394,10 @@ public class DirectorRightController {
 	private void btnSauverAction(ActionEvent event) {
 		ListCandidats list = new ListCandidats();
 		try {
+			System.out.println(noDecisionList);
+			System.out.println(acceptedList);
+			System.out.println(refusedList);
+			System.out.println(attenteList);
 			list.setCandidat(noDecisionList);
 			list.setAccepte(acceptedList);
 			list.setRefuse(refusedList);
@@ -390,7 +406,7 @@ public class DirectorRightController {
 			btnSauvTemp.setDisable(true);
 		}
 		catch (Throwable t) {
-			System.err.println("Error saving candidate changes.");
+			System.err.println("**********Error saving candidate changes.**********");
 			t.printStackTrace();
 		}
 	}
