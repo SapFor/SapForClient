@@ -189,7 +189,7 @@ public class DirectorRightController {
 	} // end loadGrid()
 	
 	private void updateList(Toggle oldToggle, Toggle newToggle, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
-		String nameMoving = oldToggle.getUserData().toString();
+		String nameMoving = rdoAccepte.getUserData().toString();
 		
 		// Remove from old list
 		if (oldToggle == rdoAccepte){
