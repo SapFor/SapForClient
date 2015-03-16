@@ -16,7 +16,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import objectsTemplates.*;
@@ -39,7 +38,7 @@ public class ClientApp {
 		
 		private static HashMap<String,StageConcret> tableDeCorrespondanceDir;
 		private static HashMap<String,StageConcret> tableDeCorrespondanceForm;
-		private static HashMap<String,Integer> tableDeCorrespondancePomp= new HashMap<String,Integer>();
+		private static HashMap<String,Integer> tableDeCorrespondancePomp = new HashMap<String,Integer>();
 		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
 		// Working on the assumption that your int value is 
 		// the ordinal value of the items in your enum (method getListCandidatDirecteur)
@@ -109,8 +108,8 @@ public class ClientApp {
 //////////////////////Director Methods//////////////////////	
 		
 
-		// Test if the stage is closed
-		// return true if the stage is closed
+		// Test if the stage is closed (date of the end of candidature > current date)
+		// return true if the stage is not closed
 		public static boolean testDate(String nomStage){
 			StageConcret test;
 			
@@ -123,6 +122,8 @@ public class ClientApp {
 		}
 		
 		
+		// Test if the stage has already started
+		// return true if the date of beginning of stage > current date
 		public static boolean testDateDebutStage(String nomStage){
 			StageConcret test;
 			
@@ -274,8 +275,8 @@ public class ClientApp {
 				
 			}
 				
-			for(int k=0; k<updatedLists.getAccepte().size();k++){
-				correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(k));
+			for(int j=0; j<updatedLists.getAccepte().size();j++){
+				correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(j));
 				accepte.add(""+correspId);	
 			}
 			
@@ -368,16 +369,47 @@ public class ClientApp {
 		// Get boolean if the fireman is already candidate at this stage
 		public static boolean isCandidate(String ClickedItemSession){
 
+			// the fireman is candidate if he is present in one of the 4 lists (enCours, accepte, refuse, attente)
+			
 			String correspondance = tableDeCorrespondanceForm.get(ClickedItemSession).getNomStage();
-			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
-	        if(moi.getEnCours()!=null){
+			boolean founded = false; 
+			
+			// Comparison between the string ClickedItemSession 
+			// and the possible correspondent element in the 4 lists of stages (of the server)
+	       
+			if(moi.getEnCours()!=null){
 	        	int i = 0;
 	        	while( i<moi.getEnCours().size() && !correspondance.equals(moi.getEnCours().get(i)) ){ i++; }
 	        
 	        	// the correct stage is found in the list -> get detailled infos
-	        	return (i<moi.getEnCours().size());
+	        	if(i<moi.getEnCours().size()){ founded = true;}
 	        }
-	        else { return false; }
+	        
+	        if(moi.getAccepte()!=null){
+	        	int i = 0;
+	        	while( i<moi.getAccepte().size() && !correspondance.equals(moi.getAccepte().get(i)) ){ i++; }
+	        
+	        	// the correct stage is found in the list -> get detailled infos
+	        	if(i<moi.getAccepte().size()){ founded = true;}
+	        }
+	        
+	        if(moi.getAttente()!=null){
+	        	int i = 0;
+	        	while( i<moi.getAttente().size() && !correspondance.equals(moi.getAttente().get(i)) ){ i++; }
+	        
+	        	// the correct stage is found in the list -> get detailled infos
+	        	if(i<moi.getAttente().size()){ founded = true;}
+	        }
+	        
+	        if(moi.getRefuse()!=null){
+	        	int i = 0;
+	        	while( i<moi.getRefuse().size() && !correspondance.equals(moi.getRefuse().get(i)) ){ i++; }
+	        
+	        	// the correct stage is found in the list -> get detailled infos
+	        	if(i<moi.getRefuse().size()){ founded = true;}
+	        }
+	        
+	        return founded;
 			
 		}
 		
@@ -403,6 +435,8 @@ public class ClientApp {
 			}
 			return listUVDispo;
 		}
+		
+		
 		
 		// Get list of the formation UVs, formateur radioButton : to put into the formation tab
 		public static List<String> getListUVFormateur(){
