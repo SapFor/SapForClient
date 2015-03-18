@@ -1,6 +1,7 @@
 package controller;
 
 import restApplication.*;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -14,11 +15,14 @@ import controller.DirectorLeftController;
 
 
 public class DirectorController {
+	
+	private MainController main;
 
 	@FXML DirectorLeftController directorLeftController;
 	@FXML DirectorRightController directorRightController;
 	
-	@FXML public void initialize() {
+	@FXML
+	public void initialize() {
 		directorLeftController.init(this);
 		directorRightController.init(this);
 		}
@@ -27,7 +31,10 @@ public class DirectorController {
 		directorRightController.loadCandidats(token);
 	}
 	
-
+    public void init(MainController main) {
+		this.main = main;
+	}
+    
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 		}
 

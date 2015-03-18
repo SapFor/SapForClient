@@ -72,7 +72,10 @@ public class DirectorRightController {
 	@FXML
     private Button btnSauvTemp;
 	
+	
+	
 	public void loadCandidats(String sessionID) {
+		
 		this.session = sessionID;
 		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); 
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));

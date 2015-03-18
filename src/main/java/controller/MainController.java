@@ -32,16 +32,28 @@ public class MainController implements Initializable{
     private Label mainLabelArea;
 	@FXML
     private Hyperlink deco;
+	@FXML
+	private DirectorController directornameController;
 	
-    	 		
+	@FXML public void initialize() {
+		directornameController.init(this);
+		}
+
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//mainLabelArea.setText("Jean Dupont n°12345"); //test à remplacer par la ligne suivante lors de l'accès au serveur
 		mainLabelArea.setText(ClientApp.getNomPomp());
+
 		if(ClientApp.isDirector()){
 			director.setDisable(false);
 		}
 					
+	}
+	
+	public void onClickDirector(Event event){
+	      // LectureUVFichier fichierUV = new LectureUVFichier(URLRessource+"UVname", 0);
+		directornameController.initialize();
+		System.out.println("clique director");
 	}
 	
 	public void onClicDeconnexion(Event event){
