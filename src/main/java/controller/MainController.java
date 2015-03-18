@@ -42,33 +42,32 @@ public class MainController implements Initializable{
     private Hyperlink profil;
     	 		
 	@FXML
-	private DirectorController directornameController;
+	private DirectorController directornameController;  //Creer un objet pour pouvoir interagir directement sur l'instance du DirectorController
 	
 	@FXML public void initialize() {
+		//initialise l'onglet directeur
 		directornameController.init(this);
 		}
 
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//mainLabelArea.setText("Jean Dupont n�12345"); //test � remplacer par la ligne suivante lors de l'acc鑣 au serveur
-		mainLabelArea.setText(ClientApp.getNomPomp());
-
-		if(ClientApp.isDirector()){
-			director.setDisable(false);
-		}
 		
-	/*// set default tab to Formation
-		SingleSelectionModel<Tab> selectionModel = tabs.getSelectionModel();
-		selectionModel.select(formation);*/
+		mainLabelArea.setText(ClientApp.getNomPomp()); // recupere le nom du pompier et l'affiche dans la barre de titre
+
+		if(ClientApp.isDirector()){ // test si le pompier est directeur
+			director.setDisable(false); //si oui active l'onglet directeur
+		}
+
 	}
 	
 	public void onClickDirector(Event event){
-	      // LectureUVFichier fichierUV = new LectureUVFichier(URLRessource+"UVname", 0);
-		directornameController.initialize();
-		System.out.println("clique director");
+		//methode appele a chaque changement d'onglet
+		//Mise a jour de l'onglet directeur (meme si onglet clique selectionne autre que directeur
+		directornameController.initialize(); 
 	}
 	
 	public void onClicDeconnexion(Event event){
+		// methode appelee quand on clique sur le lien deconnexion
 		ClientApp.deconnexion(ClientApp.getIdSession());
 		Stage currentStage = (Stage) deco.getScene().getWindow();
 		currentStage.close();
@@ -87,7 +86,7 @@ public class MainController implements Initializable{
         catch (IOException e) { e.printStackTrace(); } 
 	}
 
-	public void onClicProfil(Event event){
+/*	public void onClicProfil(Event event){ // Methode mise en commentaire car probleme avec fichier xml
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/Profil.fxml"));
@@ -109,5 +108,5 @@ public class MainController implements Initializable{
             e.printStackTrace();
           
         }
-	}
+	}*/
 }

@@ -51,8 +51,6 @@ public class DirectorRightController {
 	private Text txtcountAttente;
 	private Line line1;
 	private HBox boxCounter;
-	//private HBox hbButtons;
-
 	
 	@FXML
     private GridPane gridCandidats;
@@ -78,14 +76,14 @@ public class DirectorRightController {
 	
 	
 	public void loadCandidats(String sessionID) {
-		
+		//methode recuperant les listes de pompiers associees a un stage. 
 		this.session = sessionID;
 		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,0)); 
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,2));
 		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,3)); 
 		attenteList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,1));
 
-		loadGrid();
+		loadGrid(); 
 		loadCounter();
 		loadButtons();
 	}
@@ -105,8 +103,8 @@ public class DirectorRightController {
 
 		// setup column titles
 		Text txtNameTitle = new Text("Noms des Candidats");
-		Text txtAccepteTitle = new Text("Accepté");
-		Text txtRefuseTitle = new Text("Refusé");
+		Text txtAccepteTitle = new Text("Accepte");
+		Text txtRefuseTitle = new Text("Refuse");
 		Text txtAttenteTitle = new Text("Liste d'Attente");
 		
 		// setup HBox containing column titles
@@ -164,7 +162,7 @@ public class DirectorRightController {
 				radioGroup.selectToggle(rdoRefuse);
 				tempName = refusedIter.next();
 			}
-			else{		// attenteIter
+			else{		
 				countAttente++;
 				radioGroup.selectToggle(rdoAttente);
 				tempName = attenteIter.next();
@@ -319,9 +317,9 @@ public class DirectorRightController {
 	
 	
 	private void loadButtons(){
-		btnCloturer.setText("Clôturer la session");
+		btnCloturer.setText("Cloturer la session");
 		btnEnvoyer.setText("Valider les candidatures");
-		btnSauvTemp.setText("Sauvegarde Temporaire");
+		btnSauvTemp.setText("Sauvegarder");
 		btnCloturer.setVisible(true);
 		btnEnvoyer.setVisible(true);
 		btnSauvTemp.setVisible(true);
@@ -352,13 +350,13 @@ public class DirectorRightController {
 	private void btnCloturerAction(ActionEvent event) {
 		Date date = new Date();
 		try{
-			Calendar cal = Calendar.getInstance();
+			Calendar cal = Calendar.getInstance(); // recupere la date actuelle
 			cal.setTime(date);
 			int year = cal.get(Calendar.YEAR);
 			int month = cal.get(Calendar.MONTH) + 1; // January is 0
 			int day = cal.get(Calendar.DAY_OF_MONTH);
-			ClientApp.cloturerCandidature(session, day, month, year);
-		    btnCloturer.setDisable(true);
+			ClientApp.cloturerCandidature(session, day, month, year); // on modifie la date de cloture du stage
+		    btnCloturer.setDisable(true); // mise a jour de l'accessibilite des boutons
 		    btnEnvoyer.setDisable(false);
 		}
 		catch (Throwable t) {
@@ -369,13 +367,14 @@ public class DirectorRightController {
 	
 	@FXML
 	private void btnEnvoyerAction(ActionEvent event) {
-		ListCandidats list = new ListCandidats();
+		// methode appele quand on clique sur le bouton valider		
+		ListCandidats list = new ListCandidats(); // creation d'un objet ListCandidat qui va contenir les 4 listes mises a jour
 		try {
 			list.setCandidat(noDecisionList);
 			list.setAccepte(acceptedList);
 			list.setRefuse(refusedList);
 			list.setAttente(attenteList);
-			ClientApp.validBoutonDirecteur(session, list);
+			ClientApp.validBoutonDirecteur(session, list); //envoie de l'objet ListCandidat au modele client
 			btnEnvoyer.setDisable(true);
 		}
 		catch (Throwable t) {
@@ -388,13 +387,14 @@ public class DirectorRightController {
 	
 	@FXML
 	private void btnSauverAction(ActionEvent event) {
+		// methode appelee quand on clique sur le bouton Sauvegarde		
 		ListCandidats list = new ListCandidats();
 		try {
 			list.setCandidat(noDecisionList);
 			list.setAccepte(acceptedList);
 			list.setRefuse(refusedList);
 			list.setAttente(attenteList);
-			ClientApp.sauvTempBoutonDirecteur(session, list);
+			ClientApp.sauvTempBoutonDirecteur(session, list);// envoie l'objet ListCandidat au modele client sans notifier les candidats
 			btnSauvTemp.setDisable(true);
 		}
 		catch (Throwable t) {

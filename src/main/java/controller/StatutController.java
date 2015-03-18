@@ -41,14 +41,14 @@ public class StatutController {
 
     public void initialize() {
     	String text = "Centre ....." + "\n" + "Responsable ......" + "\n" + "Contact ....." + "\n" + 	
-    			"Personne pr¨¦venir en cas dencident" + "\n" + "Infos ..... \n";
+    			"Personne a prevenir en cas d'accident" + "\n" + "Infos ..... \n";
     	PersoAreaStatut.setText(text);
     }
     
     @FXML
     void onClicStatutObt(Event event) {
     	List<String> listSession = new ArrayList<String>();
-    	listSession.add("Vous n'avez passe aucune session.");
+    	listSession.add("Vous n'avez suivi aucun stage.");
     	listSession.add("Il est temps de candidater !");
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
@@ -59,7 +59,7 @@ public class StatutController {
     @FXML
     void onClicRepassStatut(Event event) {
     	List<String> listSession = new ArrayList<String>();
-    	listSession.add("Vous n'avez passe aucune session.");
+    	listSession.add("Vous n'avez suivi aucun stage.");
     	listSession.add("Il est temps de candidater !");
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
@@ -68,7 +68,7 @@ public class StatutController {
     }
     
     public void putInfosUV(){
-    	String infos = "Pas d'informations compleentaires disponibles pour cette UV.";
+    	String infos = "Pas d'informations complementaires disponibles pour cette UV.";
     	groupDescrStatut.setVisible(true);
     	descrAreaStatut.setText(infos);
     	descrAreaStatut.setEditable(false); //pour ne pas modifier le text area dans le programme

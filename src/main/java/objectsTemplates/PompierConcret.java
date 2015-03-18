@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 */
 
 @XmlRootElement
-public class PompierConcret {
+public class PompierConcret { //Classe associee au donnee cote serveur contient que des getter et setter
 	
 	private int idSession;
 	private int id;

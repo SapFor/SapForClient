@@ -7,7 +7,7 @@ import java.util.List;
 * Class to get and set lists of stages data, by the client
 */
 
-public class ListCandidats {
+public class ListCandidats { // Classe regroupant les 4 listes d'un stage
 	
 	private List<String> candidat;
 	private List<String> accepte;

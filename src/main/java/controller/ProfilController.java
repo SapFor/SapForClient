@@ -18,7 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class ProfilController {
+public class ProfilController { // ProfilController non utilise dans la version presentee
 
 	@FXML
     private TextField nom;

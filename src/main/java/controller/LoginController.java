@@ -33,45 +33,19 @@ public class LoginController {
     
 	@FXML
     void onClicValiderLogin(Event event) {
-		
-	/////// utilisation sans serveur /////////////////
-		/*
-		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
-    	currentStage.close();
-    	
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
-        try {
-			Parent root = fxmlLoader.load();
-			Scene scene = new Scene(root);
-			//stage = (Stage) root.getScene().getWindow();
-			scene.getStylesheets().add("/application/application.css");
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setMaximized(true);
-			stage.show();
-			
-		} 
-        catch (IOException e) { e.printStackTrace(); } 
-		*/
-		
-		
-  /////// utilisation avec serveur /////////////////
-		
-    	
+		// envoie au serveur l'id du pompier et son mot de passe
+		//si ok charge le main.fxml (l'application)
     	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
-        String reponse = ClientApp.login(idPompier, mdp);
+        String reponse = ClientApp.login(idPompier, mdp); //appel de la methode "login" du modele client
         if(reponse == "ok"){
     		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
         	currentStage.close();
         	
-        	System.out.println(getClass().getResource("/view/Main.fxml"));
         	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
             try {
     			Parent root = fxmlLoader.load();
     			Scene scene = new Scene(root);
-    			//stage = (Stage) root.getScene().getWindow();
     			scene.getStylesheets().add("/application/application.css");
 
     			Stage stage = new Stage();
@@ -114,39 +88,7 @@ public class LoginController {
 	        	loginArea.requestFocus(); 
 	        }
 	    });
-	
-		// En utilisant un TextField pour le login et un PasswordField pour le mdp, 
-		//ENTER actionne Valider et TAB change le focus.
-		// Si utilisation de TextArea pour g茅rer le login et un password visible utiliser les m茅thodes ci-dessous:
-		// ce code permet seulement de changer le focus avec TAB et ENTER. 
-		// Quand Focus sur : Valider + ENTER = action sur Valider
-	
-		/*loginArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-	            public void handle(KeyEvent event) {
-	                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER ) {
-	                    mdpArea.requestFocus();
-	                    event.consume();
-	                }
-	            }
-	        });
-		mdpArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER ) {
-                	validerLoginButton.requestFocus();
-                    event.consume();
-                }
-            }
-        });
-			
-		validerLoginButton.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.TAB ) {
-                	loginArea.requestFocus();
-                    event.consume();
 
-                }
-            }
-        });*/
 	}
 
 }

@@ -85,10 +85,10 @@ public class FormationController implements Initializable{
 		// pour récupérer le nom de l'UV cliqué dans un String
 		String UVSelectionne = UVList.getSelectionModel().getSelectedItem();
 		
-		//Affichge de la description de l'UV
+		//Affichage de la description de l'UV
 		UVDesc.setText(ClientApp.getDescriptionUV(UVSelectionne));
 
-		//Affichage des la liste des sessions
+		//Affichage de la liste des sessions
 		ObservableList<String> SessionUV = FXCollections.observableArrayList(ClientApp.getListSessionFormation(UVSelectionne));
 		SessionList.setItems(SessionUV);
 					
@@ -111,7 +111,7 @@ public class FormationController implements Initializable{
 	@FXML
     void clicSession(Event event) {
     	
-		//L'affichage des infos détaillées de la session 
+		//L'affichage des infos détaillees de la session 
 		String SessionSelect = SessionList.getSelectionModel().getSelectedItem();
 		InfoSession.setText(ClientApp.getInfoDetailsFormation(SessionSelect));
 	

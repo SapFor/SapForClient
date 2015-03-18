@@ -46,6 +46,7 @@ public class CandidatureController {
 
     @FXML
     void onClicCandAccept(Event event) {
+    	// methode qui fourni à l'IHM la liste des stages acceptes
     	List<String> listSession = ClientApp.getListSessionCandidate(2);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
@@ -55,6 +56,7 @@ public class CandidatureController {
     
     @FXML
     void onClicCandAttent(Event event) {
+    	// methode qui fourni à l'IHM la liste des stages en attente
     	List<String> listSession = ClientApp.getListSessionCandidate(1);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
@@ -64,6 +66,7 @@ public class CandidatureController {
     
     @FXML
     void onClicCandNonClot(Event event) {
+    	// methode qui fourni à l'IHM la liste des stages non clotures
     	List<String> listSession = ClientApp.getListSessionCandidate(0);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
@@ -73,6 +76,7 @@ public class CandidatureController {
     
     @FXML
     void onClicCandRefus(Event event) {
+    	// methode qui fourni à l'IHM la liste des stages refuses
     	List<String> listSession = ClientApp.getListSessionCandidate(3);
     	
     	ObservableList<String> itemssession =FXCollections.observableArrayList (listSession);
@@ -81,6 +85,7 @@ public class CandidatureController {
     }
     
     public void putInfosUV(){
+    	// fourni à IHM les infos associees à l'UV du stage selectionne
     	String infos = "Pas d'informations complémentaires disponibles pour cette UV.";
     	UVInfosCand.setText(infos);
     	UVInfosCand.setEditable(false); //pour ne pas modifier le text area dans le programme
