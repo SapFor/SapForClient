@@ -3,35 +3,30 @@ package controller;
 import restApplication.*;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginController {
 
 	@FXML
-    private TextArea mdpArea;
-
+    private PasswordField mdpArea;
+	
     @FXML
     private Button validerLoginButton;
 
     @FXML
-    private TextArea loginArea;
+    private TextField loginArea;
     
     @FXML
     private Label errorArea;
@@ -66,7 +61,7 @@ public class LoginController {
     	
     	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
-        
+        System.out.println("mdp");
         String reponse = ClientApp.login(idPompier, mdp);
         if(reponse == "ok"){
     		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
@@ -100,13 +95,21 @@ public class LoginController {
 	
 	
 	public void initialize() {
+		
+		//pour forcer le focus sur loginArea utiliser un run sur le request
 		Platform.runLater(new Runnable() {
 	        public void run() {
-	        	loginArea.requestFocus();
+	        	loginArea.requestFocus(); 
 	        }
 	    });
-		
-		loginArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+	
+		// En utilisant un TextField pour le login et un PasswordField pour le mdp, 
+		//ENTER actionne Valider et TAB change le focus.
+		// Si utilisation de TextArea pour gérer le login et un password visible utiliser les méthodes ci-dessous:
+		// ce code permet seulement de changer le focus avec TAB et ENTER. 
+		// Quand Focus sur : Valider + ENTER = action sur Valider
+	
+		/*loginArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 	            public void handle(KeyEvent event) {
 	                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER ) {
 	                    mdpArea.requestFocus();
@@ -116,7 +119,7 @@ public class LoginController {
 	        });
 		mdpArea.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER) {
+                if (event.getCode() == KeyCode.TAB || event.getCode() == KeyCode.ENTER ) {
                 	validerLoginButton.requestFocus();
                     event.consume();
                 }
@@ -131,7 +134,7 @@ public class LoginController {
 
                 }
             }
-        });
+        });*/
 	}
 
 }
