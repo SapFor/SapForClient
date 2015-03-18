@@ -12,12 +12,10 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
 
 public class FormationController implements Initializable{
 
@@ -33,11 +31,7 @@ public class FormationController implements Initializable{
 	@FXML
 	private RadioButton boutonFormateur;
 	@FXML
-	private ToggleGroup toggleGroupe = new ToggleGroup();
-	@FXML
-	private Label LabelApprenant;
-	@FXML
-	private Label LabelFormateur;
+	private ToggleGroup ToggleGroupe = new ToggleGroup();
 	
 	//Champs de texte
 	@FXML
@@ -69,8 +63,6 @@ public class FormationController implements Initializable{
 			boutonFormateur.setSelected(true);
 			//Gestion du bouton radio "formateur" si le pompier n'y a pas accès
 			boutonApprenant.setDisable(true);
-			//Messages pop-up si le bouton est désactivé
-			LabelApprenant.setTooltip(new Tooltip("Vous n'avez pas d'UV apprenant accessibles"));
 		}
 		else{
 			//Gestion du bouton radio "formateur" si le pompier n'y a pas accès
@@ -80,10 +72,6 @@ public class FormationController implements Initializable{
 			UVList.setItems(ListeUV);
 			//Bouton "apprenant" sélectionné
 			boutonApprenant.setSelected(true);
-			//Messages pop-up si le bouton est désactivé
-			if(ClientApp.getListUVFormateur().isEmpty()){
-				LabelFormateur.setTooltip(new Tooltip("Vous n'avez pas d'UV formateur accessibles"));
-			}
 		}		
 	}
 
