@@ -17,8 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
+import javafx.stage.Modality;
 /**
  * FXML Main Controller class
  *
@@ -34,13 +35,15 @@ public class MainController implements Initializable{
     private TabPane	tabs;
 	@FXML
     private Label mainLabelArea;
+	
 	@FXML
     private Hyperlink deco;
-	
+	@FXML
+    private Hyperlink profil;
     	 		
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//mainLabelArea.setText("Jean Dupont n°12345"); //test à remplacer par la ligne suivante lors de l'accès au serveur
+		//mainLabelArea.setText("Jean Dupont nï¿½12345"); //test ï¿½ remplacer par la ligne suivante lors de l'accé‘£ au serveur
 		mainLabelArea.setText(ClientApp.getNomPomp());
 		if(ClientApp.isDirector()){
 			director.setDisable(false);
@@ -70,4 +73,27 @@ public class MainController implements Initializable{
         catch (IOException e) { e.printStackTrace(); } 
 	}
 
+	public void onClicProfil(Event event){
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/view/Profil.fxml"));
+       
+        try {
+
+        	AnchorPane page = (AnchorPane) loader.load();
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Profil");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+          
+        }
+	}
 }
