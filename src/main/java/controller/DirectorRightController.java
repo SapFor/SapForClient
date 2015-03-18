@@ -77,14 +77,10 @@ public class DirectorRightController {
 	
 	public void loadCandidats(String sessionID) {
 		this.session = sessionID;
-		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,0)); 
-		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,2));
-		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,3)); 
-		attenteList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(sessionID,1));
-		System.out.println(noDecisionList);
-		System.out.println(acceptedList);
-		System.out.println(refusedList);
-		System.out.println(attenteList);
+		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,0)); 
+		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,2));
+		refusedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,3)); 
+		attenteList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,1));
 
 		loadGrid();
 		loadCounter();
@@ -109,10 +105,6 @@ public class DirectorRightController {
 		Text txtAccepteTitle = new Text("Accepté");
 		Text txtRefuseTitle = new Text("Refusé");
 		Text txtAttenteTitle = new Text("Liste d'Attente");
-	//	txtNameTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
-	//	txtAccepteTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
-	//	txtRefuseTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
-	//	txtAttenteTitle.setFont(Font.font(null, FontWeight.SEMI_BOLD, 15));
 		
 		// setup HBox containing column titles
 		HBox hbTitle = new HBox(txtAccepteTitle, txtRefuseTitle, txtAttenteTitle);
@@ -330,7 +322,7 @@ public class DirectorRightController {
 		btnEnvoyer.setVisible(true);
 		btnSauvTemp.setVisible(true);
 		btnSauvTemp.setDisable(true);
-		
+
 		// if stage candidature date is over testDate returns false
 		if(ClientApp.testDate(session)){
 			btnCloturer.setDisable(false);
@@ -394,10 +386,6 @@ public class DirectorRightController {
 	private void btnSauverAction(ActionEvent event) {
 		ListCandidats list = new ListCandidats();
 		try {
-			System.out.println(noDecisionList);
-			System.out.println(acceptedList);
-			System.out.println(refusedList);
-			System.out.println(attenteList);
 			list.setCandidat(noDecisionList);
 			list.setAccepte(acceptedList);
 			list.setRefuse(refusedList);
