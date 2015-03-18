@@ -82,8 +82,8 @@ public class LoginController {
     		} 
             catch (IOException e) { e.printStackTrace(); } 
         }
-        else if(reponse == "Vous 阾es d閖� connect�"){
-        	String erreur = reponse + " : d閏onnectez la session ouverte.";
+        else if(reponse == "Vous êtes déjà connecté"){
+        	String erreur = reponse + " : déconnectez la session ouverte.";
         	errorArea.setText(erreur);
         	errorArea.setTextFill(Color.RED);
         	errorArea.setVisible(true);
