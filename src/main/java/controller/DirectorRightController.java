@@ -102,8 +102,8 @@ public class DirectorRightController {
 
 		// setup column titles
 		Text txtNameTitle = new Text("Noms des Candidats");
-		Text txtAccepteTitle = new Text("AcceptÃ©");
-		Text txtRefuseTitle = new Text("RefusÃ©");
+		Text txtAccepteTitle = new Text("Accepté");
+		Text txtRefuseTitle = new Text("Refusé");
 		Text txtAttenteTitle = new Text("Liste d'Attente");
 		
 		// setup HBox containing column titles
@@ -315,7 +315,7 @@ public class DirectorRightController {
 	
 	
 	private void loadButtons(){
-		btnCloturer.setText("Clï¿½turer la session");
+		btnCloturer.setText("Clôturer la session");
 		btnEnvoyer.setText("Valider les candidatures");
 		btnSauvTemp.setText("Sauvegarde Temporaire");
 		btnCloturer.setVisible(true);

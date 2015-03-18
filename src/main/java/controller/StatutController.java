@@ -40,8 +40,8 @@ public class StatutController {
 
 
     public void initialize() {
-    	String text = "Centre......" + "\n" + "Responsable......." + "\n" + "Contact......." + "\n" + 	
-    			"Personne pr√©vvenir en cas dencident......." + "\n" + "Infos........ \n";
+    	String text = "Centre ....." + "\n" + "Responsable ......" + "\n" + "Contact ....." + "\n" + 	
+    			"Personne pr®¶venir en cas dencident" + "\n" + "Infos ..... \n";
     	PersoAreaStatut.setText(text);
     }
     
