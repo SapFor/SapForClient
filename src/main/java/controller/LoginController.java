@@ -61,7 +61,6 @@ public class LoginController {
     	
     	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
-        System.out.println("mdp");
         String reponse = ClientApp.login(idPompier, mdp);
         if(reponse == "ok"){
     		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
