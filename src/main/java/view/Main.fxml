@@ -22,9 +22,9 @@
       <Separator layoutX="95.0" layoutY="76.0" prefHeight="0.0" prefWidth="491.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="76.0" />
       <TabPane layoutX="-1.0" layoutY="102.0" prefHeight="303.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="97.0">
         <tabs>
-          <Tab closable="false" text="Candidatures">
+          <Tab fx:id="candidature" closable="false" text="Candidatures">
             <content>
-               <fx:include fx:id="candidature" source="Candidature.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               <fx:include source="Candidature.fxml" />
             </content>
           </Tab>
           <Tab text="Statut">
@@ -44,7 +44,7 @@
             </Tab>
         </tabs>
       </TabPane>
-      <ImageView fitHeight="98.0" fitWidth="87.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="0.0">
+      <ImageView fitHeight="97.0" fitWidth="78.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@/logo-pompiers.jpg" />
          </image>
