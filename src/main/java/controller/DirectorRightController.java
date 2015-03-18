@@ -191,7 +191,6 @@ public class DirectorRightController {
 			    	  cleanCounter();
 			    	  loadCounter();
 			    	  btnSauvTemp.setDisable(false);
-			    	  btnEnvoyer.setDisable(false);
 			      }
 			});
 		} // end while	
