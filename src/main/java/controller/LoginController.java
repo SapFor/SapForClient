@@ -87,6 +87,14 @@ public class LoginController {
     		} 
             catch (IOException e) { e.printStackTrace(); } 
         }
+        else if(reponse == "deja connecte"){
+        	String erreur = reponse.toUpperCase() + " : vous êtes déjà connecté. Déconnectez la session ouverte.";
+        	errorArea.setText(erreur);
+        	errorArea.setTextFill(Color.RED);
+        	errorArea.setVisible(true);
+        	loginArea.setText("");
+        	mdpArea.setText("");
+        }
         else { 
         	String erreur = reponse.toUpperCase() + " : le login et/ou le mot de passe sont incorrects.";
         	errorArea.setText(erreur);

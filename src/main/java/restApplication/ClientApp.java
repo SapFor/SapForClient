@@ -74,6 +74,7 @@ public class ClientApp {
 			String defPath = idPompier + "/" + mdp;
 			PompierConcret check = service.path(defPath).accept(MediaType.APPLICATION_JSON).get(new GenericType<PompierConcret>(){});
 			if (check.getIdSession()==999){ return "erreur"; }
+			else if(check.getIdSession()==1000){ return "deja connecte";}
 			else {
 				moi=check;
 				idSession = check.getIdSession(); 
