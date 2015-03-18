@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import objectsTemplates.*;
@@ -38,8 +39,7 @@ public class ClientApp {
 		
 		private static HashMap<String,StageConcret> tableDeCorrespondanceDir;
 		private static HashMap<String,StageConcret> tableDeCorrespondanceForm;
-		private static HashMap<String,Integer> tableDeCorrespondancePomp;
-
+		private static HashMap<String,Integer> tableDeCorrespondancePomp= new HashMap<String,Integer>();
 		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
 		// Working on the assumption that your int value is 
 		// the ordinal value of the items in your enum (method getListCandidatDirecteur)
@@ -113,14 +113,35 @@ public class ClientApp {
 		// return true if the stage is closed
 		public static boolean testDate(String nomStage){
 			StageConcret test;
-			String correspondance = tableDeCorrespondanceForm.get(nomStage).getNomStage();
+			
+			String correspondance = tableDeCorrespondanceDir.get(nomStage).getNomStage();
 			int i = 0;
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
 			test = listSessionDir.get(i);
 			
-			if( test.getFinCandidature().after(Calendar.getInstance().getTime()) ){ return true; }
-			else{ return false; }
+			System.out.println(test.getFinCandidature().getTime());
+			System.out.println(Calendar.getInstance().getTime());
+			
+			System.out.println(test.getFinCandidature().getTime().after(Calendar.getInstance().getTime()));
+			
+			
+			
+			return test.getFinCandidature().getTime().after(Calendar.getInstance().getTime());
 		}
+		
+		
+		public static boolean testDateDebutStage(String nomStage){
+			StageConcret test;
+			
+			String correspondance = tableDeCorrespondanceDir.get(nomStage).getNomStage();
+			int i = 0;
+			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
+			test = listSessionDir.get(i);
+					
+			return test.getDate().after(Calendar.getInstance().getTime());
+		}
+		
+		
 		
 	
 		// Get list of the director stages : to put into the director tab
@@ -151,6 +172,9 @@ public class ClientApp {
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
 	    		tableDeCorrespondanceDir.put(ligneSess, newLigne);
+	    		  for (Entry<String, StageConcret> entry : tableDeCorrespondanceDir.entrySet()) {
+	    		       System.out.println(entry.getKey()+" : "+entry.getValue());
+	    		      }
 	    		}
 			}
 	    	return listSess;	
@@ -177,8 +201,7 @@ public class ClientApp {
 	        while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 
 	        List<String> listId = null;
-	        tableDeCorrespondancePomp = new HashMap<String,Integer>();
-	        
+	        	        
 	        GuideList whichList = GuideList.values()[listLoading];
 			switch (whichList){  // choice of the candidates list to load
 				case CANDIDAT : listId = listSessionDir.get(i).getCandidats(); break;
@@ -198,9 +221,18 @@ public class ClientApp {
 		    		
 		    		PompierConcret pomp = service.path(path).accept(MediaType.APPLICATION_JSON).get(new GenericType<PompierConcret>(){}); 
 	
-		    		String namePomp = pomp.getNom() + "\t" + pomp.getPrenom() ;
+		    		String namePomp = pomp.getNom() + "_" + pomp.getPrenom() ;
 		    		listPompiers.add(namePomp);
 		    		tableDeCorrespondancePomp.put(namePomp, pomp.getId());
+
+
+       //check de remplissage de Hashmap
+		    		System.out.println(tableDeCorrespondancePomp.size());
+      for (Entry<String, Integer> entry : tableDeCorrespondancePomp.entrySet()) {
+       System.out.println(entry.getKey()+" : "+entry.getValue());
+      }
+
+
 		    	}
 	    	}
 	    	return listPompiers;
@@ -240,13 +272,13 @@ public class ClientApp {
 		//public static void validBoutonDirecteur(String clicItemSession, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
 			
 			String correspondance = tableDeCorrespondanceDir.get(clicItemSession).getNomStage();
-			
+			int correspId;			
 			// Comparison between the string stage and the correspondent element in the list of stages (of the server)
 			int i = 0;
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
-			        
+			      
 			StageConcret updatedSession = listSessionDir.get(i);
-			
+			System.out.println(updatedSession);
 			// recovery of updated lists from the client
 			List<String> candidat=new ArrayList<String>();
 			List<String> accepte = new ArrayList<String>();
@@ -254,22 +286,23 @@ public class ClientApp {
 			List<String> refuse = new ArrayList<String>();
 			
 			for(int j=0; j<updatedLists.getCandidat().size();j++){
-				int correspId = tableDeCorrespondancePomp.get(updatedLists.getCandidat().get(j));
+				correspId = tableDeCorrespondancePomp.get(updatedLists.getCandidat().get(j));
 				candidat.add(""+correspId);	
+				
 			}
-			
-			for(int j=0; j<updatedLists.getAccepte().size();j++){
-				int correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(j));
+				
+			for(int k=0; k<updatedLists.getAccepte().size();k++){
+				correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(k));
 				accepte.add(""+correspId);	
 			}
 			
 			for(int j=0; j<updatedLists.getAttente().size();j++){
-				int correspId = tableDeCorrespondancePomp.get(updatedLists.getAttente().get(j));
+				correspId = tableDeCorrespondancePomp.get(updatedLists.getAttente().get(j));
 				attente.add(""+correspId);	
 			}
 			
 			for(int j=0; j<updatedLists.getRefuse().size();j++){
-				int correspId = tableDeCorrespondancePomp.get(updatedLists.getRefuse().get(j));
+				correspId = tableDeCorrespondancePomp.get(updatedLists.getRefuse().get(j));
 				refuse.add(""+correspId);	
 			}
 			
@@ -282,6 +315,7 @@ public class ClientApp {
 			// Add a new stage using the PUT HTTP method. managed by the Jersey framework
 			String reponse = service.path("directeur/selection").type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).put(new GenericType<String>(){}, updatedSession);
 			return reponse;
+			
 		}
 		
 		// Push a updated list of candidates for a specific stage to the server : "Sauvegarde temporaire" button in the director tab
@@ -453,6 +487,7 @@ public class ClientApp {
 	        		ligneSess = nomLieu + " le " + date;
 				    listSess.add(ligneSess);
 				    tableDeCorrespondanceForm.put(ligneSess, newligne);
+				    
 	        	}
 	        }
 			}

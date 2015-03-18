@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CandidatureController">
+<AnchorPane prefHeight="735.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CandidatureController">
    <children>
       <SplitPane dividerPositions="0.5322314049586777" layoutX="-4.0" layoutY="-2.0" prefHeight="400.0" prefWidth="607.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -23,7 +23,50 @@
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
+<<<<<<< HEAD
                                                 <ListView fx:id="acceptCandArea" layoutX="25.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+=======
+                                                <Accordion layoutX="10.6" layoutY="9.6" prefHeight="256.0" prefWidth="279.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <panes>
+                                                    <TitledPane fx:id="titleAccepteesCand" animated="false" onMouseClicked="#onClicCandAccept" text="Acceptées">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <ListView fx:id="acceptCandArea" layoutX="-2.0" prefHeight="133.0" prefWidth="252.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                      </content>
+                                                    </TitledPane>
+                                                    <TitledPane fx:id="titleAttenteCand" animated="false" onMouseClicked="#onClicCandAttent" text="Sous liste d'attente">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <ListView fx:id="attentCandArea" layoutY="-57.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                      </content>
+                                                    </TitledPane>
+                                                    <TitledPane fx:id="titleNonClotureesCand" animated="false" onMouseClicked="#onClicCandNonClot" text="Non cloturées">
+                                                      <content>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <ListView fx:id="nonClotCandArea" layoutX="24.0" layoutY="-44.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                      </content>
+                                                    </TitledPane>
+                                                      <TitledPane fx:id="titleRefuseesCand" animated="false" layoutX="10.0" layoutY="60.0" onMouseClicked="#onClicCandRefus" text="Refusées">
+                                                         <content>
+                                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <ListView fx:id="refusCandArea" layoutX="-22.0" layoutY="-64.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </content>
+                                                      </TitledPane>
+                                                  </panes>
+                                                </Accordion>
+>>>>>>> origin/master
                                              </children>
                                           </AnchorPane>
                                     </content>
