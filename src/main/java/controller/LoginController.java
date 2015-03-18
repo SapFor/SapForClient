@@ -75,14 +75,15 @@ public class LoginController {
 
     			Stage stage = new Stage();
     			stage.setScene(scene);
+    			stage.setTitle("SapFor Candidature");
 				stage.setMaximized(true);
     			stage.show();
     			
     		} 
             catch (IOException e) { e.printStackTrace(); } 
         }
-        else if(reponse == "Vous êtes déjà connecté"){
-        	String erreur = reponse + " : déconnectez la session ouverte.";
+        else if(reponse == "Vous é˜¾es dé––ï¿½ connectï¿½"){
+        	String erreur = reponse + " : dé–onnectez la session ouverte.";
         	errorArea.setText(erreur);
         	errorArea.setTextFill(Color.RED);
         	errorArea.setVisible(true);
@@ -112,7 +113,7 @@ public class LoginController {
 	
 		// En utilisant un TextField pour le login et un PasswordField pour le mdp, 
 		//ENTER actionne Valider et TAB change le focus.
-		// Si utilisation de TextArea pour gÃ©rer le login et un password visible utiliser les mÃ©thodes ci-dessous:
+		// Si utilisation de TextArea pour gèŒ…rer le login et un password visible utiliser les mèŒ…thodes ci-dessous:
 		// ce code permet seulement de changer le focus avec TAB et ENTER. 
 		// Quand Focus sur : Valider + ENTER = action sur Valider
 	
