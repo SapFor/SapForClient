@@ -1,15 +1,11 @@
 package application;
 	
-import java.util.List;
-
 import restApplication.ClientApp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
-
 
 public class Main extends Application {
 	@Override
