@@ -61,7 +61,6 @@ public class LoginController {
     	
     	int idPompier = Integer.parseInt(loginArea.getText());
         String mdp = mdpArea.getText();
-        System.out.println("mdp");
         String reponse = ClientApp.login(idPompier, mdp);
         if(reponse == "ok"){
     		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
@@ -81,6 +80,14 @@ public class LoginController {
     			
     		} 
             catch (IOException e) { e.printStackTrace(); } 
+        }
+        else if(reponse == "Vous êtes déjà connecté"){
+        	String erreur = reponse + " : déconnectez la session ouverte.";
+        	errorArea.setText(erreur);
+        	errorArea.setTextFill(Color.RED);
+        	errorArea.setVisible(true);
+        	loginArea.setText("");
+        	mdpArea.setText("");
         }
         else { 
         	String erreur = reponse.toUpperCase() + " : le login et/ou le mot de passe sont incorrects.";
