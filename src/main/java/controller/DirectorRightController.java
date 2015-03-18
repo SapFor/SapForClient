@@ -75,7 +75,10 @@ public class DirectorRightController {
 	@FXML
     private Button btnSauvTemp;
 	
+	
+	
 	public void loadCandidats(String sessionID) {
+		
 		this.session = sessionID;
 		noDecisionList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,0)); 
 		acceptedList =FXCollections.observableArrayList (ClientApp.getListCandidatDirecteur(session,2));
@@ -196,10 +199,12 @@ public class DirectorRightController {
 	
 	private void updateList(Toggle oldToggle, Toggle newToggle, RadioButton rdoAccepte, RadioButton rdoRefuse, RadioButton rdoAttente) {
 
+
 		// UserData() is the same name stored at each radioButton for each person
 		// so can get nameMoving from any one of the three radioButtons.
 		// Cannot get it from oldToggle because oldToggle is null in the case of 
 		// no previous radioButton selected (noDecision).
+
 		String nameMoving = rdoAccepte.getUserData().toString();
 		
 		// Remove from old list

@@ -39,12 +39,21 @@ public class MainController implements Initializable{
 	@FXML
     private Hyperlink deco;
 	@FXML
+
     private Hyperlink profil;
     	 		
+
+	private DirectorController directornameController;
+	
+	@FXML public void initialize() {
+		directornameController.init(this);
+		}
+
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//mainLabelArea.setText("Jean Dupont n�12345"); //test � remplacer par la ligne suivante lors de l'acc鑣 au serveur
 		mainLabelArea.setText(ClientApp.getNomPomp());
+
 		if(ClientApp.isDirector()){
 			director.setDisable(false);
 		}
@@ -52,6 +61,12 @@ public class MainController implements Initializable{
 		// set default tab to Formation
 		SingleSelectionModel<Tab> selectionModel = tabs.getSelectionModel();
 		selectionModel.select(formation);
+	}
+	
+	public void onClickDirector(Event event){
+	      // LectureUVFichier fichierUV = new LectureUVFichier(URLRessource+"UVname", 0);
+		directornameController.initialize();
+		System.out.println("clique director");
 	}
 	
 	public void onClicDeconnexion(Event event){

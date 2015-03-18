@@ -15,6 +15,7 @@ import java.util.List;
 
 
 
+
 import objectsTemplates.ListCandidats;
 import objectsTemplates.PompierConcret;
 import objectsTemplates.StageConcret;
@@ -41,8 +42,13 @@ public interface ClientAppInterface {
 	
 //////////////////////Director Methods//////////////////////	
 	
-	// Test if the stage is closed (true == non closed)
+	// Test if the stage is closed (date of the end of candidature > current date)
+	// return true if the stage is not closed
 	public boolean testDate(String nomStage);
+	
+	// Test if the stage has already started
+	// return true if the date of beginning of stage > current date
+	public boolean testDateDebutStage(String nomStage);
 
 	// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
 	//public void validBoutonDirecteur(String UVname, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse);

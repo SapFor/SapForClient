@@ -7,13 +7,14 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DirectorRightController">
+<AnchorPane fx:id="directorRight" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DirectorRightController">
    <children>
       <SubScene height="412.0" width="645.0">
         <root>
           <Region />
         </root>
       </SubScene>
+
       <TitledPane fx:id="titleCandidats" alignment="CENTER" animated="false" collapsible="false" text="CANDIDATS DE LA SESSION" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
           <AnchorPane>

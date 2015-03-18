@@ -16,7 +16,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import objectsTemplates.*;
@@ -39,7 +38,7 @@ public class ClientApp {
 		
 		private static HashMap<String,StageConcret> tableDeCorrespondanceDir;
 		private static HashMap<String,StageConcret> tableDeCorrespondanceForm;
-		private static HashMap<String,Integer> tableDeCorrespondancePomp= new HashMap<String,Integer>();
+		private static HashMap<String,Integer> tableDeCorrespondancePomp = new HashMap<String,Integer>();
 		static enum GuideList { CANDIDAT, ATTENTE, ACCEPTE, REFUSE }
 		// Working on the assumption that your int value is 
 		// the ordinal value of the items in your enum (method getListCandidatDirecteur)
@@ -75,7 +74,9 @@ public class ClientApp {
 			String defPath = idPompier + "/" + mdp;
 			PompierConcret check = service.path(defPath).accept(MediaType.APPLICATION_JSON).get(new GenericType<PompierConcret>(){});
 			if (check.getIdSession()==999){ return "erreur"; }
-			else if (check.getIdSession()==1000){ return "Vous êtes déjà connecté"; }
+
+			else if(check.getIdSession()==1000){ return "Vous êtes déjà connecté";}
+
 			else {
 				moi=check;
 				idSession = check.getIdSession(); 
@@ -110,8 +111,8 @@ public class ClientApp {
 //////////////////////Director Methods//////////////////////	
 		
 
-		// Test if the stage is closed
-		// return true if the stage is closed
+		// Test if the stage is closed (date of the end of candidature > current date)
+		// return true if the stage is not closed
 		public static boolean testDate(String nomStage){
 			StageConcret test;
 			
@@ -119,18 +120,13 @@ public class ClientApp {
 			int i = 0;
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++;}
 			test = listSessionDir.get(i);
-			
-			System.out.println(test.getFinCandidature().getTime());
-			System.out.println(Calendar.getInstance().getTime());
-			
-			System.out.println(test.getFinCandidature().getTime().after(Calendar.getInstance().getTime()));
-			
-			
-			
+
 			return test.getFinCandidature().getTime().after(Calendar.getInstance().getTime());
 		}
 		
 		
+		// Test if the stage has already started
+		// return true if the date of beginning of stage > current date
 		public static boolean testDateDebutStage(String nomStage){
 			StageConcret test;
 			
@@ -173,9 +169,7 @@ public class ClientApp {
 	    		ligneSess = nomUV + "\t" + date + "\t" + nomLieu;
 	    		listSess.add(ligneSess);
 	    		tableDeCorrespondanceDir.put(ligneSess, newLigne);
-	    		  for (Entry<String, StageConcret> entry : tableDeCorrespondanceDir.entrySet()) {
-	    		       System.out.println(entry.getKey()+" : "+entry.getValue());
-	    		      }
+
 	    		}
 			}
 	    	return listSess;	
@@ -226,14 +220,6 @@ public class ClientApp {
 		    		listPompiers.add(namePomp);
 		    		tableDeCorrespondancePomp.put(namePomp, pomp.getId());
 
-
-       //check de remplissage de Hashmap
-		    		System.out.println(tableDeCorrespondancePomp.size());
-      for (Entry<String, Integer> entry : tableDeCorrespondancePomp.entrySet()) {
-       System.out.println(entry.getKey()+" : "+entry.getValue());
-      }
-
-
 		    	}
 	    	}
 	    	return listPompiers;
@@ -279,7 +265,7 @@ public class ClientApp {
 			while( i<listSessionDir.size() && !correspondance.equals(listSessionDir.get(i).getNomStage()) ){ i++; }
 			      
 			StageConcret updatedSession = listSessionDir.get(i);
-			System.out.println(updatedSession);
+			
 			// recovery of updated lists from the client
 			List<String> candidat=new ArrayList<String>();
 			List<String> accepte = new ArrayList<String>();
@@ -292,8 +278,8 @@ public class ClientApp {
 				
 			}
 				
-			for(int k=0; k<updatedLists.getAccepte().size();k++){
-				correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(k));
+			for(int j=0; j<updatedLists.getAccepte().size();j++){
+				correspId = tableDeCorrespondancePomp.get(updatedLists.getAccepte().get(j));
 				accepte.add(""+correspId);	
 			}
 			
@@ -386,16 +372,47 @@ public class ClientApp {
 		// Get boolean if the fireman is already candidate at this stage
 		public static boolean isCandidate(String ClickedItemSession){
 
+			// the fireman is candidate if he is present in one of the 4 lists (enCours, accepte, refuse, attente)
+			
 			String correspondance = tableDeCorrespondanceForm.get(ClickedItemSession).getNomStage();
-			// Comparison between the string ClickedItemSession and the correspondent element in the list of stage (of the server)
-	        if(moi.getEnCours()!=null){
+			boolean founded = false; 
+			
+			// Comparison between the string ClickedItemSession 
+			// and the possible correspondent element in the 4 lists of stages (of the server)
+	       
+			if(moi.getEnCours()!=null){
 	        	int i = 0;
 	        	while( i<moi.getEnCours().size() && !correspondance.equals(moi.getEnCours().get(i)) ){ i++; }
 	        
 	        	// the correct stage is found in the list -> get detailled infos
-	        	return (i<moi.getEnCours().size());
+	        	if(i<moi.getEnCours().size()){ founded = true;}
 	        }
-	        else { return false; }
+	        
+	        if(moi.getAccepte()!=null){
+	        	int i = 0;
+	        	while( i<moi.getAccepte().size() && !correspondance.equals(moi.getAccepte().get(i)) ){ i++; }
+	        
+	        	// the correct stage is found in the list -> get detailled infos
+	        	if(i<moi.getAccepte().size()){ founded = true;}
+	        }
+	        
+	        if(moi.getAttente()!=null){
+	        	int i = 0;
+	        	while( i<moi.getAttente().size() && !correspondance.equals(moi.getAttente().get(i)) ){ i++; }
+	        
+	        	// the correct stage is found in the list -> get detailled infos
+	        	if(i<moi.getAttente().size()){ founded = true;}
+	        }
+	        
+	        if(moi.getRefuse()!=null){
+	        	int i = 0;
+	        	while( i<moi.getRefuse().size() && !correspondance.equals(moi.getRefuse().get(i)) ){ i++; }
+	        
+	        	// the correct stage is found in the list -> get detailled infos
+	        	if(i<moi.getRefuse().size()){ founded = true;}
+	        }
+	        
+	        return founded;
 			
 		}
 		
@@ -421,6 +438,8 @@ public class ClientApp {
 			}
 			return listUVDispo;
 		}
+		
+		
 		
 		// Get list of the formation UVs, formateur radioButton : to put into the formation tab
 		public static List<String> getListUVFormateur(){
@@ -584,7 +603,7 @@ public class ClientApp {
 				moi.setEnCours(current);   // deleting the old candidated stage on the list of stages of our fireman (deleting side client)
 					
 				// Add a new stage using the GET HTTP method. managed by the Jersey framework
-				service.path("candidater/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
+				service.path("desincription/" + moi.getIdSession() + "/" + currentStage).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(new GenericType<String>(){});
 			}
 		}
 		
