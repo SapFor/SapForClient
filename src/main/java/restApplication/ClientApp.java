@@ -34,7 +34,6 @@ public class ClientApp {
 		private static List<StageConcret> listSessionForm;
 		private static List<StageConcret> listSessionDir;
 		private static List<UVConcret> listUV;
-		private static int nbCandidats = 0;
 		
 		private static HashMap<String,StageConcret> tableDeCorrespondanceDir;
 		private static HashMap<String,StageConcret> tableDeCorrespondanceForm;
@@ -66,7 +65,8 @@ public class ClientApp {
 		}
 		*/
 		
-		// Get idSession by login and password
+		// Get idSession by login and password by a creation of a new instance of the client/connection to server
+		// Server return an error message if login/mdp not correct or user already connected
 		public static String login(int idPompier,String mdp){
 			config = new DefaultClientConfig();
 			client = Client.create(config);
@@ -87,17 +87,18 @@ public class ClientApp {
 		// Get IdSession
 		public static int getIdSession(){ return idSession; }
 		
-		// Get name fireman
+		// Get first name and last name of the user
 		public static String getNomPomp(){ return moi.getPrenom() + " " + moi.getNom() + " - Agent n°" + moi.getId(); }
 		
-
-		// Get boolean if the fireman is director
+		// Test if the user is director
+		// Return true if the user is director
 		public static boolean isDirector(){
 			return (moi.getDirecteur().compareTo("oui")==0);
 		}
 		
 		
-		// Deconnect the session (idSession is the number of the session)
+		// @param : idSession is the number of the session (clicked on the IHM and pushed by controller)  
+		// Deconnect the session by server access, with a confirmation message (or an error message)
 		public static String deconnexion(int idSession){
 			String reponse;
 			String nSession = "" + idSession;
@@ -108,11 +109,15 @@ public class ClientApp {
 			else { return "erreur de deconnexion!"; }
 		}
 		
+		
+		
+		
 //////////////////////Director Methods//////////////////////	
 		
 
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)  
 		// Test if the stage is closed (date of the end of candidature > current date)
-		// return true if the stage is not closed
+		// Return true if the stage is not closed
 		public static boolean testDate(String nomStage){
 			StageConcret test;
 			
@@ -125,8 +130,11 @@ public class ClientApp {
 		}
 		
 		
+		
+		
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)    
 		// Test if the stage has already started
-		// return true if the date of beginning of stage > current date
+		// Return true if the date of beginning of stage > current date
 		public static boolean testDateDebutStage(String nomStage){
 			StageConcret test;
 			
@@ -140,8 +148,8 @@ public class ClientApp {
 		
 		
 		
-	
-		// Get list of the director stages : to put into the director tab
+		
+		// Get list of the director stages by server access : to put into the director tab
 		public static List<String> getListSessionDirecteur(){
 			//WebResource service = connect();
 			// Get list of stages from the server
@@ -176,7 +184,11 @@ public class ClientApp {
 	    }
 		
 		
-	  	// Get list of director candidates for a specific stage : to put into the director tab
+		
+		
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)    
+		// @param : listLoading = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
+	  	// Get list of director candidates for a specific stage by server access : to put into the director tab
 		public static List<String> getListCandidatDirecteur(String ClickedItemSession, int listLoading){
 
 			/*
@@ -227,13 +239,15 @@ public class ClientApp {
 		
 		
 		
-		// Get the objet ListCandidats hosting all the list (accepted, refused, pending, no handled candidates) : to put into the director tab
+		
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)   
+		// Get the objet ListCandidats hosting all the lists (accepted, refused, pending, no handled candidates) : to put into the director tab
 		public static ListCandidats getListCandidatDirecteurGlobal(String ClickedItemSession){
 			
 			ListCandidats candidates = new ListCandidats();  // create object of the class ListCandidats for pushing on the tab
 			List<String> currentListPomp;
 			
-			for (int j=0; j<4; j++){
+			for (int j=0; j<4; j++){ // using the method getListCandidatDirecteur for the four lists
 				currentListPomp = getListCandidatDirecteur(ClickedItemSession, j);
 				
 				switch (j){  // choice of the candidates list to set in the ListCandidats object
@@ -248,15 +262,12 @@ public class ClientApp {
 		}
 		
 		
-		// Get the number of candidates for a stage : to put into the director tab 
-		public static int getNbCandidats(){
-			return nbCandidats;
-		}
 		
 		
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)   
+		// @param : object hosting four updated lists of candidates (push by controller)
 		// Push a updated list of candidates for a specific stage to the server : "Valider" button in the director tab
 		public static String validBoutonDirecteur(String clicItemSession, ListCandidats updatedLists){
-		//public static void validBoutonDirecteur(String clicItemSession, List<String> candidat, List<String> accepte, List<String> attente, List<String> refuse){
 			
 			String correspondance = tableDeCorrespondanceDir.get(clicItemSession).getNomStage();
 			int correspId;			
@@ -305,6 +316,11 @@ public class ClientApp {
 			
 		}
 		
+		
+		
+		
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)    
+		// @param : object hosting four updated lists of candidates (push by controller)
 		// Push a updated list of candidates for a specific stage to the server : "Sauvegarde temporaire" button in the director tab
 		public static String sauvTempBoutonDirecteur(String clicItemSession, ListCandidats updatedLists){
 					
@@ -352,9 +368,12 @@ public class ClientApp {
 			return reponse;
 		}
 		
-				
 		
-		// Close the candidatures of a stage : associated to the "Cloturer" button in the director tab
+		
+			
+		// @param : full name of the stage (clicked on the IHM and pushed by controller)   
+		// @param : jour/mois/annee (push by controller)	
+		// Close the candidatures of a stage (push to the server) : associated to the "Cloturer" button in the director tab
 		public static String cloturerCandidature(String nomSession,int jour, int mois, int annee){
 			String nomStage = tableDeCorrespondanceDir.get(nomSession).getNomStage();
 			String reponse;
@@ -365,11 +384,16 @@ public class ClientApp {
 			}
 			else { return "Problème lors du changement de date";}
 		}
-				
-				
+		
+		
+		
+			
 //////////////////////Formation Methods//////////////////////
 		
-		// Get boolean if the fireman is already candidate at this stage
+
+		// @param : date and place of the stage (clicked on the IHM and pushed by controller)  
+		// Get boolean if the fireman is already candidate at this stage (present in one of the four lists)
+		// Return true if he's already candidated
 		public static boolean isCandidate(String ClickedItemSession){
 
 			// the fireman is candidate if he is present in one of the 4 lists (enCours, accepte, refuse, attente)
@@ -419,7 +443,7 @@ public class ClientApp {
 		
 		
 		
-		// Get list of the formation UVs, apprenant radioButton : to put into the formation tab
+		// Get list of the formation UVs by server access : to put into the formation tab (apprenant radioButton)
 		public static List<String> getListUVApprenant(){
 			// Get list of stages from the server
 			EncapsulationUV encapUV = service.path("UVcandidat/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
@@ -441,7 +465,8 @@ public class ClientApp {
 		
 		
 		
-		// Get list of the formation UVs, formateur radioButton : to put into the formation tab
+		
+		// Get list of the formation UVs by server access : to put into the formation tab (formateur radioButton)
 		public static List<String> getListUVFormateur(){
 			// Get list of stages from the server
 			EncapsulationUV encapUV = service.path("UVformateur/" + moi.getIdSession()).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationUV>(){});
@@ -460,10 +485,12 @@ public class ClientApp {
 			}
 			return listUVDispo;
 		}
-				
 		
 		
-		// Get description of the formation UVs : to put into the formation tab
+		
+		
+		// @param : name of the UV (clicked on the IHM and pushed by controller)  
+		// Get description for one UV : to put into the formation tab
 		public static String getDescriptionUV(String clickedItemUV){
 			
 			String description="";
@@ -481,7 +508,8 @@ public class ClientApp {
 		
 		
 		
-		// Get list of the formation stages of the formation UVs : to put into the formation tab
+		// @param : name of the UV (clicked on the IHM and pushed by controller)  
+		// Get list of the formation stages for one UV, by server access : to put into the formation tab
 		public static List<String> getListSessionFormation(String clickedItemUV){
 			// Get list of stages from the server
 			EncapsulationStage encapSession = service.path("UV/" + clickedItemUV).accept(MediaType.APPLICATION_JSON).get(new GenericType<EncapsulationStage>(){});
@@ -515,6 +543,9 @@ public class ClientApp {
 		}
 		
 		
+		
+		
+		// @param : date and place of the stage (clicked on the IHM and pushed by controller)  
 		// Get detailled infos of the formation stage : to put into the formation tab
 		public static String getInfoDetailsFormation(String ClickedItemSession){
 			
@@ -529,7 +560,8 @@ public class ClientApp {
 		}
 		
 		
-
+		
+		
 		// auxiliary method : Get the three words of the item "NomLieu le Date" and redo a unique completed string
 		// exemple : FDF1broceliande le 15/06/2015 -> FDF1broceliande15juin15
 		public static String getConcatNameStage(String nomStage){
@@ -572,6 +604,9 @@ public class ClientApp {
 		}
 		
 		
+		
+		
+		// @param : date and place of the stage (clicked on the IHM and pushed by controller)  
 		// Push a new candidating fireman for a specific stage to the server : "Candidater" button in the formation tab
 		public static void candidateBoutonFormation(String currentItemStage){
 			
@@ -590,6 +625,8 @@ public class ClientApp {
 		
 		
 		
+		
+		// @param : date and place of the stage (clicked on the IHM and pushed by controller)  
 		// Push a fireman who delete his candidacy, for a specific stage to the server : "Retirer" button in the formation tab
 		public static void retirerBoutonFormation(String currentItemStage){
 			
@@ -607,11 +644,14 @@ public class ClientApp {
 			}
 		}
 		
-	
+		
+		
+		
 //////////////////////Candidate Methods//////////////////////
 		
+		
+		// @param : statut = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
 		// Get list of the candidate stages : to put into the candidate tab
-		// statut = 0 for "no handled candidat", 1 for "attente", 2 for "accepte", 3 for "refuse"
 		public static List<String> getListSessionCandidate(int statut){
 				
 			List<String> listId = new ArrayList<String>(); // create list of stages for pushing on the tab
