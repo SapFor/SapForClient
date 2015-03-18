@@ -39,10 +39,9 @@ public class MainController implements Initializable{
 	@FXML
     private Hyperlink deco;
 	@FXML
-
     private Hyperlink profil;
     	 		
-
+	@FXML
 	private DirectorController directornameController;
 	
 	@FXML public void initialize() {
@@ -58,9 +57,9 @@ public class MainController implements Initializable{
 			director.setDisable(false);
 		}
 		
-		// set default tab to Formation
+	/*// set default tab to Formation
 		SingleSelectionModel<Tab> selectionModel = tabs.getSelectionModel();
-		selectionModel.select(formation);
+		selectionModel.select(formation);*/
 	}
 	
 	public void onClickDirector(Event event){

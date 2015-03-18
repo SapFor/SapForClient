@@ -66,6 +66,7 @@ public class LoginController {
     		Stage currentStage = (Stage) validerLoginButton.getScene().getWindow();
         	currentStage.close();
         	
+        	System.out.println(getClass().getResource("/view/Main.fxml"));
         	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Main.fxml")); 
             try {
     			Parent root = fxmlLoader.load();

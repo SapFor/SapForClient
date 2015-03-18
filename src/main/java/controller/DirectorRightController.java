@@ -51,7 +51,7 @@ public class DirectorRightController {
 	private Text txtcountAttente;
 	private Line line1;
 	private HBox boxCounter;
-	private HBox hbButtons;
+	//private HBox hbButtons;
 
 	
 	@FXML

@@ -37,9 +37,9 @@
                 <fx:include source="Formation.fxml" />
               </content>
             </Tab>
-            <Tab fx:id="director" closable="false" disable="true" text="Directeur">
+            <Tab fx:id="director" closable="false" disable="true" onSelectionChanged="#onClickDirector" text="Directeur">
                <content>
-                  <fx:include source="Director.fxml" />
+                  <fx:include fx:id="directorname" source="Director.fxml" />
                </content>
             </Tab>
         </tabs>
