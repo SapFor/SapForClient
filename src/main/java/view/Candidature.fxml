@@ -23,9 +23,7 @@
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-<<<<<<< HEAD
                                                 <ListView fx:id="acceptCandArea" layoutX="25.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-=======
                                                 <Accordion layoutX="10.6" layoutY="9.6" prefHeight="256.0" prefWidth="279.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <panes>
                                                     <TitledPane fx:id="titleAccepteesCand" animated="false" onMouseClicked="#onClicCandAccept" text="Acceptées">
@@ -66,7 +64,6 @@
                                                       </TitledPane>
                                                   </panes>
                                                 </Accordion>
->>>>>>> origin/master
                                              </children>
                                           </AnchorPane>
                                     </content>
